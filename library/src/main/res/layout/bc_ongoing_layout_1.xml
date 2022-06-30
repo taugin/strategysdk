@@ -42,6 +42,6 @@
         android:paddingEnd="8dp"
         android:text="@string/bc_str_open"
         android:textColor="@color/bc_color_white"
-        android:textSize="11.0sp" />
+        android:textSize="12.0sp" />
 
 </LinearLayout>

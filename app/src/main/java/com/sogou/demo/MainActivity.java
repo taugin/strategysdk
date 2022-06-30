@@ -15,32 +15,41 @@ import com.sogou.log.Log;
 
 public class MainActivity extends Activity {
 
-    private RemindParams mRemindParams;
+    private RemindParams.Builder mRemindParamsBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bundle bundle = getIntent().getExtras();
-        Log.v(Log.TAG, "bundle : " + (bundle != null ? bundle.getString("test_bundle_key") : ""));
-        mRemindParams = new RemindParams.Builder()
+        Log.v(Log.TAG, "start_app_from : " + (bundle != null ? bundle.getString("start_app_from") : ""));
+        mRemindParamsBuilder = new RemindParams.Builder()
                 .setLayoutType(RemindParams.LAYOUT_TYPE_1)
                 .setTitleString("梦幻怪兽")
                 .setDescString("梦幻怪兽是一款让人欲罢不能的RPG手游，主打四对四特殊回合制战斗，最多16只怪兽组成一个队伍。独创对战系统和上百种技能让每一次战斗更加热血和多元。终极进化你的怪兽，释放它们的真正力量，主宰PvP赛场！您准备好进入梦幻怪兽的世界了吗？\n")
                 .setIconId(R.drawable.notify_icon_small)
                 .setImageId(R.drawable.bc_image)
-                .setActionString("下载试玩").build();
+                .setActionString("下载试玩");
     }
 
     public void onClick(View v) {
         if (v.getId() == R.id.show_app_detail) {
             startActivity(getSettingsDetail());
         } else if (v.getId() == R.id.show_remind_notification) {
-            KeepAlive.showRemind(this, mRemindParams, KeepAlive.RemindMode.NOTIFICATION);
+            Bundle bundle = new Bundle();
+            bundle.putString("start_app_from", String.valueOf(KeepAlive.RemindMode.NOTIFICATION));
+            mRemindParamsBuilder.setBundle(bundle);
+            KeepAlive.showRemind(this, mRemindParamsBuilder.build(), KeepAlive.RemindMode.NOTIFICATION);
         } else if (v.getId() == R.id.show_remind_activity) {
-            KeepAlive.showRemind(this, mRemindParams);
+            Bundle bundle = new Bundle();
+            bundle.putString("start_app_from", String.valueOf(KeepAlive.RemindMode.ACTIVITY));
+            mRemindParamsBuilder.setBundle(bundle);
+            KeepAlive.showRemind(this, mRemindParamsBuilder.build());
         } else if (v.getId() == R.id.show_remind_activity_notification) {
-            KeepAlive.showRemind(this, mRemindParams, KeepAlive.RemindMode.ACTIVITY_AND_NOTIFICATION);
+            Bundle bundle = new Bundle();
+            bundle.putString("start_app_from", String.valueOf(KeepAlive.RemindMode.ACTIVITY_AND_NOTIFICATION));
+            mRemindParamsBuilder.setBundle(bundle);
+            KeepAlive.showRemind(this, mRemindParamsBuilder.build(), KeepAlive.RemindMode.ACTIVITY_AND_NOTIFICATION);
         }
     }
 

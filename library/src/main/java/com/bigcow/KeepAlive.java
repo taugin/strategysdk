@@ -20,7 +20,7 @@ import com.bigcow.model.RemindParams;
 
 public class KeepAlive {
     public static enum RemindMode {
-        ACTIVITY, NOTIFICATION, ACTIVITY_AND_NOTIFICATION
+        ACTIVITY, NOTIFICATION, ACTIVITY_AND_NOTIFICATION, ONGOING
     }
     public static void attachBaseContext(Context context, OnGoingParams params) {
         CoreManager.get(context).setOnGoingParams(params);

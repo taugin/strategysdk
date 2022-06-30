@@ -9,6 +9,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.bigcow.backact.BackMainActivity;
+import com.bigcow.backact.adapter.StartStrategyList;
+
 public class CoreManager {
     public static final String EXTRA_SHOW_REMIND = "extra_show_remind";
     public static final String EXTRA_REMIND_MODE = "extra_show_notification";
@@ -59,9 +62,7 @@ public class CoreManager {
         return mRemindParams;
     }
 
-
-    public PendingIntent getPendingIntent(Params params) {
-        PendingIntent pendingIntent = null;
+    public Intent getDestIntent(Params params) {
         Intent intent = null;
         if (params != null && params.getStartClass() != null) {
             intent = new Intent(mContext, params.getStartClass());
@@ -79,9 +80,22 @@ public class CoreManager {
         if (params != null && params.getBundle() != null && intent != null) {
             intent.putExtras(params.getBundle());
         }
+        return intent;
+    }
+
+    public int getRemindId() {
+        return 0x1234;
+    }
+
+    public PendingIntent getPendingIntent(Params params) {
+        PendingIntent pendingIntent = null;
+        Intent intent = getDestIntent(params);
+        Intent wrapIntent = new Intent(mContext, BackMainActivity.class);
+        wrapIntent.putExtra(StartStrategyList.PREF_DEST_INTENT, intent);
+        wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getRemindId());
         int requestId = Long.valueOf(System.currentTimeMillis()).intValue() + 1001;
         try {
-            pendingIntent = PendingIntent.getActivity(mContext, requestId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = PendingIntent.getActivity(mContext, requestId, wrapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         } catch (Exception e) {
         }
         return pendingIntent;

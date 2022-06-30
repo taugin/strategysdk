@@ -2,11 +2,13 @@ package com.bigcow.component;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -17,7 +19,7 @@ import com.bigcow.log.Log;
 import com.bigcow.model.CoreManager;
 import com.bigcow.model.RemindParams;
 
-public class RemindActivity extends Activity {
+public class RemindActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "remind";
 
     @Override
@@ -83,6 +85,11 @@ public class RemindActivity extends Activity {
         actionView.setText(actionString);
         iconView.setImageBitmap(iconBitmap);
         imageView.setImageBitmap(imageBitmap);
+        titleView.setOnClickListener(this);
+        descView.setOnClickListener(this);
+        actionView.setOnClickListener(this);
+        iconView.setOnClickListener(this);
+        imageView.setOnClickListener(this);
     }
 
     private void showAnimation() {
@@ -121,5 +128,13 @@ public class RemindActivity extends Activity {
     public void finish() {
         super.finish();
         overridePendingTransition(0, R.anim.bc_out_slide_top);
+    }
+
+    @Override
+    public void onClick(View v) {
+        RemindParams params = CoreManager.get(this).getRemindParams();
+        Intent intent = CoreManager.get(this).getDestIntent(params);
+        startActivity(intent);
+        finish();
     }
 }

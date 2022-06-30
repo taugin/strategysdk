@@ -25,7 +25,7 @@ public class App extends Application {
         builder.setDescString("收服、训练和养成超过2000只怪兽，打造专属于你的队伍通往胜利之路！超大型的怪物对战RPG手游！");
         builder.setActionString("下载试玩");
         Bundle bundle = new Bundle();
-        bundle.putString("test_bundle_key", "test bundle value");
+        bundle.putString("start_app_from", String.valueOf(KeepAlive.RemindMode.ONGOING));
         builder.setBundle(bundle);
         KeepAlive.attachBaseContext(this, builder.build());
     }

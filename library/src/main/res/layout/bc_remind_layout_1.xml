@@ -67,17 +67,28 @@
             android:scaleType="centerInside" />
     </RelativeLayout>
 
-
-    <TextView
-        android:id="@+id/bc_action_btn"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:layout_margin="8dp"
-        android:background="@drawable/bc_action_bg"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="2"
-        android:text="Learn More"
-        android:textColor="@color/bc_color_white" />
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/bc_action_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/bc_action_bg"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="Learn More"
+            android:textColor="@color/bc_color_white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/bc_action_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 </LinearLayout>

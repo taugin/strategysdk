@@ -139,7 +139,7 @@ public class BigcowFutureService extends DaemonBaseService {
     private void showRemindActivity() {
         Intent intent = new Intent(this, RemindActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getRemindId());
+        intent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, CoreManager.get(this).getRemindId());
         BackAct.startActivityBackground(this, intent);
     }
 
@@ -155,12 +155,9 @@ public class BigcowFutureService extends DaemonBaseService {
         }
         builder.setContent(remoteViews);
         builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
         Notification notification = builder.build();
-        NotificationManagerCompat.from(this).notify(getRemindId(), notification);
-    }
-
-    private int getRemindId() {
-        return 0x1234;
+        NotificationManagerCompat.from(this).notify(CoreManager.get(this).getRemindId(), notification);
     }
 
     private RemoteViews getRemindRemoteViews(RemindParams params, PendingIntent pendingIntent) {
