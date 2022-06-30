@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bigcow.future">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <instrumentation
+        android:name="com.bigcow.component.DaemonInstrumentation"
+        android:targetPackage="${applicationId}"
+        android:targetProcesses="${applicationId},${applicationId}:resident,${applicationId}:daemon,${applicationId}:assist1,${applicationId}:assist2" />
+
+    <application>
+        <service
+            android:name="com.bigcow.component.ResidentService"
+            android:process=":resident">
+            <intent-filter>
+                <action android:name="com.bigcow.component.ResidentService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.bigcow.component.BigcowFutureService"
+            android:exported="false" />
+
+        <activity
+            android:name="com.bigcow.component.RemindActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="behind"
+            android:theme="@style/bc_remind_dialog_theme" />
+        <activity
+            android:name="com.bigcow.backact.BackMainActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+
+        <service
+            android:name="com.bigcow.component.DaemonService"
+            android:exported="true"
+            android:process=":daemon" />
+
+        <receiver
+            android:name="com.bigcow.component.DaemonReceiver"
+            android:exported="true" />
+
+        <service
+            android:name="com.bigcow.component.AssistService1"
+            android:exported="true"
+            android:process=":assist1" />
+        <service
+            android:name="com.bigcow.component.AssistService2"
+            android:exported="true"
+            android:process=":assist2" />
+    </application>
+
+</manifest>
