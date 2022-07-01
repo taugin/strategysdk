@@ -75,7 +75,7 @@ public class App extends Application {
         });
     }
 
-    private String bundleToString(Bundle bundle) {
+    public static String bundleToString(Bundle bundle) {
         if (bundle != null) {
             Set<String> set = bundle.keySet();
             Map<String, Object> map = new HashMap<>();

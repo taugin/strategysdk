@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bundle bundle = getIntent().getExtras();
-        Log.v(Log.TAG, "start_app_from : " + (bundle != null ? bundle.getString("start_app_from") : ""));
+        Log.v(Log.TAG, "start args : " + App.bundleToString(bundle));
     }
 
     private void generateRemindParams() {
@@ -70,18 +70,24 @@ public class MainActivity extends Activity {
             generateRemindParams();
             Bundle bundle = new Bundle();
             bundle.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.NOTIFICATION));
+            bundle.putString("remind_title", TITLE_ARRAY[mIndex]);
+            bundle.putString("remind_desc", DESC_ARRAY[mIndex]);
             mRemindParamsBuilder.setBundle(bundle);
             VibrantRemind.showRemind(this, mRemindParamsBuilder.build(), VibrantRemind.RemindMode.NOTIFICATION);
         } else if (v.getId() == R.id.show_remind_activity) {
             generateRemindParams();
             Bundle bundle = new Bundle();
             bundle.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.ACTIVITY));
+            bundle.putString("remind_title", TITLE_ARRAY[mIndex]);
+            bundle.putString("remind_desc", DESC_ARRAY[mIndex]);
             mRemindParamsBuilder.setBundle(bundle);
             VibrantRemind.showRemind(this, mRemindParamsBuilder.build());
         } else if (v.getId() == R.id.show_remind_activity_notification) {
             generateRemindParams();
             Bundle bundle = new Bundle();
             bundle.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.ACTIVITY_AND_NOTIFICATION));
+            bundle.putString("remind_title", TITLE_ARRAY[mIndex]);
+            bundle.putString("remind_desc", DESC_ARRAY[mIndex]);
             mRemindParamsBuilder.setBundle(bundle);
             VibrantRemind.showRemind(this, mRemindParamsBuilder.build(), VibrantRemind.RemindMode.ACTIVITY_AND_NOTIFICATION);
         }
