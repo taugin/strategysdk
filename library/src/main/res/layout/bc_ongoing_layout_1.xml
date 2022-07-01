@@ -40,7 +40,7 @@
         android:minWidth="60.0dip"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="@string/bc_str_open"
+        android:text="Open"
         android:textColor="@color/bc_color_white"
         android:textSize="12.0sp" />
 

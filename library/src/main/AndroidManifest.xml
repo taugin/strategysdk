@@ -26,7 +26,7 @@
             android:screenOrientation="behind"
             android:theme="@style/bc_remind_dialog_theme" />
         <activity
-            android:name="com.vibrant.backact.BackMainActivity"
+            android:name="com.vibrant.startup.BackMiddleActivity"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 

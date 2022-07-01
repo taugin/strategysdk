@@ -1,4 +1,4 @@
-package com.sogou.demo;
+package com.vibrant.demo;
 
 import android.app.ActivityManager;
 import android.app.Application;
@@ -6,8 +6,8 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.vibrant.VibrantRemind;
+import com.vibrant.daemon.demo.R;
 import com.vibrant.model.OnGoingParams;
-import com.sogou.daemon.demo.R;
 
 public class App extends Application {
     @Override
@@ -22,7 +22,48 @@ public class App extends Application {
         Bundle bundle = new Bundle();
         bundle.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.ONGOING));
         builder.setBundle(bundle);
-        VibrantRemind.init(this, builder.build());
+        VibrantRemind.init(this, builder.build(), new VibrantRemind.OnDataCallback() {
+
+            @Override
+            public void reportCallRemind() {
+                Log.v(Log.TAG, "report call remind");
+            }
+
+            @Override
+            public void reportCallNotification() {
+                Log.v(Log.TAG, "report call notification");
+            }
+
+            @Override
+            public void reportShowRemind() {
+                Log.v(Log.TAG, "report show remind");
+            }
+
+            @Override
+            public void reportRemindClick() {
+                Log.v(Log.TAG, "report click remind");
+            }
+
+            @Override
+            public void reportOnGoingClick() {
+                Log.v(Log.TAG, "report click ongoing");
+            }
+
+            @Override
+            public void reportNotificationClick() {
+                Log.v(Log.TAG, "report click notification");
+            }
+
+            @Override
+            public void reportRemindClose() {
+                Log.v(Log.TAG, "report close remind");
+            }
+
+            @Override
+            public void reportError(VibrantRemind.RemindMode remindMode, String error) {
+                Log.v(Log.TAG, "mode : " + remindMode + " , error : " + error);
+            }
+        });
     }
 
     @Override

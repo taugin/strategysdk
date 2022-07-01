@@ -1,10 +1,9 @@
-package com.sogou.log;
+package com.vibrant.startup.log;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-
-import com.sogou.daemon.demo.BuildConfig;
+import com.vibrant.future.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -21,7 +20,7 @@ public class Log {
     private static final int ERROR = android.util.Log.ERROR;
     private static final int WARN = android.util.Log.WARN;
 
-    public static final String TAG = "demo";
+    public static final String TAG = "back";
     public static final boolean DEBUGABLE = BuildConfig.DEBUG;
 
     private static boolean isLoggable(String tag, int level) {
@@ -32,6 +31,7 @@ public class Log {
     }
 
     public static void d(String tag, String message) {
+        tag = checkLogTag(tag);
         if (isLoggable(tag, DEBUG)) {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
@@ -40,6 +40,7 @@ public class Log {
     }
 
     public static void v(String tag, String message) {
+        tag = checkLogTag(tag);
         if (isLoggable(tag, VERBOSE)) {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
@@ -48,6 +49,7 @@ public class Log {
     }
 
     public static void i(String tag, String message) {
+        tag = checkLogTag(tag);
         if (isLoggable(tag, INFO)) {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
@@ -56,6 +58,7 @@ public class Log {
     }
 
     public static void w(String tag, String message) {
+        tag = checkLogTag(tag);
         if (isLoggable(tag, WARN)) {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
@@ -64,6 +67,7 @@ public class Log {
     }
 
     public static void e(String tag, String message) {
+        tag = checkLogTag(tag);
         if (isLoggable(tag, ERROR)) {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
@@ -72,6 +76,7 @@ public class Log {
     }
 
     public static void e(String tag, String message, Throwable e) {
+        tag = checkLogTag(tag);
         if (isLoggable(tag, ERROR)) {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
@@ -79,8 +84,28 @@ public class Log {
         }
     }
 
+    public static void vf(String tag, String message, Object... objects) {
+        tag = checkLogTag(tag);
+        if (isLoggable(tag, VERBOSE)) {
+            String extraString = getMethodNameAndLineNumber();
+            tag = privateTag() ? tag : getTag();
+            try {
+                message = String.format(message, objects);
+            } catch (Exception e) {
+            }
+            android.util.Log.v(tag, extraString + message);
+        }
+    }
+
     private static boolean privateTag() {
         return GLOBAL_TAG;
+    }
+
+    private static String checkLogTag(String tag) {
+        if (tag != null && tag.length() > 23) {
+            tag = TAG;
+        }
+        return tag;
     }
 
     @SuppressLint("DefaultLocale")

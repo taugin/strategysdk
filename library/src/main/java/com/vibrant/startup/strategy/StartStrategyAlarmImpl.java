@@ -1,4 +1,4 @@
-package com.vibrant.backact.strategy;
+package com.vibrant.startup.strategy;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

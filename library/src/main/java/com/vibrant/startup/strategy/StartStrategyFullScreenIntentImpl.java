@@ -1,4 +1,4 @@
-package com.vibrant.backact.strategy;
+package com.vibrant.startup.strategy;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -10,7 +10,7 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.vibrant.backact.utils.BackActUtils;
+import com.vibrant.startup.utils.BackActUtils;
 
 public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
     public static int notification_id = 99;

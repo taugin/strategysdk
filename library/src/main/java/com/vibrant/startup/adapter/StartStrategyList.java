@@ -1,4 +1,4 @@
-package com.vibrant.backact.adapter;
+package com.vibrant.startup.adapter;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -7,17 +7,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
 
-import com.vibrant.backact.log.Log;
-import com.vibrant.backact.strategy.IStartStrategy;
-import com.vibrant.backact.strategy.StartStrategyAlarmImpl;
-import com.vibrant.backact.strategy.StartStrategyBringForegroundImpl;
-import com.vibrant.backact.strategy.StartStrategyFullScreenIntentImpl;
-import com.vibrant.backact.strategy.StartStrategyJobServiceImpl;
-import com.vibrant.backact.strategy.StartStrategyResetIntentImpl4MIUI;
-import com.vibrant.backact.strategy.StartStrategyResetIntentImpl4VIVO;
-import com.vibrant.backact.strategy.StartStrategySafeImpl;
-import com.vibrant.backact.strategy.StartStrategyVirtualDisplayImpl;
-import com.vibrant.backact.utils.BackActUtils;
+import com.vibrant.startup.log.Log;
+import com.vibrant.startup.strategy.IStartStrategy;
+import com.vibrant.startup.strategy.StartStrategyAlarmImpl;
+import com.vibrant.startup.strategy.StartStrategyBringForegroundImpl;
+import com.vibrant.startup.strategy.StartStrategyFullScreenIntentImpl;
+import com.vibrant.startup.strategy.StartStrategyJobServiceImpl;
+import com.vibrant.startup.strategy.StartStrategyResetIntentImpl4MIUI;
+import com.vibrant.startup.strategy.StartStrategyResetIntentImpl4VIVO;
+import com.vibrant.startup.strategy.StartStrategySafeImpl;
+import com.vibrant.startup.strategy.StartStrategyVirtualDisplayImpl;
+import com.vibrant.startup.utils.BackActUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;

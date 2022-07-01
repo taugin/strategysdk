@@ -1,10 +1,10 @@
-package com.vibrant.backact.strategy;
+package com.vibrant.startup.strategy;
 
 import android.content.Context;
 import android.content.Intent;
 
-import com.vibrant.backact.log.Log;
-import com.vibrant.backact.utils.BackActUtils;
+import com.vibrant.startup.log.Log;
+import com.vibrant.startup.utils.BackActUtils;
 
 
 public class StartStrategyBringForegroundImpl implements IStartStrategy {

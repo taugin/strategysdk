@@ -9,10 +9,10 @@ import android.os.MessageQueue;
 
 import androidx.core.content.ContextCompat;
 
-import com.vibrant.component.RemindFutureService;
 import com.vibrant.component.DaemonInstrumentation;
 import com.vibrant.component.DaemonReceiver;
 import com.vibrant.component.DaemonService;
+import com.vibrant.component.RemindFutureService;
 import com.vibrant.daemon.JavaDaemon;
 import com.vibrant.model.CoreManager;
 import com.vibrant.model.OnGoingParams;
@@ -24,7 +24,12 @@ public class VibrantRemind {
     }
 
     public static void init(Context context, OnGoingParams params) {
+        init(context, params, null);
+    }
+
+    public static void init(Context context, OnGoingParams params, OnDataCallback callback) {
         CoreManager.get(context).init();
+        CoreManager.get(context).setOnDataCallback(callback);
         CoreManager.get(context).setOnGoingParams(params);
         JavaDaemon.getInstance().init(context, new Intent(context, DaemonService.class), new Intent(context, DaemonReceiver.class), new Intent(context, DaemonInstrumentation.class));
         JavaDaemon.getInstance().startAppLock(context, new String[]{"daemon", "assist1", "assist2"});
@@ -85,5 +90,31 @@ public class VibrantRemind {
         } catch (Exception e) {
         }
         return processName;
+    }
+
+    public static abstract class OnDataCallback {
+        public void reportCallRemind() {
+        }
+
+        public void reportCallNotification() {
+        }
+
+        public void reportShowRemind() {
+        }
+
+        public void reportRemindClick() {
+        }
+
+        public void reportOnGoingClick() {
+        }
+
+        public void reportNotificationClick() {
+        }
+
+        public void reportRemindClose() {
+        }
+
+        public void reportError(VibrantRemind.RemindMode remindMode, String error) {
+        }
     }
 }

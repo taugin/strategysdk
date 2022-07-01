@@ -1,4 +1,4 @@
-package com.vibrant.backact.strategy;
+package com.vibrant.startup.strategy;
 
 import android.app.PendingIntent;
 import android.app.Presentation;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.core.view.ViewCompat;
 
-import com.vibrant.backact.utils.BackActUtils;
+import com.vibrant.startup.utils.BackActUtils;
 
 
 public class StartStrategyVirtualDisplayImpl implements IStartStrategy {

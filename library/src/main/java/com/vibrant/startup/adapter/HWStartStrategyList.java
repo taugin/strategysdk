@@ -1,13 +1,13 @@
-package com.vibrant.backact.adapter;
+package com.vibrant.startup.adapter;
 
 import android.content.Context;
 
-import com.vibrant.backact.strategy.StartStrategyAlarmImpl;
-import com.vibrant.backact.strategy.StartStrategyBringForegroundImpl;
-import com.vibrant.backact.strategy.StartStrategyFullScreenIntentImpl;
-import com.vibrant.backact.strategy.StartStrategyJobServiceImpl;
-import com.vibrant.backact.strategy.StartStrategySafeImpl;
-import com.vibrant.backact.strategy.StartStrategyVirtualDisplayImpl;
+import com.vibrant.startup.strategy.StartStrategyAlarmImpl;
+import com.vibrant.startup.strategy.StartStrategyBringForegroundImpl;
+import com.vibrant.startup.strategy.StartStrategyFullScreenIntentImpl;
+import com.vibrant.startup.strategy.StartStrategyJobServiceImpl;
+import com.vibrant.startup.strategy.StartStrategySafeImpl;
+import com.vibrant.startup.strategy.StartStrategyVirtualDisplayImpl;
 
 public class HWStartStrategyList extends StartStrategyList{
     public static final String Strategy_Name = "HWStartStrategyList";

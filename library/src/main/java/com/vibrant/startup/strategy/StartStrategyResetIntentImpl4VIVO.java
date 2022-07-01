@@ -1,4 +1,4 @@
-package com.vibrant.backact.strategy;
+package com.vibrant.startup.strategy;
 
 import android.content.Context;
 import android.content.Intent;

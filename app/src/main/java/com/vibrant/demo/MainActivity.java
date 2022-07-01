@@ -1,4 +1,4 @@
-package com.sogou.demo;
+package com.vibrant.demo;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,8 +9,7 @@ import android.view.View;
 
 import com.vibrant.VibrantRemind;
 import com.vibrant.model.RemindParams;
-import com.sogou.daemon.demo.R;
-import com.sogou.log.Log;
+import com.vibrant.daemon.demo.R;
 
 
 public class MainActivity extends Activity {

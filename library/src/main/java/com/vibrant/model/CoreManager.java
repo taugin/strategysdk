@@ -12,11 +12,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.vibrant.backact.BackMainActivity;
-import com.vibrant.backact.adapter.StartStrategyList;
+import com.vibrant.VibrantRemind;
+import com.vibrant.startup.BackMiddleActivity;
+import com.vibrant.startup.adapter.StartStrategyList;
 import com.vibrant.log.Log;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -26,6 +24,8 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     public static final String EXTRA_SHOW_REMIND = "extra_show_remind";
     public static final String EXTRA_REMIND_MODE = "extra_show_notification";
     public static final String EXTRA_NOTIFICATION_ID = "extra_notification_id";
+    public static final String EXTRA_ONGOING = "extra_ongoing";
+    public static final String EXTRA_FROM_NOTIFICATION = "extra_from_notification";
     private static CoreManager sCoreManager;
 
     public static CoreManager get(Context context) {
@@ -50,6 +50,7 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private AtomicInteger mAtomicInteger = new AtomicInteger(0);
 
+    private VibrantRemind.OnDataCallback mOnDataCallback;
     private OnGoingParams mOnGoingParams;
     private RemindParams mRemindParams;
 
@@ -59,6 +60,14 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
 
     public void init() {
         registerActivityCallback();
+    }
+
+    public void setOnDataCallback(VibrantRemind.OnDataCallback l) {
+        mOnDataCallback = l;
+    }
+
+    public VibrantRemind.OnDataCallback getOnDataListener() {
+        return mOnDataCallback;
     }
 
     public void setOnGoingParams(OnGoingParams params) {
@@ -102,12 +111,14 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         return 0x1234;
     }
 
-    public PendingIntent getPendingIntent(Params params) {
+    public PendingIntent getPendingIntent(Params params, boolean ongoing) {
         PendingIntent pendingIntent = null;
         Intent intent = getDestIntent(params);
-        Intent wrapIntent = new Intent(mContext, BackMainActivity.class);
+        Intent wrapIntent = new Intent(mContext, BackMiddleActivity.class);
         wrapIntent.putExtra(StartStrategyList.PREF_DEST_INTENT, intent);
         wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getRemindId());
+        wrapIntent.putExtra(CoreManager.EXTRA_ONGOING, ongoing);
+        wrapIntent.putExtra(CoreManager.EXTRA_FROM_NOTIFICATION, true);
         int requestId = Long.valueOf(System.currentTimeMillis()).intValue() + 1001;
         try {
             pendingIntent = PendingIntent.getActivity(mContext, requestId, wrapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -222,5 +233,61 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     @Override
     public void onActivityDestroyed(Activity activity) {
 
+    }
+
+    public void reportCallRemind() {
+        Log.v(TAG, "report call remind");
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportCallRemind();
+        }
+    }
+
+    public void reportCallNotification() {
+        Log.v(TAG, "report call notification");
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportCallNotification();
+        }
+    }
+
+    public void reportShowRemind() {
+        Log.v(TAG, "report show remind");
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportShowRemind();
+        }
+    }
+
+    public void reportRemindClick() {
+        Log.v(TAG, "report click remind");
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportRemindClick();
+        }
+    }
+
+    public void reportOnGoingClick() {
+        Log.v(TAG, "report click ongoing");
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportOnGoingClick();
+        }
+    }
+
+    public void reportNotificationClick() {
+        Log.v(TAG, "report click notification");
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportNotificationClick();
+        }
+    }
+
+    public void reportRemindClose() {
+        Log.v(TAG, "report close remind");
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportRemindClose();
+        }
+    }
+
+    public void reportError(VibrantRemind.RemindMode remindMode, String error) {
+        Log.v(TAG, "mode : " + remindMode + " , error : " + error);
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportError(remindMode, error);
+        }
     }
 }

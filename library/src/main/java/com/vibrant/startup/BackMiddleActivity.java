@@ -1,4 +1,4 @@
-package com.vibrant.backact;
+package com.vibrant.startup;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -7,12 +7,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.vibrant.backact.adapter.StartStrategyList;
-import com.vibrant.backact.log.Log;
-import com.vibrant.backact.utils.BackActUtils;
+import com.vibrant.startup.adapter.StartStrategyList;
+import com.vibrant.startup.log.Log;
+import com.vibrant.startup.utils.BackActUtils;
 import com.vibrant.model.CoreManager;
 
-public class BackMainActivity extends Activity {
+public class BackMiddleActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +27,7 @@ public class BackMainActivity extends Activity {
         } catch (Exception e) {
         }
         cancelNotificationIfNeed();
+        reportNotificationClick();
         finish();
     }
 
@@ -34,6 +35,7 @@ public class BackMainActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
         cancelNotificationIfNeed();
+        reportNotificationClick();
         try {
             String action = getIntent().getStringExtra(StartStrategyList.ACTION_START_COMPLETE);
             if (!TextUtils.isEmpty(action)) {
@@ -62,6 +64,24 @@ public class BackMainActivity extends Activity {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
                 if (notificationManager != null) {
                     notificationManager.cancel(notificationId);
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 报告通知点击，通知点击会启动此activity作为过渡activity
+     */
+    private void reportNotificationClick() {
+        try {
+            boolean fromNotification = getIntent().getBooleanExtra(CoreManager.EXTRA_FROM_NOTIFICATION, false);
+            if (fromNotification) {
+                boolean ongoing = getIntent().getBooleanExtra(CoreManager.EXTRA_ONGOING, false);
+                if (ongoing) {
+                    CoreManager.get(this).reportOnGoingClick();
+                } else {
+                    CoreManager.get(this).reportNotificationClick();
                 }
             }
         } catch (Exception e) {

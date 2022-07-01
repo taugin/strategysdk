@@ -1,15 +1,15 @@
-package com.vibrant.backact;
+package com.vibrant.startup;
 
 import android.content.Context;
 import android.content.Intent;
 
-import com.vibrant.backact.adapter.HWStartStrategyList;
-import com.vibrant.backact.adapter.StartStrategyList;
+import com.vibrant.startup.adapter.HWStartStrategyList;
+import com.vibrant.startup.adapter.StartStrategyList;
 import com.vibrant.model.CoreManager;
 
 public class BackAct {
     public static void startActivityBackground(Context context, Intent intent) {
-        Intent wrapIntent = new Intent(context, BackMainActivity.class);
+        Intent wrapIntent = new Intent(context, BackMiddleActivity.class);
         wrapIntent.putExtra(StartStrategyList.PREF_DEST_INTENT, intent);
         try {
             if (CoreManager.get(context).appOnTop()) {

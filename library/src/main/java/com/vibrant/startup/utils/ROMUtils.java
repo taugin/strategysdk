@@ -1,4 +1,4 @@
-package com.vibrant.backact.utils;
+package com.vibrant.startup.utils;
 
 import android.os.Build;
 import android.os.Environment;

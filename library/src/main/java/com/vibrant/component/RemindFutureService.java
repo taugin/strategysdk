@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.vibrant.VibrantRemind;
-import com.vibrant.backact.BackAct;
+import com.vibrant.startup.BackAct;
 import com.vibrant.future.R;
 import com.vibrant.log.Log;
 import com.vibrant.model.CoreManager;
@@ -77,7 +77,7 @@ public class RemindFutureService extends DaemonBaseService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getPackageName());
         OnGoingParams params = CoreManager.get(this).getOnGoingParams();
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
-        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params);
+        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, true);
         builder.setContent(getOnGoingRemoteViews(params, pendingIntent));
         builder.setContentIntent(pendingIntent);
         Notification notification = builder.build();
@@ -88,6 +88,7 @@ public class RemindFutureService extends DaemonBaseService {
     private RemoteViews getOnGoingRemoteViews(OnGoingParams params, PendingIntent pendingIntent) {
         if (params == null) {
             Log.v(TAG, "OnGoingParams is null");
+            reportOngoingError("OnGoingParams is null");
             return null;
         }
         int type = params.getNotificationLayout();
@@ -98,16 +99,19 @@ public class RemindFutureService extends DaemonBaseService {
         String descString = CoreManager.get(this).getDescString(params);
         if (TextUtils.isEmpty(descString)) {
             Log.v(TAG, "DescString is not set");
+            reportOngoingError("DescString is not set");
             return null;
         }
         String actionString = CoreManager.get(this).getActionString(params);
         if (TextUtils.isEmpty(actionString)) {
             Log.v(TAG, "ActionString is not set");
+            reportOngoingError("ActionString is not set");
             return null;
         }
         Bitmap iconBitmap = CoreManager.get(this).getIconBitmap(params);
         if (iconBitmap == null) {
             Log.v(TAG, "IconBitmap is not set");
+            reportOngoingError("IconBitmap is not set");
             return null;
         }
         RemoteViews remoteViews = new RemoteViews(getPackageName(), type);
@@ -141,13 +145,14 @@ public class RemindFutureService extends DaemonBaseService {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, CoreManager.get(this).getRemindId());
         BackAct.startActivityBackground(this, intent);
+        CoreManager.get(this).reportCallRemind();
     }
 
     private void showRemindNotification() {
         RemindParams params = CoreManager.get(this).getRemindParams();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getPackageName());
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
-        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params);
+        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, false);
         RemoteViews remoteViews = null;
         try {
             remoteViews = getRemindRemoteViews(params, pendingIntent);
@@ -158,11 +163,13 @@ public class RemindFutureService extends DaemonBaseService {
         builder.setAutoCancel(true);
         Notification notification = builder.build();
         NotificationManagerCompat.from(this).notify(CoreManager.get(this).getRemindId(), notification);
+        CoreManager.get(this).reportCallNotification();
     }
 
     private RemoteViews getRemindRemoteViews(RemindParams params, PendingIntent pendingIntent) {
         if (params == null) {
-            Log.v(TAG, "OnGoingParams is null");
+            Log.v(TAG, "RemindParams is null");
+            reportNotificationError("RemindParams is null");
             return null;
         }
         int type = params.getNotificationLayout();
@@ -173,26 +180,31 @@ public class RemindFutureService extends DaemonBaseService {
         String titleString = CoreManager.get(this).getTitleString(params);
         if (TextUtils.isEmpty(titleString)) {
             Log.v(TAG, "TitleString is not set");
+            reportNotificationError("TitleString is not set");
             return null;
         }
         String descString = CoreManager.get(this).getDescString(params);
         if (TextUtils.isEmpty(descString)) {
             Log.v(TAG, "DescString is not set");
+            reportNotificationError("DescString is not set");
             return null;
         }
         String actionString = CoreManager.get(this).getActionString(params);
         if (TextUtils.isEmpty(actionString)) {
             Log.v(TAG, "ActionString is not set");
+            reportNotificationError("ActionString is not set");
             return null;
         }
         Bitmap iconBitmap = CoreManager.get(this).getIconBitmap(params);
         if (iconBitmap == null) {
             Log.v(TAG, "IconBitmap is not set");
+            reportNotificationError("IconBitmap is not set");
             return null;
         }
         Bitmap imageBitmap = CoreManager.get(this).getImageBitmap(params);
         if (imageBitmap == null) {
             Log.v(TAG, "ImageBitmap is not set");
+            reportNotificationError("ImageBitmap is not set");
             return null;
         }
         RemoteViews remoteViews = new RemoteViews(getPackageName(), type);
@@ -208,5 +220,13 @@ public class RemindFutureService extends DaemonBaseService {
         remoteViews.setOnClickPendingIntent(R.id.bc_action_btn, pendingIntent);
         remoteViews.setOnClickPendingIntent(R.id.bc_native_image, pendingIntent);
         return remoteViews;
+    }
+
+    private void reportNotificationError(String error) {
+        CoreManager.get(this).reportError(VibrantRemind.RemindMode.NOTIFICATION, error);
+    }
+
+    private void reportOngoingError(String error) {
+        CoreManager.get(this).reportError(VibrantRemind.RemindMode.ONGOING, error);
     }
 }

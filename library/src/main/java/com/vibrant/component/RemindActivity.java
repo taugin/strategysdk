@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vibrant.VibrantRemind;
 import com.vibrant.future.R;
 import com.vibrant.log.Log;
 import com.vibrant.model.CoreManager;
@@ -29,12 +30,14 @@ public class RemindActivity extends Activity implements View.OnClickListener {
         cancelNotificationIfNeed();
         updateView();
         updateWindow();
+        CoreManager.get(this).reportShowRemind();
     }
 
     private void updateView() {
         RemindParams params = CoreManager.get(this).getRemindParams();
         if (params == null) {
-            Log.v(TAG, "OnGoingParams is null");
+            Log.v(TAG, "RemindParams is null");
+            reportError("RemindParams is null");
             finish();
             return;
         }
@@ -46,24 +49,28 @@ public class RemindActivity extends Activity implements View.OnClickListener {
         String titleString = CoreManager.get(this).getTitleString(params);
         if (TextUtils.isEmpty(titleString)) {
             Log.v(TAG, "TitleString is not set");
+            reportError("TitleString is not set");
             finish();
             return;
         }
         String descString = CoreManager.get(this).getDescString(params);
         if (TextUtils.isEmpty(descString)) {
             Log.v(TAG, "DescString is not set");
+            reportError("DescString is not set");
             finish();
             return;
         }
         String actionString = CoreManager.get(this).getActionString(params);
         if (TextUtils.isEmpty(actionString)) {
             Log.v(TAG, "ActionString is not set");
+            reportError("ActionString is not set");
             finish();
             return;
         }
         Bitmap iconBitmap = CoreManager.get(this).getIconBitmap(params);
         if (iconBitmap == null) {
             Log.v(TAG, "IconBitmap is not set");
+            reportError("IconBitmap is not set");
             finish();
             return;
         }
@@ -71,25 +78,31 @@ public class RemindActivity extends Activity implements View.OnClickListener {
         Log.v(TAG, "ImageBitmap : " + imageBitmap);
         if (imageBitmap == null) {
             Log.v(TAG, "ImageBitmap is not set");
+            reportError("ImageBitmap is not set");
             finish();
             return;
         }
-        setContentView(type);
-        TextView titleView = findViewById(R.id.bc_native_title);
-        TextView descView = findViewById(R.id.bc_native_detail);
-        TextView actionView = findViewById(R.id.bc_action_btn);
-        ImageView iconView = findViewById(R.id.bc_native_icon);
-        ImageView imageView = findViewById(R.id.bc_native_image);
-        titleView.setText(titleString);
-        descView.setText(descString);
-        actionView.setText(actionString);
-        iconView.setImageBitmap(iconBitmap);
-        imageView.setImageBitmap(imageBitmap);
-        titleView.setOnClickListener(this);
-        descView.setOnClickListener(this);
-        actionView.setOnClickListener(this);
-        iconView.setOnClickListener(this);
-        imageView.setOnClickListener(this);
+        try {
+            setContentView(type);
+            TextView titleView = findViewById(R.id.bc_native_title);
+            TextView descView = findViewById(R.id.bc_native_detail);
+            TextView actionView = findViewById(R.id.bc_action_btn);
+            ImageView iconView = findViewById(R.id.bc_native_icon);
+            ImageView imageView = findViewById(R.id.bc_native_image);
+            titleView.setText(titleString);
+            descView.setText(descString);
+            actionView.setText(actionString);
+            iconView.setImageBitmap(iconBitmap);
+            imageView.setImageBitmap(imageBitmap);
+            titleView.setOnClickListener(this);
+            descView.setOnClickListener(this);
+            actionView.setOnClickListener(this);
+            iconView.setOnClickListener(this);
+            imageView.setOnClickListener(this);
+        } catch (Exception e) {
+            reportError(String.valueOf(e));
+            finish();
+        }
     }
 
     private void showAnimation() {
@@ -128,13 +141,19 @@ public class RemindActivity extends Activity implements View.OnClickListener {
     public void finish() {
         super.finish();
         overridePendingTransition(0, R.anim.bc_out_slide_top);
+        CoreManager.get(this).reportRemindClose();
     }
 
     @Override
     public void onClick(View v) {
+        CoreManager.get(this).reportRemindClick();
         RemindParams params = CoreManager.get(this).getRemindParams();
         Intent intent = CoreManager.get(this).getDestIntent(params);
         startActivity(intent);
         finish();
+    }
+
+    private void reportError(String error) {
+        CoreManager.get(this).reportError(VibrantRemind.RemindMode.ACTIVITY, error);
     }
 }
