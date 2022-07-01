@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Looper;
 import android.os.MessageQueue;
 
@@ -93,25 +94,28 @@ public class VibrantRemind {
     }
 
     public static abstract class OnDataCallback {
-        public void reportCallRemind() {
+        public void reportCallRemind(Bundle bundle) {
         }
 
-        public void reportCallNotification() {
+        public void reportCallNotification(Bundle bundle) {
         }
 
-        public void reportShowRemind() {
+        public void reportShowRemind(Bundle bundle) {
         }
 
-        public void reportRemindClick() {
+        public void reportRemindClick(Bundle bundle) {
         }
 
-        public void reportOnGoingClick() {
+        public void reportOnGoingClick(Bundle bundle) {
         }
 
-        public void reportNotificationClick() {
+        public void reportNotificationClick(Bundle bundle) {
         }
 
-        public void reportRemindClose() {
+        public void reportNotificationClose(Bundle bundle) {
+        }
+
+        public void reportRemindClose(Bundle bundle) {
         }
 
         public void reportError(VibrantRemind.RemindMode remindMode, String error) {

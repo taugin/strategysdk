@@ -15,12 +15,12 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.vibrant.VibrantRemind;
-import com.vibrant.startup.BackAct;
 import com.vibrant.future.R;
 import com.vibrant.log.Log;
 import com.vibrant.model.CoreManager;
 import com.vibrant.model.OnGoingParams;
 import com.vibrant.model.RemindParams;
+import com.vibrant.startup.BackAct;
 
 public class RemindFutureService extends DaemonBaseService {
     private static final String TAG = "remind";
@@ -50,11 +50,15 @@ public class RemindFutureService extends DaemonBaseService {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void createNotificationChannel() {
+    private String getOnGoingChannelId() {
+        return getPackageName() + ".ongoing";
+    }
+
+    private void createOnGoingChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = NotificationManagerCompat.from(this).getNotificationChannel(getPackageName());
+            NotificationChannel notificationChannel = NotificationManagerCompat.from(this).getNotificationChannel(getOnGoingChannelId());
             if (notificationChannel == null) {
-                notificationChannel = new NotificationChannel(getPackageName(), "daemon", NotificationManager.IMPORTANCE_LOW);
+                notificationChannel = new NotificationChannel(getOnGoingChannelId(), "daemon", NotificationManager.IMPORTANCE_LOW);
                 notificationChannel.enableLights(false);
                 notificationChannel.enableVibration(false);
                 notificationChannel.setVibrationPattern(new long[]{0});
@@ -73,8 +77,8 @@ public class RemindFutureService extends DaemonBaseService {
     }
 
     private void showForegroundNotification() {
-        createNotificationChannel();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getPackageName());
+        createOnGoingChannel();
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getOnGoingChannelId());
         OnGoingParams params = CoreManager.get(this).getOnGoingParams();
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
         PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, true);
@@ -148,25 +152,46 @@ public class RemindFutureService extends DaemonBaseService {
         CoreManager.get(this).reportCallRemind();
     }
 
+    private String getOnNotificationChannelId() {
+        return getPackageName() + ".notification";
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = NotificationManagerCompat.from(this).getNotificationChannel(getOnNotificationChannelId());
+            if (notificationChannel == null) {
+                notificationChannel = new NotificationChannel(getOnNotificationChannelId(), "daemon", NotificationManager.IMPORTANCE_HIGH);
+                notificationChannel.enableLights(false);
+                notificationChannel.enableVibration(false);
+                notificationChannel.setVibrationPattern(new long[]{0});
+                notificationChannel.setSound(null, null);
+                NotificationManagerCompat.from(this).createNotificationChannel(notificationChannel);
+            }
+        }
+    }
+
     private void showRemindNotification() {
+        createNotificationChannel();
         RemindParams params = CoreManager.get(this).getRemindParams();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getPackageName());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getOnNotificationChannelId());
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
         PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, false);
+        PendingIntent cancelPendingIntent = CoreManager.get(this).getCancelPendingIntent();
         RemoteViews remoteViews = null;
         try {
-            remoteViews = getRemindRemoteViews(params, pendingIntent);
+            remoteViews = getRemindRemoteViews(params, pendingIntent, cancelPendingIntent);
         } catch (Exception e) {
         }
-        builder.setContent(remoteViews);
+        builder.setCustomContentView(remoteViews);
         builder.setContentIntent(pendingIntent);
-        builder.setAutoCancel(true);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setFullScreenIntent(pendingIntent, true);
         Notification notification = builder.build();
         NotificationManagerCompat.from(this).notify(CoreManager.get(this).getRemindId(), notification);
         CoreManager.get(this).reportCallNotification();
     }
 
-    private RemoteViews getRemindRemoteViews(RemindParams params, PendingIntent pendingIntent) {
+    private RemoteViews getRemindRemoteViews(RemindParams params, PendingIntent pendingIntent, PendingIntent cancelPendingIntent) {
         if (params == null) {
             Log.v(TAG, "RemindParams is null");
             reportNotificationError("RemindParams is null");
@@ -219,6 +244,7 @@ public class RemindFutureService extends DaemonBaseService {
         remoteViews.setOnClickPendingIntent(R.id.bc_native_detail, pendingIntent);
         remoteViews.setOnClickPendingIntent(R.id.bc_action_btn, pendingIntent);
         remoteViews.setOnClickPendingIntent(R.id.bc_native_image, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_close_image, cancelPendingIntent);
         return remoteViews;
     }
 

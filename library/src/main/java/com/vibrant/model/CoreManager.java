@@ -26,6 +26,7 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     public static final String EXTRA_NOTIFICATION_ID = "extra_notification_id";
     public static final String EXTRA_ONGOING = "extra_ongoing";
     public static final String EXTRA_FROM_NOTIFICATION = "extra_from_notification";
+    public static final String EXTRA_ONLY_CANCEL = "extra_only_cancel";
     private static CoreManager sCoreManager;
 
     public static CoreManager get(Context context) {
@@ -120,6 +121,19 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         wrapIntent.putExtra(CoreManager.EXTRA_ONGOING, ongoing);
         wrapIntent.putExtra(CoreManager.EXTRA_FROM_NOTIFICATION, true);
         int requestId = Long.valueOf(System.currentTimeMillis()).intValue() + 1001;
+        try {
+            pendingIntent = PendingIntent.getActivity(mContext, requestId, wrapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        } catch (Exception e) {
+        }
+        return pendingIntent;
+    }
+
+    public PendingIntent getCancelPendingIntent() {
+        PendingIntent pendingIntent = null;
+        Intent wrapIntent = new Intent(mContext, BackMiddleActivity.class);
+        wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getRemindId());
+        wrapIntent.putExtra(CoreManager.EXTRA_ONLY_CANCEL, true);
+        int requestId = Long.valueOf(System.currentTimeMillis()).intValue() + 1002;
         try {
             pendingIntent = PendingIntent.getActivity(mContext, requestId, wrapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         } catch (Exception e) {
@@ -235,52 +249,66 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
 
     }
 
+    private Bundle getParamsBundle(Params params) {
+        if (params != null) {
+            return params.getBundle();
+        }
+        return null;
+    }
+
     public void reportCallRemind() {
         Log.v(TAG, "report call remind");
         if (mOnDataCallback != null) {
-            mOnDataCallback.reportCallRemind();
+            mOnDataCallback.reportCallRemind(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportCallNotification() {
         Log.v(TAG, "report call notification");
         if (mOnDataCallback != null) {
-            mOnDataCallback.reportCallNotification();
+            mOnDataCallback.reportCallNotification(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportShowRemind() {
         Log.v(TAG, "report show remind");
         if (mOnDataCallback != null) {
-            mOnDataCallback.reportShowRemind();
+            mOnDataCallback.reportShowRemind(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportRemindClick() {
         Log.v(TAG, "report click remind");
         if (mOnDataCallback != null) {
-            mOnDataCallback.reportRemindClick();
+            mOnDataCallback.reportRemindClick(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportOnGoingClick() {
         Log.v(TAG, "report click ongoing");
         if (mOnDataCallback != null) {
-            mOnDataCallback.reportOnGoingClick();
+            mOnDataCallback.reportOnGoingClick(getParamsBundle(mOnGoingParams));
         }
     }
 
     public void reportNotificationClick() {
         Log.v(TAG, "report click notification");
         if (mOnDataCallback != null) {
-            mOnDataCallback.reportNotificationClick();
+            mOnDataCallback.reportNotificationClick(getParamsBundle(mRemindParams));
+        }
+    }
+
+    public void reportNotificationClose() {
+        Log.v(TAG, "report close notification");
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportNotificationClose(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportRemindClose() {
         Log.v(TAG, "report close remind");
         if (mOnDataCallback != null) {
-            mOnDataCallback.reportRemindClose();
+            mOnDataCallback.reportRemindClose(getParamsBundle(mRemindParams));
         }
     }
 

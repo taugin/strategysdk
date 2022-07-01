@@ -9,6 +9,10 @@ import com.vibrant.VibrantRemind;
 import com.vibrant.daemon.demo.R;
 import com.vibrant.model.OnGoingParams;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class App extends Application {
     @Override
     public void onCreate() {
@@ -19,44 +23,49 @@ public class App extends Application {
         builder.setIconId(R.drawable.sp_icon);
         builder.setDescString("收服、训练和养成超过2000只怪兽，打造专属于你的队伍通往胜利之路！超大型的怪物对战RPG手游！");
         builder.setActionString("下载试玩");
-        Bundle bundle = new Bundle();
-        bundle.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.ONGOING));
-        builder.setBundle(bundle);
+        Bundle extra = new Bundle();
+        extra.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.ONGOING));
+        builder.setBundle(extra);
         VibrantRemind.init(this, builder.build(), new VibrantRemind.OnDataCallback() {
 
             @Override
-            public void reportCallRemind() {
-                Log.v(Log.TAG, "report call remind");
+            public void reportCallRemind(Bundle bundle) {
+                Log.v(Log.TAG, "report call remind : " + bundleToString(bundle));
             }
 
             @Override
-            public void reportCallNotification() {
-                Log.v(Log.TAG, "report call notification");
+            public void reportCallNotification(Bundle bundle) {
+                Log.v(Log.TAG, "report call notification : " + bundleToString(bundle));
             }
 
             @Override
-            public void reportShowRemind() {
-                Log.v(Log.TAG, "report show remind");
+            public void reportShowRemind(Bundle bundle) {
+                Log.v(Log.TAG, "report show remind : " + bundleToString(bundle));
             }
 
             @Override
-            public void reportRemindClick() {
-                Log.v(Log.TAG, "report click remind");
+            public void reportRemindClick(Bundle bundle) {
+                Log.v(Log.TAG, "report click remind : " + bundleToString(bundle));
             }
 
             @Override
-            public void reportOnGoingClick() {
-                Log.v(Log.TAG, "report click ongoing");
+            public void reportOnGoingClick(Bundle bundle) {
+                Log.v(Log.TAG, "report click ongoing : " + bundleToString(bundle));
             }
 
             @Override
-            public void reportNotificationClick() {
-                Log.v(Log.TAG, "report click notification");
+            public void reportNotificationClick(Bundle bundle) {
+                Log.v(Log.TAG, "report click notification : " + bundleToString(bundle));
             }
 
             @Override
-            public void reportRemindClose() {
-                Log.v(Log.TAG, "report close remind");
+            public void reportNotificationClose(Bundle bundle) {
+                Log.v(Log.TAG, "report close notification : " + bundleToString(bundle));
+            }
+
+            @Override
+            public void reportRemindClose(Bundle bundle) {
+                Log.v(Log.TAG, "report close remind : " + bundleToString(bundle));
             }
 
             @Override
@@ -64,6 +73,20 @@ public class App extends Application {
                 Log.v(Log.TAG, "mode : " + remindMode + " , error : " + error);
             }
         });
+    }
+
+    private String bundleToString(Bundle bundle) {
+        if (bundle != null) {
+            Set<String> set = bundle.keySet();
+            Map<String, Object> map = new HashMap<>();
+            if (set != null) {
+                for (String s : set) {
+                    map.put(s, bundle.get(s));
+                }
+            }
+            return map.toString();
+        }
+        return "";
     }
 
     @Override

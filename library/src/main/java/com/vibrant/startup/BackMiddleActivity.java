@@ -50,8 +50,10 @@ public class BackMiddleActivity extends Activity {
     private void startDestActivity(String from) {
         try {
             Intent intent = getIntent().getParcelableExtra(StartStrategyList.PREF_DEST_INTENT);
-            Log.v(Log.TAG, "start from (" + from + ") received intent = " + intent);
-            startActivity(intent);
+            if (intent != null) {
+                Log.v(Log.TAG, "start from (" + from + ") received intent = " + intent);
+                startActivity(intent);
+            }
         } catch (Exception e) {
         }
     }
@@ -65,6 +67,10 @@ public class BackMiddleActivity extends Activity {
                 if (notificationManager != null) {
                     notificationManager.cancel(notificationId);
                 }
+            }
+            boolean onlyCancel = getIntent().getBooleanExtra(CoreManager.EXTRA_ONLY_CANCEL, false);
+            if (onlyCancel) {
+                CoreManager.get(this).reportNotificationClose();
             }
         } catch (Exception e) {
         }

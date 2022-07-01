@@ -99,6 +99,7 @@ public class RemindActivity extends Activity implements View.OnClickListener {
             actionView.setOnClickListener(this);
             iconView.setOnClickListener(this);
             imageView.setOnClickListener(this);
+            findViewById(R.id.bc_close_image).setOnClickListener(this);
         } catch (Exception e) {
             reportError(String.valueOf(e));
             finish();
@@ -146,6 +147,10 @@ public class RemindActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if (v.getId() == R.id.bc_close_image) {
+            finish();
+            return;
+        }
         CoreManager.get(this).reportRemindClick();
         RemindParams params = CoreManager.get(this).getRemindParams();
         Intent intent = CoreManager.get(this).getDestIntent(params);
