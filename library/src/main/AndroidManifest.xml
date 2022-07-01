@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vibrant.future">
+    package="com.sharp.future">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
     <instrumentation
-        android:name="com.vibrant.component.DaemonInstrumentation"
+        android:name="com.sharp.component.DaemonInstrumentation"
         android:targetPackage="${applicationId}"
         android:targetProcesses="${applicationId},${applicationId}:resident,${applicationId}:daemon,${applicationId}:assist1,${applicationId}:assist2" />
 
     <application>
         <service
-            android:name="com.vibrant.component.ResidentService"
+            android:name="com.sharp.component.ResidentService"
             android:process=":resident">
             <intent-filter>
-                <action android:name="com.vibrant.component.ResidentService" />
+                <action android:name="com.sharp.component.ResidentService" />
             </intent-filter>
         </service>
         <service
-            android:name="com.vibrant.component.RemindFutureService"
+            android:name="com.sharp.component.RemindFutureService"
             android:exported="false" />
 
         <activity
-            android:name="com.vibrant.component.RemindActivity"
+            android:name="com.sharp.component.RemindActivity"
             android:launchMode="singleTask"
             android:screenOrientation="behind"
             android:theme="@style/bc_remind_dialog_theme" />
         <activity
-            android:name="com.vibrant.startup.BackMiddleActivity"
+            android:name="com.sharp.startup.BackMiddleActivity"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 
         <service
-            android:name="com.vibrant.component.DaemonService"
+            android:name="com.sharp.component.DaemonService"
             android:exported="true"
             android:process=":daemon" />
 
         <receiver
-            android:name="com.vibrant.component.DaemonReceiver"
+            android:name="com.sharp.component.DaemonReceiver"
             android:exported="true" />
 
         <service
-            android:name="com.vibrant.component.AssistService1"
+            android:name="com.sharp.component.AssistService1"
             android:exported="true"
             android:process=":assist1" />
         <service
-            android:name="com.vibrant.component.AssistService2"
+            android:name="com.sharp.component.AssistService2"
             android:exported="true"
             android:process=":assist2" />
     </application>

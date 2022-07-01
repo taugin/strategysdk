@@ -73,7 +73,7 @@ uploadArchives {
             }
             pom.version = android.defaultConfig.versionName
             pom.artifactId = "daemon"
-            pom.groupId = "com.vibrant.future"
+            pom.groupId = "com.sharp.future"
             pom.name = "daemon"
             pom.packaging = "aar"
         }
