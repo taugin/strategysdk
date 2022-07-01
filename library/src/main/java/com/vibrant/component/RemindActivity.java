@@ -30,6 +30,7 @@ public class RemindActivity extends Activity implements View.OnClickListener {
         cancelNotificationIfNeed();
         updateView();
         updateWindow();
+        showAnimation();
         CoreManager.get(this).reportShowRemind();
     }
 
@@ -84,11 +85,11 @@ public class RemindActivity extends Activity implements View.OnClickListener {
         }
         try {
             setContentView(type);
-            TextView titleView = findViewById(R.id.bc_native_title);
-            TextView descView = findViewById(R.id.bc_native_detail);
-            TextView actionView = findViewById(R.id.bc_action_btn);
-            ImageView iconView = findViewById(R.id.bc_native_icon);
-            ImageView imageView = findViewById(R.id.bc_native_image);
+            TextView titleView = findViewById(R.id.bc_remind_title);
+            TextView descView = findViewById(R.id.bc_remind_detail);
+            TextView actionView = findViewById(R.id.bc_remind_cta);
+            ImageView iconView = findViewById(R.id.bc_remind_icon);
+            ImageView imageView = findViewById(R.id.bc_remind_image);
             titleView.setText(titleString);
             descView.setText(descString);
             actionView.setText(actionString);
@@ -99,7 +100,7 @@ public class RemindActivity extends Activity implements View.OnClickListener {
             actionView.setOnClickListener(this);
             iconView.setOnClickListener(this);
             imageView.setOnClickListener(this);
-            findViewById(R.id.bc_close_image).setOnClickListener(this);
+            findViewById(R.id.bc_remind_close).setOnClickListener(this);
         } catch (Exception e) {
             reportError(String.valueOf(e));
             finish();
@@ -107,7 +108,11 @@ public class RemindActivity extends Activity implements View.OnClickListener {
     }
 
     private void showAnimation() {
-        getWindow().getDecorView().startAnimation(AnimationUtils.loadAnimation(this, R.anim.bc_in_slide_bottom));
+        try {
+            View rootView = findViewById(R.id.bc_remind_root);
+            rootView.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bc_in_slide_bottom));
+        } catch (Exception e) {
+        }
     }
 
     private void cancelNotificationIfNeed() {
@@ -147,7 +152,7 @@ public class RemindActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.bc_close_image) {
+        if (v.getId() == R.id.bc_remind_close) {
             finish();
             return;
         }

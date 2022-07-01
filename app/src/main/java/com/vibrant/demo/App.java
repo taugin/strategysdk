@@ -19,8 +19,8 @@ public class App extends Application {
         super.onCreate();
         OnGoingParams.Builder builder = new OnGoingParams.Builder();
         builder.setLayoutType(OnGoingParams.LAYOUT_ONGOING_1);
-        builder.setSmallIcon(R.drawable.notify_icon_small);
-        builder.setIconId(R.drawable.sp_icon);
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setIconId(R.drawable.ic_launcher);
         builder.setDescString("收服、训练和养成超过2000只怪兽，打造专属于你的队伍通往胜利之路！超大型的怪物对战RPG手游！");
         builder.setActionString("下载试玩");
         Bundle extra = new Bundle();

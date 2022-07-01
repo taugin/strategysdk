@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bc_remind_root"
     android:layout_width="match_parent"
     android:layout_height="316dp"
     android:background="@drawable/bc_reminder"
@@ -16,7 +17,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/bc_native_icon"
+                android:id="@+id/bc_remind_icon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_centerHorizontal="true"
@@ -26,14 +27,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/bc_native_icon"
+                android:layout_below="@+id/bc_remind_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginRight="8dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/bc_native_title"
+                    android:id="@+id/bc_remind_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -45,7 +46,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/bc_native_detail"
+                    android:id="@+id/bc_remind_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -58,7 +59,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/bc_close_image"
+            android:id="@+id/bc_remind_close"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
@@ -73,7 +74,7 @@
         android:layout_marginRight="8dp">
 
         <ImageView
-            android:id="@+id/bc_native_image"
+            android:id="@+id/bc_remind_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@null"
@@ -86,7 +87,7 @@
         android:layout_margin="8dp">
 
         <TextView
-            android:id="@+id/bc_action_btn"
+            android:id="@+id/bc_remind_cta"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -100,7 +101,7 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/bc_action_image"
+            android:id="@+id/bc_remind_cta_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>

@@ -233,18 +233,18 @@ public class RemindFutureService extends DaemonBaseService {
             return null;
         }
         RemoteViews remoteViews = new RemoteViews(getPackageName(), type);
-        remoteViews.setImageViewBitmap(R.id.bc_native_icon, iconBitmap);
-        remoteViews.setTextViewText(R.id.bc_native_title, titleString);
-        remoteViews.setTextViewText(R.id.bc_native_detail, descString);
-        remoteViews.setTextViewText(R.id.bc_action_btn, actionString);
-        remoteViews.setImageViewBitmap(R.id.bc_native_image, imageBitmap);
+        remoteViews.setImageViewBitmap(R.id.bc_remind_icon, iconBitmap);
+        remoteViews.setTextViewText(R.id.bc_remind_title, titleString);
+        remoteViews.setTextViewText(R.id.bc_remind_detail, descString);
+        remoteViews.setTextViewText(R.id.bc_remind_cta, actionString);
+        remoteViews.setImageViewBitmap(R.id.bc_remind_image, imageBitmap);
 
-        remoteViews.setOnClickPendingIntent(R.id.bc_native_icon, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_native_title, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_native_detail, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_action_btn, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_native_image, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_close_image, cancelPendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_icon, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_title, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_detail, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_cta, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_image, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_close, cancelPendingIntent);
         return remoteViews;
     }
 
