@@ -5,29 +5,29 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.bigcow.KeepAlive;
-import com.bigcow.model.OnGoingParams;
+import com.vibrant.VibrantRemind;
+import com.vibrant.model.OnGoingParams;
 import com.sogou.daemon.demo.R;
 
 public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-    }
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
         OnGoingParams.Builder builder = new OnGoingParams.Builder();
-        builder.setLayoutType(OnGoingParams.LAYOUT_TYPE_1);
+        builder.setLayoutType(OnGoingParams.LAYOUT_ONGOING_1);
         builder.setSmallIcon(R.drawable.notify_icon_small);
         builder.setIconId(R.drawable.sp_icon);
         builder.setDescString("收服、训练和养成超过2000只怪兽，打造专属于你的队伍通往胜利之路！超大型的怪物对战RPG手游！");
         builder.setActionString("下载试玩");
         Bundle bundle = new Bundle();
-        bundle.putString("start_app_from", String.valueOf(KeepAlive.RemindMode.ONGOING));
+        bundle.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.ONGOING));
         builder.setBundle(bundle);
-        KeepAlive.attachBaseContext(this, builder.build());
+        VibrantRemind.init(this, builder.build());
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
     }
 
     public boolean isMainProcess() {
