@@ -117,7 +117,9 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         Intent intent = getDestIntent(params);
         Intent wrapIntent = new Intent(mContext, BackMiddleActivity.class);
         wrapIntent.putExtra(StartStrategyList.PREF_DEST_INTENT, intent);
-        wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getRemindId());
+        if (!ongoing) {
+            wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getRemindId());
+        }
         wrapIntent.putExtra(CoreManager.EXTRA_ONGOING, ongoing);
         wrapIntent.putExtra(CoreManager.EXTRA_FROM_NOTIFICATION, true);
         int requestId = Long.valueOf(System.currentTimeMillis()).intValue() + 1001;
