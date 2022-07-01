@@ -54,7 +54,7 @@ public class AppProcessThread extends Thread {
         daemonEntity.instrumentIntent = daemonEnv.instrumentIntent;
         String str = daemonEnv.publicDir;
         String str2 = daemonEnv.nativeDir;
-        String nativeFilePath = findLibrary("bigcow_daemon");
+        String nativeFilePath = findLibrary("vibrant_daemon");
         if (!TextUtils.isEmpty(nativeFilePath) && !TextUtils.equals(nativeFilePath, str2)) {
             str2 = str2 + ":" + nativeFilePath;
         }

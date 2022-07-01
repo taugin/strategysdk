@@ -23,7 +23,7 @@ public class DaemonMain implements Serializable {
     static {
         try {
             // System.setProperty("REGISTER_CLASS_PATH", DaemonMain.class.getName().replaceAll(".", "/"));
-            System.loadLibrary("bigcow_daemon");
+            System.loadLibrary("vibrant_daemon");
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e, e);
         }

@@ -14,7 +14,7 @@
             android:name="com.vibrant.component.ResidentService"
             android:process=":resident">
             <intent-filter>
-                <action android:name="com.bigcow.component.ResidentService" />
+                <action android:name="com.vibrant.component.ResidentService" />
             </intent-filter>
         </service>
         <service
