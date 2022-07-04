@@ -100,6 +100,12 @@ public class RemindFutureService extends DaemonBaseService {
             Log.v(TAG, "LayoutType is not set, use default layout");
             type = OnGoingParams.LAYOUT_ONGOING_1;
         }
+        String titleString = CoreManager.get(this).getTitleString(params);
+        if (TextUtils.isEmpty(titleString)) {
+            Log.v(TAG, "TitleString is not set");
+            reportNotificationError("TitleString is not set");
+            return null;
+        }
         String descString = CoreManager.get(this).getDescString(params);
         if (TextUtils.isEmpty(descString)) {
             Log.v(TAG, "DescString is not set");
@@ -120,9 +126,11 @@ public class RemindFutureService extends DaemonBaseService {
         }
         RemoteViews remoteViews = new RemoteViews(getPackageName(), type);
         remoteViews.setImageViewBitmap(R.id.bc_ongoing_icon, iconBitmap);
+        remoteViews.setTextViewText(R.id.bc_ongoing_title, titleString);
         remoteViews.setTextViewText(R.id.bc_ongoing_desc, descString);
         remoteViews.setTextViewText(R.id.bc_ongoing_action, actionString);
         remoteViews.setOnClickPendingIntent(R.id.bc_ongoing_icon, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_ongoing_title, pendingIntent);
         remoteViews.setOnClickPendingIntent(R.id.bc_ongoing_desc, pendingIntent);
         remoteViews.setOnClickPendingIntent(R.id.bc_ongoing_action, pendingIntent);
         return remoteViews;

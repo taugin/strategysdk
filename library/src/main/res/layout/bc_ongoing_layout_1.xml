@@ -15,6 +15,21 @@
         android:layout_marginStart="8.0dip" />
 
     <TextView
+        android:id="@+id/bc_ongoing_title"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1.0"
+        android:maxLines="1"
+        android:textColor="@color/bc_color_black"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/bc_ongoing_desc"
         android:layout_width="0.0dip"
         android:layout_height="wrap_content"
@@ -36,13 +51,13 @@
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="8.0dip"
         android:background="@drawable/bc_blue_btn"
+        android:ellipsize="end"
         android:gravity="center"
-        android:minWidth="60dp"
         android:maxWidth="100dp"
+        android:maxLines="1"
+        android:minWidth="60dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:maxLines="1"
-        android:ellipsize="end"
         android:text="Open"
         android:textColor="@color/bc_color_white"
         android:textSize="12.0sp" />

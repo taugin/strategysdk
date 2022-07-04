@@ -13,6 +13,8 @@ public class OnGoingParams extends Params implements Serializable {
     private int smallIcon;
     private int iconId;
     private Bitmap iconBitmap;
+    private int titleId;
+    private String titleString;
     private int descId;
     private String descString;
     private int actionId;
@@ -37,6 +39,14 @@ public class OnGoingParams extends Params implements Serializable {
 
     public Bitmap getIconBitmap() {
         return iconBitmap;
+    }
+
+    public int getTitleId() {
+        return titleId;
+    }
+
+    public String getTitleString() {
+        return titleString;
     }
 
     public int getDescId() {
@@ -68,6 +78,8 @@ public class OnGoingParams extends Params implements Serializable {
         private int smallIcon;
         private int iconId;
         private Bitmap iconBitmap;
+        private int titleId;
+        private String titleString;
         private int descId;
         private String descString;
         private int actionId;
@@ -81,6 +93,8 @@ public class OnGoingParams extends Params implements Serializable {
             params.smallIcon = smallIcon;
             params.iconId = iconId;
             params.iconBitmap = iconBitmap;
+            params.titleId = titleId;
+            params.titleString = titleString;
             params.descId = descId;
             params.descString = descString;
             params.actionId = actionId;
@@ -106,6 +120,16 @@ public class OnGoingParams extends Params implements Serializable {
 
         public Builder setIconBitmap(Bitmap iconBitmap) {
             this.iconBitmap = iconBitmap;
+            return this;
+        }
+
+        public Builder setTitleId(int titleId) {
+            this.titleId = titleId;
+            return this;
+        }
+
+        public Builder setTitleString(String titleString) {
+            this.titleString = titleString;
             return this;
         }
 

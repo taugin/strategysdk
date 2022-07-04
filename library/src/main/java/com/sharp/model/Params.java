@@ -12,6 +12,10 @@ public abstract class Params {
 
     public abstract Bitmap getIconBitmap() ;
 
+    public abstract int getTitleId();
+
+    public abstract String getTitleString();
+
     public abstract int getDescId();
 
     public abstract String getDescString();

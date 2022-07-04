@@ -13,9 +13,9 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.sharp.SharpRemind;
+import com.sharp.log.Log;
 import com.sharp.startup.BackMiddleActivity;
 import com.sharp.startup.adapter.StartStrategyList;
-import com.sharp.log.Log;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -143,10 +143,13 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         return pendingIntent;
     }
 
-    public String getTitleString(RemindParams params) {
+    public String getTitleString(Params params) {
         String titleString = params.getTitleString();
         if (TextUtils.isEmpty(titleString)) {
-            titleString = mContext.getResources().getString(params.getTitleId());
+            try {
+                titleString = mContext.getResources().getString(params.getTitleId());
+            } catch (Exception e) {
+            }
         }
         return titleString;
     }
@@ -154,7 +157,10 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     public Bitmap getImageBitmap(RemindParams params) {
         Bitmap imageBitmap = params.getImageBitmap();
         if (imageBitmap == null) {
-            imageBitmap = BitmapFactory.decodeResource(mContext.getResources(), params.getImageId());
+            try {
+                imageBitmap = BitmapFactory.decodeResource(mContext.getResources(), params.getImageId());
+            } catch (Exception e) {
+            }
         }
         return imageBitmap;
     }
@@ -173,7 +179,10 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     public Bitmap getIconBitmap(Params params) {
         Bitmap iconBitmap = params.getIconBitmap();
         if (iconBitmap == null) {
-            iconBitmap = BitmapFactory.decodeResource(mContext.getResources(), params.getIconId());
+            try {
+                iconBitmap = BitmapFactory.decodeResource(mContext.getResources(), params.getIconId());
+            } catch (Exception e) {
+            }
         }
         return iconBitmap;
     }
@@ -181,7 +190,10 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     public String getDescString(Params params) {
         String descString = params.getDescString();
         if (TextUtils.isEmpty(descString)) {
-            descString = mContext.getResources().getString(params.getDescId());
+            try {
+                descString = mContext.getResources().getString(params.getDescId());
+            } catch (Exception e) {
+            }
         }
         return descString;
     }
@@ -189,11 +201,14 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     public String getActionString(Params params) {
         String actionString = params.getActionString();
         if (TextUtils.isEmpty(actionString)) {
-            actionString = mContext.getResources().getString(params.getActionId());
+            try {
+                actionString = mContext.getResources().getString(params.getActionId());
+            } catch (Exception e) {
+            }
         }
         return actionString;
     }
-    
+
     private void registerActivityCallback() {
         try {
             if (mContext instanceof Application) {
@@ -214,7 +229,6 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        
     }
 
     @Override
@@ -226,12 +240,10 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityResumed(Activity activity) {
-
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-
     }
 
     @Override
@@ -243,12 +255,10 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
     }
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-
     }
 
     private Bundle getParamsBundle(Params params) {
