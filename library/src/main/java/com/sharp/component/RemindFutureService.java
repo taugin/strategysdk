@@ -119,12 +119,12 @@ public class RemindFutureService extends DaemonBaseService {
             return null;
         }
         RemoteViews remoteViews = new RemoteViews(getPackageName(), type);
-        remoteViews.setImageViewBitmap(R.id.bc_app_icon, iconBitmap);
-        remoteViews.setTextViewText(R.id.bc_noti_desc, descString);
-        remoteViews.setTextViewText(R.id.bc_noti_cta, actionString);
-        remoteViews.setOnClickPendingIntent(R.id.bc_app_icon, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_noti_desc, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_noti_cta, pendingIntent);
+        remoteViews.setImageViewBitmap(R.id.bc_ongoing_icon, iconBitmap);
+        remoteViews.setTextViewText(R.id.bc_ongoing_desc, descString);
+        remoteViews.setTextViewText(R.id.bc_ongoing_action, actionString);
+        remoteViews.setOnClickPendingIntent(R.id.bc_ongoing_icon, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_ongoing_desc, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_ongoing_action, pendingIntent);
         return remoteViews;
     }
 
