@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 public class OnGoingParams extends Params implements Serializable {
     public static final int LAYOUT_ONGOING_1 = R.layout.bc_ongoing_layout_1;
+    public static final int LAYOUT_ONGOING_2 = R.layout.bc_ongoing_layout_2;
     private int notificationLayout;
     private int smallIcon;
     private int iconId;

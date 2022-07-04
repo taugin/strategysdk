@@ -18,7 +18,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         OnGoingParams.Builder builder = new OnGoingParams.Builder();
-        builder.setLayoutType(OnGoingParams.LAYOUT_ONGOING_1);
+        builder.setLayoutType(OnGoingParams.LAYOUT_ONGOING_2);
         builder.setSmallIcon(R.drawable.ic_launcher);
         builder.setIconId(R.drawable.ic_launcher);
         builder.setTitleString("战RPG手游");
