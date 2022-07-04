@@ -2,6 +2,7 @@ package com.sharp.model;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.RemoteViews;
 
 import com.sharp.future.R;
 
@@ -25,6 +26,7 @@ public class RemindParams extends Params implements Serializable {
     private Bitmap actionBitmap;
     private Bundle bundle;
     private Class<?> startClass;
+    private RemoteViews remoteViews;
 
     private RemindParams() {
     }
@@ -99,6 +101,11 @@ public class RemindParams extends Params implements Serializable {
         return startClass;
     }
 
+    @Override
+    public RemoteViews getRemoteViews() {
+        return remoteViews;
+    }
+
     public static class Builder {
         private int layoutType;
         private int smallIcon;
@@ -115,6 +122,7 @@ public class RemindParams extends Params implements Serializable {
         private Bitmap actionBitmap;
         private Bundle bundle;
         private Class<?> startClass;
+        private RemoteViews remoteViews;
 
         public Builder setLayoutType(int layoutType) {
             this.layoutType = layoutType;
@@ -191,6 +199,10 @@ public class RemindParams extends Params implements Serializable {
             return this;
         }
 
+        public void setRemoteViews(RemoteViews remoteViews) {
+            this.remoteViews = remoteViews;
+        }
+
         public RemindParams build() {
             RemindParams params = new RemindParams();
             params.notificationLayout = layoutType;
@@ -208,6 +220,7 @@ public class RemindParams extends Params implements Serializable {
             params.actionBitmap = actionBitmap;
             params.bundle = bundle;
             params.startClass = startClass;
+            params.remoteViews = remoteViews;
             return params;
         }
     }

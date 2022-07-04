@@ -2,6 +2,7 @@ package com.sharp.model;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.RemoteViews;
 
 import com.sharp.future.R;
 
@@ -22,6 +23,7 @@ public class OnGoingParams extends Params implements Serializable {
     private String actionString;
     private Bundle bundle;
     private Class<?> startClass;
+    private RemoteViews remoteViews;
 
     private OnGoingParams() {
     }
@@ -74,6 +76,11 @@ public class OnGoingParams extends Params implements Serializable {
         return startClass;
     }
 
+    @Override
+    public RemoteViews getRemoteViews() {
+        return remoteViews;
+    }
+
     public static class Builder {
         private int layoutType;
         private int smallIcon;
@@ -87,6 +94,7 @@ public class OnGoingParams extends Params implements Serializable {
         private String actionString;
         private Bundle bundle;
         private Class<?> startClass;
+        private RemoteViews remoteViews;
 
         public OnGoingParams build() {
             OnGoingParams params = new OnGoingParams();
@@ -102,6 +110,7 @@ public class OnGoingParams extends Params implements Serializable {
             params.actionString = actionString;
             params.bundle = bundle;
             params.startClass = startClass;
+            params.remoteViews = remoteViews;
             return params;
         }
 
@@ -161,6 +170,11 @@ public class OnGoingParams extends Params implements Serializable {
 
         public Builder setStartClass(Class<?> startClass) {
             this.startClass = startClass;
+            return this;
+        }
+
+        public Builder setRemoteViews(RemoteViews remoteViews) {
+            this.remoteViews = remoteViews;
             return this;
         }
     }

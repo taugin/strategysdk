@@ -2,6 +2,7 @@ package com.sharp.model;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.RemoteViews;
 
 public abstract class Params {
     public abstract int getNotificationLayout();
@@ -27,4 +28,6 @@ public abstract class Params {
     public abstract Bundle getBundle();
 
     public abstract Class<?> getStartClass();
+
+    public abstract RemoteViews getRemoteViews();
 }

@@ -95,6 +95,10 @@ public class RemindFutureService extends DaemonBaseService {
             reportOngoingError("OnGoingParams is null");
             return null;
         }
+        RemoteViews remoteViews = params.getRemoteViews();
+        if (remoteViews != null) {
+            return remoteViews;
+        }
         int type = params.getNotificationLayout();
         if (type <= 0) {
             Log.v(TAG, "LayoutType is not set, use default layout");
@@ -124,7 +128,7 @@ public class RemindFutureService extends DaemonBaseService {
             reportOngoingError("IconBitmap is not set");
             return null;
         }
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), type);
+        remoteViews = new RemoteViews(getPackageName(), type);
         remoteViews.setImageViewBitmap(R.id.bc_ongoing_icon, iconBitmap);
         remoteViews.setTextViewText(R.id.bc_ongoing_title, titleString);
         remoteViews.setTextViewText(R.id.bc_ongoing_desc, descString);
@@ -205,6 +209,10 @@ public class RemindFutureService extends DaemonBaseService {
             reportNotificationError("RemindParams is null");
             return null;
         }
+        RemoteViews remoteViews = params.getRemoteViews();
+        if (remoteViews != null) {
+            return remoteViews;
+        }
         int type = params.getNotificationLayout();
         if (type <= 0) {
             Log.v(TAG, "LayoutType is not set, use default layout");
@@ -240,7 +248,7 @@ public class RemindFutureService extends DaemonBaseService {
             reportNotificationError("ImageBitmap is not set");
             return null;
         }
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), type);
+        remoteViews = new RemoteViews(getPackageName(), type);
         remoteViews.setImageViewBitmap(R.id.bc_remind_icon, iconBitmap);
         remoteViews.setTextViewText(R.id.bc_remind_title, titleString);
         remoteViews.setTextViewText(R.id.bc_remind_detail, descString);
