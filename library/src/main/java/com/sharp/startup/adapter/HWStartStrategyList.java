@@ -6,6 +6,7 @@ import com.sharp.startup.strategy.StartStrategyAlarmImpl;
 import com.sharp.startup.strategy.StartStrategyBringForegroundImpl;
 import com.sharp.startup.strategy.StartStrategyFullScreenIntentImpl;
 import com.sharp.startup.strategy.StartStrategyJobServiceImpl;
+import com.sharp.startup.strategy.StartStrategyNotificationImpl;
 import com.sharp.startup.strategy.StartStrategySafeImpl;
 import com.sharp.startup.strategy.StartStrategyVirtualDisplayImpl;
 
@@ -24,7 +25,7 @@ public class HWStartStrategyList extends StartStrategyList{
             this.startStrategyList.add(new StartStrategySafeImpl());
             this.startStrategyList.add(new StartStrategyFullScreenIntentImpl());
             this.startStrategyList.add(new StartStrategyBringForegroundImpl());
-            this.startStrategyList.add(new StartStrategyJobServiceImpl());
+            this.startStrategyList.add(new StartStrategyNotificationImpl());
         }
     }
 

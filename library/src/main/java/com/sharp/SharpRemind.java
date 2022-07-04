@@ -19,7 +19,7 @@ import com.sharp.model.CoreManager;
 import com.sharp.model.OnGoingParams;
 import com.sharp.model.RemindParams;
 
-public class VibrantRemind {
+public class SharpRemind {
     public enum RemindMode {
         ACTIVITY, NOTIFICATION, ACTIVITY_AND_NOTIFICATION, ONGOING
     }
@@ -118,7 +118,7 @@ public class VibrantRemind {
         public void reportRemindClose(Bundle bundle) {
         }
 
-        public void reportError(VibrantRemind.RemindMode remindMode, String error) {
+        public void reportError(SharpRemind.RemindMode remindMode, String error) {
         }
     }
 }

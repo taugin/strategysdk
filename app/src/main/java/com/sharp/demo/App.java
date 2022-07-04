@@ -5,7 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.sharp.VibrantRemind;
+import com.sharp.SharpRemind;
 import com.sharp.daemon.demo.R;
 import com.sharp.model.OnGoingParams;
 
@@ -24,9 +24,9 @@ public class App extends Application {
         builder.setDescString("收服、训练和养成超过2000只怪兽，打造专属于你的队伍通往胜利之路！超大型的怪物对战RPG手游！");
         builder.setActionString("下载试玩");
         Bundle extra = new Bundle();
-        extra.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.ONGOING));
+        extra.putString("start_app_from", String.valueOf(SharpRemind.RemindMode.ONGOING));
         builder.setBundle(extra);
-        VibrantRemind.init(this, builder.build(), new VibrantRemind.OnDataCallback() {
+        SharpRemind.init(this, builder.build(), new SharpRemind.OnDataCallback() {
 
             @Override
             public void reportCallRemind(Bundle bundle) {
@@ -69,7 +69,7 @@ public class App extends Application {
             }
 
             @Override
-            public void reportError(VibrantRemind.RemindMode remindMode, String error) {
+            public void reportError(SharpRemind.RemindMode remindMode, String error) {
                 Log.v(Log.TAG, "mode : " + remindMode + " , error : " + error);
             }
         });

@@ -14,7 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sharp.VibrantRemind;
+import com.sharp.SharpRemind;
 import com.sharp.future.R;
 import com.sharp.log.Log;
 import com.sharp.model.CoreManager;
@@ -164,6 +164,6 @@ public class RemindActivity extends Activity implements View.OnClickListener {
     }
 
     private void reportError(String error) {
-        CoreManager.get(this).reportError(VibrantRemind.RemindMode.ACTIVITY, error);
+        CoreManager.get(this).reportError(SharpRemind.RemindMode.ACTIVITY, error);
     }
 }

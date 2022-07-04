@@ -7,7 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import com.sharp.VibrantRemind;
+import com.sharp.SharpRemind;
 import com.sharp.model.RemindParams;
 import com.sharp.daemon.demo.R;
 
@@ -69,27 +69,27 @@ public class MainActivity extends Activity {
         } else if (v.getId() == R.id.show_remind_notification) {
             generateRemindParams();
             Bundle bundle = new Bundle();
-            bundle.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.NOTIFICATION));
+            bundle.putString("start_app_from", String.valueOf(SharpRemind.RemindMode.NOTIFICATION));
             bundle.putString("remind_title", TITLE_ARRAY[mIndex]);
             bundle.putString("remind_desc", DESC_ARRAY[mIndex]);
             mRemindParamsBuilder.setBundle(bundle);
-            VibrantRemind.showRemind(this, mRemindParamsBuilder.build(), VibrantRemind.RemindMode.NOTIFICATION);
+            SharpRemind.showRemind(this, mRemindParamsBuilder.build(), SharpRemind.RemindMode.NOTIFICATION);
         } else if (v.getId() == R.id.show_remind_activity) {
             generateRemindParams();
             Bundle bundle = new Bundle();
-            bundle.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.ACTIVITY));
+            bundle.putString("start_app_from", String.valueOf(SharpRemind.RemindMode.ACTIVITY));
             bundle.putString("remind_title", TITLE_ARRAY[mIndex]);
             bundle.putString("remind_desc", DESC_ARRAY[mIndex]);
             mRemindParamsBuilder.setBundle(bundle);
-            VibrantRemind.showRemind(this, mRemindParamsBuilder.build());
+            SharpRemind.showRemind(this, mRemindParamsBuilder.build());
         } else if (v.getId() == R.id.show_remind_activity_notification) {
             generateRemindParams();
             Bundle bundle = new Bundle();
-            bundle.putString("start_app_from", String.valueOf(VibrantRemind.RemindMode.ACTIVITY_AND_NOTIFICATION));
+            bundle.putString("start_app_from", String.valueOf(SharpRemind.RemindMode.ACTIVITY_AND_NOTIFICATION));
             bundle.putString("remind_title", TITLE_ARRAY[mIndex]);
             bundle.putString("remind_desc", DESC_ARRAY[mIndex]);
             mRemindParamsBuilder.setBundle(bundle);
-            VibrantRemind.showRemind(this, mRemindParamsBuilder.build(), VibrantRemind.RemindMode.ACTIVITY_AND_NOTIFICATION);
+            SharpRemind.showRemind(this, mRemindParamsBuilder.build(), SharpRemind.RemindMode.ACTIVITY_AND_NOTIFICATION);
         }
     }
 

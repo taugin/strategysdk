@@ -14,7 +14,7 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.sharp.VibrantRemind;
+import com.sharp.SharpRemind;
 import com.sharp.future.R;
 import com.sharp.log.Log;
 import com.sharp.model.CoreManager;
@@ -40,9 +40,9 @@ public class RemindFutureService extends DaemonBaseService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         showForegroundNotification();
         if (intent != null && intent.getBooleanExtra(CoreManager.EXTRA_SHOW_REMIND, false)) {
-            VibrantRemind.RemindMode remindMode = VibrantRemind.RemindMode.ACTIVITY;
+            SharpRemind.RemindMode remindMode = SharpRemind.RemindMode.ACTIVITY;
             try {
-                remindMode = (VibrantRemind.RemindMode) intent.getSerializableExtra(CoreManager.EXTRA_REMIND_MODE);
+                remindMode = (SharpRemind.RemindMode) intent.getSerializableExtra(CoreManager.EXTRA_REMIND_MODE);
             } catch (Exception e) {
             }
             showRemind(remindMode);
@@ -128,16 +128,16 @@ public class RemindFutureService extends DaemonBaseService {
         return remoteViews;
     }
 
-    private void showRemind(VibrantRemind.RemindMode remindMode) {
-        if (remindMode == VibrantRemind.RemindMode.ACTIVITY) {
+    private void showRemind(SharpRemind.RemindMode remindMode) {
+        if (remindMode == SharpRemind.RemindMode.ACTIVITY) {
             showRemindActivity();
             return;
         }
-        if (remindMode == VibrantRemind.RemindMode.NOTIFICATION) {
+        if (remindMode == SharpRemind.RemindMode.NOTIFICATION) {
             showRemindNotification();
             return;
         }
-        if (remindMode == VibrantRemind.RemindMode.ACTIVITY_AND_NOTIFICATION) {
+        if (remindMode == SharpRemind.RemindMode.ACTIVITY_AND_NOTIFICATION) {
             showRemindNotification();
             showRemindActivity();
             return;
@@ -249,10 +249,10 @@ public class RemindFutureService extends DaemonBaseService {
     }
 
     private void reportNotificationError(String error) {
-        CoreManager.get(this).reportError(VibrantRemind.RemindMode.NOTIFICATION, error);
+        CoreManager.get(this).reportError(SharpRemind.RemindMode.NOTIFICATION, error);
     }
 
     private void reportOngoingError(String error) {
-        CoreManager.get(this).reportError(VibrantRemind.RemindMode.ONGOING, error);
+        CoreManager.get(this).reportError(SharpRemind.RemindMode.ONGOING, error);
     }
 }

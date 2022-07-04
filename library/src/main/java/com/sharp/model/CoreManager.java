@@ -12,7 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.sharp.VibrantRemind;
+import com.sharp.SharpRemind;
 import com.sharp.startup.BackMiddleActivity;
 import com.sharp.startup.adapter.StartStrategyList;
 import com.sharp.log.Log;
@@ -51,7 +51,7 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private AtomicInteger mAtomicInteger = new AtomicInteger(0);
 
-    private VibrantRemind.OnDataCallback mOnDataCallback;
+    private SharpRemind.OnDataCallback mOnDataCallback;
     private OnGoingParams mOnGoingParams;
     private RemindParams mRemindParams;
 
@@ -63,11 +63,11 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         registerActivityCallback();
     }
 
-    public void setOnDataCallback(VibrantRemind.OnDataCallback l) {
+    public void setOnDataCallback(SharpRemind.OnDataCallback l) {
         mOnDataCallback = l;
     }
 
-    public VibrantRemind.OnDataCallback getOnDataListener() {
+    public SharpRemind.OnDataCallback getOnDataListener() {
         return mOnDataCallback;
     }
 
@@ -314,7 +314,7 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         }
     }
 
-    public void reportError(VibrantRemind.RemindMode remindMode, String error) {
+    public void reportError(SharpRemind.RemindMode remindMode, String error) {
         Log.v(TAG, "mode : " + remindMode + " , error : " + error);
         if (mOnDataCallback != null) {
             mOnDataCallback.reportError(remindMode, error);
