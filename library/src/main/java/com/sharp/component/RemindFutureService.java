@@ -81,7 +81,7 @@ public class RemindFutureService extends DaemonBaseService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getOnGoingChannelId());
         OnGoingParams params = CoreManager.get(this).getOnGoingParams();
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
-        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, true);
+        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, true, -1);
         builder.setContent(getOnGoingRemoteViews(params, pendingIntent));
         builder.setContentIntent(pendingIntent);
         Notification notification = builder.build();
@@ -188,8 +188,8 @@ public class RemindFutureService extends DaemonBaseService {
         RemindParams params = CoreManager.get(this).getRemindParams();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getOnNotificationChannelId());
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
-        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, false);
-        PendingIntent cancelPendingIntent = CoreManager.get(this).getCancelPendingIntent();
+        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, false, notificationId);
+        PendingIntent cancelPendingIntent = CoreManager.get(this).getCancelPendingIntent(notificationId);
         RemoteViews remoteViews = null;
         try {
             remoteViews = getRemindRemoteViews(params, pendingIntent, cancelPendingIntent);

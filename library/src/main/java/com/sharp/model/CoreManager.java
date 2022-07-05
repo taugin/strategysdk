@@ -121,13 +121,13 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         return notificationId;
     }
 
-    public PendingIntent getPendingIntent(Params params, boolean ongoing) {
+    public PendingIntent getPendingIntent(Params params, boolean ongoing, int notificationId) {
         PendingIntent pendingIntent = null;
         Intent intent = getDestIntent(params);
         Intent wrapIntent = new Intent(mContext, BackMiddleActivity.class);
         wrapIntent.putExtra(StartStrategyList.PREF_DEST_INTENT, intent);
         if (!ongoing) {
-            wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getNotificationId());
+            wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, notificationId);
         }
         wrapIntent.putExtra(CoreManager.EXTRA_ONGOING, ongoing);
         wrapIntent.putExtra(CoreManager.EXTRA_FROM_NOTIFICATION, true);
@@ -139,10 +139,10 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         return pendingIntent;
     }
 
-    public PendingIntent getCancelPendingIntent() {
+    public PendingIntent getCancelPendingIntent(int notificationId) {
         PendingIntent pendingIntent = null;
         Intent wrapIntent = new Intent(mContext, BackMiddleActivity.class);
-        wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getNotificationId());
+        wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, notificationId);
         wrapIntent.putExtra(CoreManager.EXTRA_ONLY_CANCEL, true);
         int requestId = Long.valueOf(System.currentTimeMillis()).intValue() + 1002;
         try {
