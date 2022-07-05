@@ -88,10 +88,6 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     }
 
     public Intent getDestIntent(Params params) {
-        return getDestIntent(params, -1);
-    }
-
-    public Intent getDestIntent(Params params, int notificationId) {
         Intent intent = null;
         if (params != null && params.getStartClass() != null) {
             intent = new Intent(mContext, params.getStartClass());
@@ -108,25 +104,30 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         }
         Bundle bundle = getParamsBundle(params);
         if (bundle != null && intent != null) {
-            if (notificationId != -1) {
-                bundle.putInt("sharp_notification_id", notificationId);
-            }
             intent.putExtras(bundle);
         }
         return intent;
     }
 
-    public int getRemindId() {
-        return 0x1234;
+    public int getNotificationId() {
+        int notificationId = -1;
+        if (mRemindParams != null) {
+            notificationId = mRemindParams.getNotificationId();
+        }
+        if (notificationId == -1) {
+            notificationId = 0x1234;
+        }
+        Log.v(TAG, "notification id : " + notificationId);
+        return notificationId;
     }
 
-    public PendingIntent getPendingIntent(Params params, boolean ongoing, int notificationId) {
+    public PendingIntent getPendingIntent(Params params, boolean ongoing) {
         PendingIntent pendingIntent = null;
-        Intent intent = getDestIntent(params, notificationId);
+        Intent intent = getDestIntent(params);
         Intent wrapIntent = new Intent(mContext, BackMiddleActivity.class);
         wrapIntent.putExtra(StartStrategyList.PREF_DEST_INTENT, intent);
         if (!ongoing) {
-            wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getRemindId());
+            wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getNotificationId());
         }
         wrapIntent.putExtra(CoreManager.EXTRA_ONGOING, ongoing);
         wrapIntent.putExtra(CoreManager.EXTRA_FROM_NOTIFICATION, true);
@@ -141,7 +142,7 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     public PendingIntent getCancelPendingIntent() {
         PendingIntent pendingIntent = null;
         Intent wrapIntent = new Intent(mContext, BackMiddleActivity.class);
-        wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getRemindId());
+        wrapIntent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getNotificationId());
         wrapIntent.putExtra(CoreManager.EXTRA_ONLY_CANCEL, true);
         int requestId = Long.valueOf(System.currentTimeMillis()).intValue() + 1002;
         try {

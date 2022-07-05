@@ -27,6 +27,7 @@ public class RemindParams extends Params implements Serializable {
     private Bundle bundle;
     private Class<?> startClass;
     private RemoteViews remoteViews;
+    private int notificationId = -1;
 
     private RemindParams() {
     }
@@ -106,6 +107,10 @@ public class RemindParams extends Params implements Serializable {
         return remoteViews;
     }
 
+    public int getNotificationId() {
+        return notificationId;
+    }
+
     public static class Builder {
         private int layoutType;
         private int smallIcon;
@@ -123,6 +128,7 @@ public class RemindParams extends Params implements Serializable {
         private Bundle bundle;
         private Class<?> startClass;
         private RemoteViews remoteViews;
+        private int notificationId = -1;
 
         public Builder setLayoutType(int layoutType) {
             this.layoutType = layoutType;
@@ -199,8 +205,14 @@ public class RemindParams extends Params implements Serializable {
             return this;
         }
 
-        public void setRemoteViews(RemoteViews remoteViews) {
+        public Builder setRemoteViews(RemoteViews remoteViews) {
             this.remoteViews = remoteViews;
+            return this;
+        }
+
+        public Builder setNotificationId(int notificationId) {
+            this.notificationId = notificationId;
+            return this;
         }
 
         public RemindParams build() {
@@ -221,6 +233,7 @@ public class RemindParams extends Params implements Serializable {
             params.bundle = bundle;
             params.startClass = startClass;
             params.remoteViews = remoteViews;
+            params.notificationId = notificationId;
             return params;
         }
     }

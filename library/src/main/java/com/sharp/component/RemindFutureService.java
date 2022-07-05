@@ -81,7 +81,7 @@ public class RemindFutureService extends DaemonBaseService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getOnGoingChannelId());
         OnGoingParams params = CoreManager.get(this).getOnGoingParams();
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
-        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, true, -1);
+        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, true);
         builder.setContent(getOnGoingRemoteViews(params, pendingIntent));
         builder.setContentIntent(pendingIntent);
         Notification notification = builder.build();
@@ -159,7 +159,7 @@ public class RemindFutureService extends DaemonBaseService {
     private void showRemindActivity() {
         Intent intent = new Intent(this, RemindActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, CoreManager.get(this).getRemindId());
+        intent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, CoreManager.get(this).getNotificationId());
         BackAct.startActivityBackground(this, intent);
         CoreManager.get(this).reportCallRemind();
     }
@@ -184,11 +184,11 @@ public class RemindFutureService extends DaemonBaseService {
 
     private void showRemindNotification() {
         createNotificationChannel();
-        int notificationId = CoreManager.get(this).getRemindId();
+        int notificationId = CoreManager.get(this).getNotificationId();
         RemindParams params = CoreManager.get(this).getRemindParams();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getOnNotificationChannelId());
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
-        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, false, notificationId);
+        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, false);
         PendingIntent cancelPendingIntent = CoreManager.get(this).getCancelPendingIntent();
         RemoteViews remoteViews = null;
         try {

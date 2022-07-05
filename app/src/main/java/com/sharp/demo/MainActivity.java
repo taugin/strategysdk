@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
         mIndex = new Random(System.currentTimeMillis()).nextInt(ICON_ARRAY.length);
         mRemindParamsBuilder = new RemindParams.Builder()
                 .setLayoutType(RemindParams.LAYOUT_REMIND_1)
+                .setNotificationId(new Random().nextInt(10000))
                 .setTitleString(TITLE_ARRAY[mIndex])
                 .setDescString(DESC_ARRAY[mIndex])
                 .setIconId(ICON_ARRAY[mIndex])
