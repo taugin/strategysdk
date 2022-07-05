@@ -81,7 +81,7 @@ public class RemindFutureService extends DaemonBaseService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getOnGoingChannelId());
         OnGoingParams params = CoreManager.get(this).getOnGoingParams();
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
-        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, true);
+        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, true, -1);
         builder.setContent(getOnGoingRemoteViews(params, pendingIntent));
         builder.setContentIntent(pendingIntent);
         Notification notification = builder.build();
@@ -184,10 +184,11 @@ public class RemindFutureService extends DaemonBaseService {
 
     private void showRemindNotification() {
         createNotificationChannel();
+        int notificationId = CoreManager.get(this).getRemindId();
         RemindParams params = CoreManager.get(this).getRemindParams();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getOnNotificationChannelId());
         builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
-        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, false);
+        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, false, notificationId);
         PendingIntent cancelPendingIntent = CoreManager.get(this).getCancelPendingIntent();
         RemoteViews remoteViews = null;
         try {
@@ -199,7 +200,7 @@ public class RemindFutureService extends DaemonBaseService {
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.setFullScreenIntent(pendingIntent, true);
         Notification notification = builder.build();
-        NotificationManagerCompat.from(this).notify(CoreManager.get(this).getRemindId(), notification);
+        NotificationManagerCompat.from(this).notify(notificationId, notification);
         CoreManager.get(this).reportCallNotification();
     }
 

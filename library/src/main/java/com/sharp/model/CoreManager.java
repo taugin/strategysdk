@@ -88,6 +88,10 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     }
 
     public Intent getDestIntent(Params params) {
+        return getDestIntent(params, -1);
+    }
+
+    public Intent getDestIntent(Params params, int notificationId) {
         Intent intent = null;
         if (params != null && params.getStartClass() != null) {
             intent = new Intent(mContext, params.getStartClass());
@@ -102,8 +106,12 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
                 intent = new Intent();
             }
         }
-        if (params != null && params.getBundle() != null && intent != null) {
-            intent.putExtras(params.getBundle());
+        Bundle bundle = getParamsBundle(params);
+        if (bundle != null && intent != null) {
+            if (notificationId != -1) {
+                bundle.putInt("sharp_notification_id", notificationId);
+            }
+            intent.putExtras(bundle);
         }
         return intent;
     }
@@ -112,9 +120,9 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         return 0x1234;
     }
 
-    public PendingIntent getPendingIntent(Params params, boolean ongoing) {
+    public PendingIntent getPendingIntent(Params params, boolean ongoing, int notificationId) {
         PendingIntent pendingIntent = null;
-        Intent intent = getDestIntent(params);
+        Intent intent = getDestIntent(params, notificationId);
         Intent wrapIntent = new Intent(mContext, BackMiddleActivity.class);
         wrapIntent.putExtra(StartStrategyList.PREF_DEST_INTENT, intent);
         if (!ongoing) {
