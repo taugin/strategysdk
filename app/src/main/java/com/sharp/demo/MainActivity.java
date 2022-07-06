@@ -43,6 +43,18 @@ public class MainActivity extends Activity {
             R.drawable.app_image_4
     };
 
+    private static final int[] ONGOING_ARRAY = {
+            OnGoingParams.LAYOUT_ONGOING_1,
+            OnGoingParams.LAYOUT_ONGOING_2,
+            OnGoingParams.LAYOUT_ONGOING_3,
+            OnGoingParams.LAYOUT_ONGOING_4,
+            OnGoingParams.LAYOUT_ONGOING_5
+    };
+    private static final int[] REMIND_ARRAY = {
+            RemindParams.LAYOUT_REMIND_1,
+            RemindParams.LAYOUT_REMIND_2
+    };
+
     private static int mIndex = 0;
 
     @Override
@@ -56,7 +68,7 @@ public class MainActivity extends Activity {
     private void generateRemindParams() {
         mIndex = new Random(System.currentTimeMillis()).nextInt(ICON_ARRAY.length);
         mRemindParamsBuilder = new RemindParams.Builder()
-                .setLayoutType(RemindParams.LAYOUT_REMIND_1)
+                .setLayoutType(REMIND_ARRAY[new Random().nextInt(REMIND_ARRAY.length)])
                 .setNotificationId(new Random().nextInt(10000))
                 .setTitleString(TITLE_ARRAY[mIndex])
                 .setDescString(DESC_ARRAY[mIndex])
@@ -94,9 +106,9 @@ public class MainActivity extends Activity {
             SharpRemind.showRemind(this, mRemindParamsBuilder.build(), SharpRemind.RemindMode.ACTIVITY_AND_NOTIFICATION);
         } else if (v.getId() == R.id.update_ongoing) {
             OnGoingParams.Builder builder = new OnGoingParams.Builder();
-            builder.setLayoutType(OnGoingParams.LAYOUT_ONGOING_1);
+            builder.setLayoutType(ONGOING_ARRAY[new Random().nextInt(ONGOING_ARRAY.length)]);
             builder.setSmallIcon(R.drawable.ic_launcher);
-            builder.setIconId(R.drawable.ic_launcher);
+            builder.setIconId(IMAGE_ARRAY[0]);
             builder.setTitleString("战RPG手游");
             builder.setDescString("收服、训练和养成超过2000只怪兽，打造专属于你的队伍通往胜利之路！超大型的怪物对战RPG手游！");
             builder.setActionString("下载试玩");

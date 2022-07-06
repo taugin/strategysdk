@@ -11,6 +11,9 @@ import java.io.Serializable;
 public class OnGoingParams extends Params implements Serializable {
     public static final int LAYOUT_ONGOING_1 = R.layout.bc_ongoing_layout_1;
     public static final int LAYOUT_ONGOING_2 = R.layout.bc_ongoing_layout_2;
+    public static final int LAYOUT_ONGOING_3 = R.layout.bc_ongoing_layout_3;
+    public static final int LAYOUT_ONGOING_4 = R.layout.bc_ongoing_layout_4;
+    public static final int LAYOUT_ONGOING_5 = R.layout.bc_ongoing_layout_5;
     private int notificationLayout;
     private int smallIcon;
     private int iconId;
