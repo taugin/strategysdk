@@ -50,7 +50,7 @@
         android:layout_alignParentEnd="true"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="8.0dip"
-        android:background="@drawable/bc_blue_btn"
+        android:background="@drawable/bc_yellow_btn"
         android:ellipsize="end"
         android:gravity="center"
         android:maxWidth="100dp"

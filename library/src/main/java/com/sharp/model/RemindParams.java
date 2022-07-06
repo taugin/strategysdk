@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 public class RemindParams extends Params implements Serializable {
     public static final int LAYOUT_REMIND_1 = R.layout.bc_remind_layout_1;
+    public static final int LAYOUT_REMIND_2 = R.layout.bc_remind_layout_2;
 
     private int notificationLayout = LAYOUT_REMIND_1;
     private int smallIcon;
