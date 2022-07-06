@@ -39,6 +39,13 @@ public class SharpRemind {
         }
     }
 
+    public static void updateOnGoing(Context context, OnGoingParams params) {
+        CoreManager.get(context).setOnGoingParams(params);
+        Intent intent = new Intent(context, RemindFutureService.class);
+        intent.putExtra(CoreManager.EXTRA_REMIND_MODE, RemindMode.ONGOING);
+        ContextCompat.startForegroundService(context, intent);
+    }
+
     public static void showRemind(Context context, RemindParams params) {
         showRemind(context, params, RemindMode.ACTIVITY);
     }

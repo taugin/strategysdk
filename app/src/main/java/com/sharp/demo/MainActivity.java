@@ -8,8 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.sharp.SharpRemind;
-import com.sharp.model.RemindParams;
 import com.sharp.daemon.demo.R;
+import com.sharp.model.OnGoingParams;
+import com.sharp.model.RemindParams;
 
 import java.util.Random;
 
@@ -91,6 +92,19 @@ public class MainActivity extends Activity {
             bundle.putString("remind_desc", DESC_ARRAY[mIndex]);
             mRemindParamsBuilder.setBundle(bundle);
             SharpRemind.showRemind(this, mRemindParamsBuilder.build(), SharpRemind.RemindMode.ACTIVITY_AND_NOTIFICATION);
+        } else if (v.getId() == R.id.update_ongoing) {
+            OnGoingParams.Builder builder = new OnGoingParams.Builder();
+            builder.setLayoutType(OnGoingParams.LAYOUT_ONGOING_1);
+            builder.setSmallIcon(R.drawable.ic_launcher);
+            builder.setIconId(R.drawable.ic_launcher);
+            builder.setTitleString("战RPG手游");
+            builder.setDescString("收服、训练和养成超过2000只怪兽，打造专属于你的队伍通往胜利之路！超大型的怪物对战RPG手游！");
+            builder.setActionString("下载试玩");
+            Bundle extra = new Bundle();
+            extra.putString("start_app_from", String.valueOf(SharpRemind.RemindMode.ONGOING));
+            extra.putString("args", "update ongoing");
+            builder.setBundle(extra);
+            SharpRemind.updateOnGoing(this, builder.build());
         }
     }
 
