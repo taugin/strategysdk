@@ -12,6 +12,7 @@
     <application>
         <service
             android:name="com.sharp.component.ResidentService"
+            android:exported="false"
             android:process=":resident">
             <intent-filter>
                 <action android:name="com.sharp.component.ResidentService" />
@@ -25,10 +26,12 @@
             android:name="com.sharp.component.RemindActivity"
             android:launchMode="singleTask"
             android:screenOrientation="behind"
+            android:exported="false"
             android:theme="@style/bc_remind_dialog_theme" />
         <activity
             android:name="com.sharp.startup.BackMiddleActivity"
             android:launchMode="singleTask"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 
         <service
