@@ -120,6 +120,25 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void showRemind() {
+        Bundle bundle = new Bundle();
+        bundle.putString("start_app_from", String.valueOf(SharpRemind.RemindMode.ACTIVITY_AND_NOTIFICATION));
+        bundle.putString("remind_title", TITLE_ARRAY[mIndex]);
+        bundle.putString("remind_desc", DESC_ARRAY[mIndex]);
+        // 设置参数
+        RemindParams.Builder builder = new RemindParams.Builder()
+                .setLayoutType(RemindParams.LAYOUT_REMIND_1)
+                .setNotificationId(0x100010)
+                .setTitleString("梦幻怪兽")
+                .setDescString("梦幻怪兽是一款让人欲罢不能的RPG手游，主打四对四特殊回合制战斗，最多16只怪兽组成一个队伍。独创对战系统和上百种技能让每一次战斗更加热血和多元。终极进化你的怪兽，释放它们的真正力量，主宰PvP赛场！您准备好进入梦幻怪兽的世界了吗？")
+                .setIconId(R.drawable.app_icon_1)
+                .setImageId(R.drawable.app_image_1)
+                .setActionString("下载试玩")
+                .setBundle(bundle);
+
+        SharpRemind.showRemind(this, builder.build());
+    }
+
     private Intent getSettingsDetail() {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
