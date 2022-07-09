@@ -23,7 +23,6 @@ import com.sharp.model.RemindParams;
 import com.sharp.startup.BackAct;
 
 public class RemindFutureService extends DaemonBaseService {
-    private static final String TAG = "remind";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -91,7 +90,7 @@ public class RemindFutureService extends DaemonBaseService {
 
     private RemoteViews getOnGoingRemoteViews(OnGoingParams params, PendingIntent pendingIntent) {
         if (params == null) {
-            Log.v(TAG, "OnGoingParams is null");
+            Log.v(SharpRemind.TAG, "OnGoingParams is null");
             reportOngoingError("OnGoingParams is null");
             return null;
         }
@@ -101,30 +100,30 @@ public class RemindFutureService extends DaemonBaseService {
         }
         int type = params.getNotificationLayout();
         if (type <= 0) {
-            Log.v(TAG, "LayoutType is not set, use default layout");
+            Log.v(SharpRemind.TAG, "LayoutType is not set, use default layout");
             type = OnGoingParams.LAYOUT_ONGOING_1;
         }
         String titleString = CoreManager.get(this).getTitleString(params);
         if (TextUtils.isEmpty(titleString)) {
-            Log.v(TAG, "TitleString is not set");
+            Log.v(SharpRemind.TAG, "TitleString is not set");
             reportNotificationError("TitleString is not set");
             return null;
         }
         String descString = CoreManager.get(this).getDescString(params);
         if (TextUtils.isEmpty(descString)) {
-            Log.v(TAG, "DescString is not set");
+            Log.v(SharpRemind.TAG, "DescString is not set");
             reportOngoingError("DescString is not set");
             return null;
         }
         String actionString = CoreManager.get(this).getActionString(params);
         if (TextUtils.isEmpty(actionString)) {
-            Log.v(TAG, "ActionString is not set");
+            Log.v(SharpRemind.TAG, "ActionString is not set");
             reportOngoingError("ActionString is not set");
             return null;
         }
         Bitmap iconBitmap = CoreManager.get(this).getIconBitmap(params);
         if (iconBitmap == null) {
-            Log.v(TAG, "IconBitmap is not set");
+            Log.v(SharpRemind.TAG, "IconBitmap is not set");
             reportOngoingError("IconBitmap is not set");
             return null;
         }
@@ -206,7 +205,7 @@ public class RemindFutureService extends DaemonBaseService {
 
     private RemoteViews getRemindRemoteViews(RemindParams params, PendingIntent pendingIntent, PendingIntent cancelPendingIntent) {
         if (params == null) {
-            Log.v(TAG, "RemindParams is null");
+            Log.v(SharpRemind.TAG, "RemindParams is null");
             reportNotificationError("RemindParams is null");
             return null;
         }
@@ -216,36 +215,36 @@ public class RemindFutureService extends DaemonBaseService {
         }
         int type = params.getNotificationLayout();
         if (type <= 0) {
-            Log.v(TAG, "LayoutType is not set, use default layout");
+            Log.v(SharpRemind.TAG, "LayoutType is not set, use default layout");
             type = RemindParams.LAYOUT_REMIND_1;
         }
         String titleString = CoreManager.get(this).getTitleString(params);
         if (TextUtils.isEmpty(titleString)) {
-            Log.v(TAG, "TitleString is not set");
+            Log.v(SharpRemind.TAG, "TitleString is not set");
             reportNotificationError("TitleString is not set");
             return null;
         }
         String descString = CoreManager.get(this).getDescString(params);
         if (TextUtils.isEmpty(descString)) {
-            Log.v(TAG, "DescString is not set");
+            Log.v(SharpRemind.TAG, "DescString is not set");
             reportNotificationError("DescString is not set");
             return null;
         }
         String actionString = CoreManager.get(this).getActionString(params);
         if (TextUtils.isEmpty(actionString)) {
-            Log.v(TAG, "ActionString is not set");
+            Log.v(SharpRemind.TAG, "ActionString is not set");
             reportNotificationError("ActionString is not set");
             return null;
         }
         Bitmap iconBitmap = CoreManager.get(this).getIconBitmap(params);
         if (iconBitmap == null) {
-            Log.v(TAG, "IconBitmap is not set");
+            Log.v(SharpRemind.TAG, "IconBitmap is not set");
             reportNotificationError("IconBitmap is not set");
             return null;
         }
         Bitmap imageBitmap = CoreManager.get(this).getImageBitmap(params);
         if (imageBitmap == null) {
-            Log.v(TAG, "ImageBitmap is not set");
+            Log.v(SharpRemind.TAG, "ImageBitmap is not set");
             reportNotificationError("ImageBitmap is not set");
             return null;
         }

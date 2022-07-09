@@ -31,47 +31,47 @@ public class App extends Application {
 
             @Override
             public void reportCallRemind(Bundle bundle) {
-                Log.v(Log.TAG, "report call remind : " + bundleToString(bundle));
+                Log.v(SharpRemind.TAG, "report call remind : " + bundleToString(bundle));
             }
 
             @Override
             public void reportCallNotification(Bundle bundle) {
-                Log.v(Log.TAG, "report call notification : " + bundleToString(bundle));
+                Log.v(SharpRemind.TAG, "report call notification : " + bundleToString(bundle));
             }
 
             @Override
             public void reportShowRemind(Bundle bundle) {
-                Log.v(Log.TAG, "report show remind : " + bundleToString(bundle));
+                Log.v(SharpRemind.TAG, "report show remind : " + bundleToString(bundle));
             }
 
             @Override
             public void reportRemindClick(Bundle bundle) {
-                Log.v(Log.TAG, "report click remind : " + bundleToString(bundle));
+                Log.v(SharpRemind.TAG, "report click remind : " + bundleToString(bundle));
             }
 
             @Override
             public void reportOnGoingClick(Bundle bundle) {
-                Log.v(Log.TAG, "report click ongoing : " + bundleToString(bundle));
+                Log.v(SharpRemind.TAG, "report click ongoing : " + bundleToString(bundle));
             }
 
             @Override
             public void reportNotificationClick(Bundle bundle) {
-                Log.v(Log.TAG, "report click notification : " + bundleToString(bundle));
+                Log.v(SharpRemind.TAG, "report click notification : " + bundleToString(bundle));
             }
 
             @Override
             public void reportNotificationClose(Bundle bundle) {
-                Log.v(Log.TAG, "report close notification : " + bundleToString(bundle));
+                Log.v(SharpRemind.TAG, "report close notification : " + bundleToString(bundle));
             }
 
             @Override
             public void reportRemindClose(Bundle bundle) {
-                Log.v(Log.TAG, "report close remind : " + bundleToString(bundle));
+                Log.v(SharpRemind.TAG, "report close remind : " + bundleToString(bundle));
             }
 
             @Override
             public void reportError(SharpRemind.RemindMode remindMode, String error) {
-                Log.v(Log.TAG, "mode : " + remindMode + " , error : " + error);
+                Log.v(SharpRemind.TAG, "mode : " + remindMode + " , error : " + error);
             }
         });
     }

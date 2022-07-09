@@ -20,7 +20,6 @@ import com.sharp.startup.adapter.StartStrategyList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CoreManager implements Application.ActivityLifecycleCallbacks {
-    private static final String TAG = "CoreManager";
     public static final String EXTRA_SHOW_REMIND = "extra_show_remind";
     public static final String EXTRA_REMIND_MODE = "extra_show_notification";
     public static final String EXTRA_NOTIFICATION_ID = "extra_notification_id";
@@ -48,7 +47,6 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     }
 
     private Context mContext;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
     private AtomicInteger mAtomicInteger = new AtomicInteger(0);
 
     private SharpRemind.OnDataCallback mOnDataCallback;
@@ -117,7 +115,7 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         if (notificationId == -1) {
             notificationId = 0x1234;
         }
-        Log.v(TAG, "notification id : " + notificationId);
+        Log.v(SharpRemind.TAG, "notification id : " + notificationId);
         return notificationId;
     }
 
@@ -225,7 +223,7 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
                 ((Application) mContext).registerActivityLifecycleCallbacks(this);
             }
         } catch (Exception | Error e) {
-            Log.e(TAG, "error : " + e);
+            Log.e(SharpRemind.TAG, "error : " + e);
         }
     }
 
@@ -278,63 +276,63 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
     }
 
     public void reportCallRemind() {
-        Log.v(TAG, "report call remind");
+        Log.v(SharpRemind.TAG, "report call remind");
         if (mOnDataCallback != null) {
             mOnDataCallback.reportCallRemind(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportCallNotification() {
-        Log.v(TAG, "report call notification");
+        Log.v(SharpRemind.TAG, "report call notification");
         if (mOnDataCallback != null) {
             mOnDataCallback.reportCallNotification(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportShowRemind() {
-        Log.v(TAG, "report show remind");
+        Log.v(SharpRemind.TAG, "report show remind");
         if (mOnDataCallback != null) {
             mOnDataCallback.reportShowRemind(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportRemindClick() {
-        Log.v(TAG, "report click remind");
+        Log.v(SharpRemind.TAG, "report click remind");
         if (mOnDataCallback != null) {
             mOnDataCallback.reportRemindClick(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportOnGoingClick() {
-        Log.v(TAG, "report click ongoing");
+        Log.v(SharpRemind.TAG, "report click ongoing");
         if (mOnDataCallback != null) {
             mOnDataCallback.reportOnGoingClick(getParamsBundle(mOnGoingParams));
         }
     }
 
     public void reportNotificationClick() {
-        Log.v(TAG, "report click notification");
+        Log.v(SharpRemind.TAG, "report click notification");
         if (mOnDataCallback != null) {
             mOnDataCallback.reportNotificationClick(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportNotificationClose() {
-        Log.v(TAG, "report close notification");
+        Log.v(SharpRemind.TAG, "report close notification");
         if (mOnDataCallback != null) {
             mOnDataCallback.reportNotificationClose(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportRemindClose() {
-        Log.v(TAG, "report close remind");
+        Log.v(SharpRemind.TAG, "report close remind");
         if (mOnDataCallback != null) {
             mOnDataCallback.reportRemindClose(getParamsBundle(mRemindParams));
         }
     }
 
     public void reportError(SharpRemind.RemindMode remindMode, String error) {
-        Log.v(TAG, "mode : " + remindMode + " , error : " + error);
+        Log.v(SharpRemind.TAG, "mode : " + remindMode + " , error : " + error);
         if (mOnDataCallback != null) {
             mOnDataCallback.reportError(remindMode, error);
         }

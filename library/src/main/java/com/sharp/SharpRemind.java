@@ -20,6 +20,7 @@ import com.sharp.model.OnGoingParams;
 import com.sharp.model.RemindParams;
 
 public class SharpRemind {
+    public static final String TAG = "remind";
     public enum RemindMode {
         ACTIVITY, NOTIFICATION, ACTIVITY_AND_NOTIFICATION, ONGOING
     }
