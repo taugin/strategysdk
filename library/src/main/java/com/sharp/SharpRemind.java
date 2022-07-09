@@ -15,6 +15,7 @@ import com.sharp.component.DaemonReceiver;
 import com.sharp.component.DaemonService;
 import com.sharp.component.RemindFutureService;
 import com.sharp.daemon.JavaDaemon;
+import com.sharp.log.Log;
 import com.sharp.model.CoreManager;
 import com.sharp.model.OnGoingParams;
 import com.sharp.model.RemindParams;
@@ -30,6 +31,7 @@ public class SharpRemind {
     }
 
     public static void init(Context context, OnGoingParams params, OnDataCallback callback) {
+        Log.v(TAG, "sharp remind init");
         CoreManager.get(context).init();
         CoreManager.get(context).setOnDataCallback(callback);
         CoreManager.get(context).setOnGoingParams(params);
@@ -41,6 +43,7 @@ public class SharpRemind {
     }
 
     public static void updateOnGoing(Context context, OnGoingParams params) {
+        Log.v(TAG, "update ongoing notification");
         CoreManager.get(context).setOnGoingParams(params);
         Intent intent = new Intent(context, RemindFutureService.class);
         intent.putExtra(CoreManager.EXTRA_REMIND_MODE, RemindMode.ONGOING);
@@ -52,6 +55,7 @@ public class SharpRemind {
     }
 
     public static void showRemind(Context context, RemindParams params, RemindMode remindMode) {
+        Log.v(TAG, "show remind");
         CoreManager.get(context).setRemindParams(params);
         Intent intent = new Intent(context, RemindFutureService.class);
         intent.putExtra(CoreManager.EXTRA_SHOW_REMIND, true);

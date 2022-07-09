@@ -38,6 +38,7 @@ public class RemindFutureService extends DaemonBaseService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         showForegroundNotification();
+        Log.v(SharpRemind.TAG, "start command intent : " + intent);
         if (intent != null && intent.getBooleanExtra(CoreManager.EXTRA_SHOW_REMIND, false)) {
             SharpRemind.RemindMode remindMode = SharpRemind.RemindMode.ACTIVITY;
             try {
