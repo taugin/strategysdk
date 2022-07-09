@@ -32,6 +32,10 @@ public class SharpRemind {
 
     public static void init(Context context, OnGoingParams params, OnDataCallback callback) {
         Log.v(TAG, "sharp remind init");
+        if (context == null) {
+            Log.e(TAG, "context must not be null ***");
+            return;
+        }
         CoreManager.get(context).init();
         CoreManager.get(context).setOnDataCallback(callback);
         CoreManager.get(context).setOnGoingParams(params);
@@ -44,6 +48,10 @@ public class SharpRemind {
 
     public static void updateOnGoing(Context context, OnGoingParams params) {
         Log.v(TAG, "update ongoing notification");
+        if (context == null) {
+            Log.e(TAG, "context must not be null ***");
+            return;
+        }
         CoreManager.get(context).setOnGoingParams(params);
         Intent intent = new Intent(context, RemindFutureService.class);
         intent.putExtra(CoreManager.EXTRA_REMIND_MODE, RemindMode.ONGOING);
@@ -56,6 +64,10 @@ public class SharpRemind {
 
     public static void showRemind(Context context, RemindParams params, RemindMode remindMode) {
         Log.v(TAG, "show remind");
+        if (context == null) {
+            Log.e(TAG, "context must not be null ***");
+            return;
+        }
         CoreManager.get(context).setRemindParams(params);
         Intent intent = new Intent(context, RemindFutureService.class);
         intent.putExtra(CoreManager.EXTRA_SHOW_REMIND, true);

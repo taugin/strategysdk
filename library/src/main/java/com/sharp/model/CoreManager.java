@@ -32,7 +32,7 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         if (sCoreManager == null) {
             create(context);
         }
-        if (sCoreManager != null) {
+        if (sCoreManager != null && context != null) {
             sCoreManager.mContext = context.getApplicationContext();
         }
         return sCoreManager;
