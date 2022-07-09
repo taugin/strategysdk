@@ -31,18 +31,10 @@ public class SharpRemind {
     }
 
     public static void init(Context context, OnGoingParams params, OnDataCallback callback) {
-        Log.v(TAG, "sharp remind init");
-        if (context == null) {
-            Log.e(TAG, "context must not be null ***");
-            return;
-        }
-        CoreManager.get(context).init();
-        CoreManager.get(context).setOnDataCallback(callback);
-        CoreManager.get(context).setOnGoingParams(params);
         JavaDaemon.getInstance().init(context, new Intent(context, DaemonService.class), new Intent(context, DaemonReceiver.class), new Intent(context, DaemonInstrumentation.class));
         JavaDaemon.getInstance().startAppLock(context, new String[]{"daemon", "assist1", "assist2"});
         if (isMainProcess(context)) {
-            startResidentService(context);
+            startFutureService(context, params, callback);
         }
     }
 
@@ -75,7 +67,15 @@ public class SharpRemind {
         ContextCompat.startForegroundService(context, intent);
     }
 
-    private static void startResidentService(final Context context) {
+    private static void startFutureService(final Context context, OnGoingParams params, OnDataCallback callback) {
+        Log.v(TAG, "start future service");
+        if (context == null) {
+            Log.e(TAG, "context must not be null ***");
+            return;
+        }
+        CoreManager.get(context).init();
+        CoreManager.get(context).setOnDataCallback(callback);
+        CoreManager.get(context).setOnGoingParams(params);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
                 @Override
