@@ -5,11 +5,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.sharp.future.R;
 import com.sharp.startup.utils.BackActUtils;
 
 public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
@@ -56,14 +59,12 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
         } else {
             builder = new NotificationCompat.Builder(context);
         }
-//        int i = C1082R.layout.kl_layout_notification;
-//        int i2 = C1082R.C1083drawable.kl_trans;
-//        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), i);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.bc_no_header_up_layout);
         builder.setContentTitle("优化中");
         builder.setContentText("正在优化...");
         builder.setSmallIcon(context.getApplicationInfo().icon);
-//        builder.setCustomContentView(remoteViews);
-//        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), i2));
+        builder.setCustomContentView(remoteViews);
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.bc_ad_close));
         builder.setAutoCancel(true);
         builder.setDefaults(4);
         builder.setPriority(-1);
@@ -73,7 +74,6 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
 
     public static final class CancelNotificationRunnable implements Runnable {
 
-        /* renamed from: a */
         public final NotificationManagerCompat mNotificationManagerCompat;
 
         public CancelNotificationRunnable(NotificationManagerCompat notificationManagerCompat) {
