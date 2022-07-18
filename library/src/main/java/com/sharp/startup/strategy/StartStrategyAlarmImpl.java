@@ -14,7 +14,13 @@ public class StartStrategyAlarmImpl implements IStartStrategy {
 
     @Override
     public boolean startActivityInBackground(Context context, Intent intent, boolean z) {
-        PendingIntent activity = PendingIntent.getActivity(context, 10102, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        int flags;
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+        } else {
+            flags = PendingIntent.FLAG_UPDATE_CURRENT;
+        }
+        PendingIntent activity = PendingIntent.getActivity(context, 10102, intent, flags);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) {
             return false;

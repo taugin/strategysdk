@@ -141,7 +141,13 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         wrapIntent.putExtra(CoreManager.EXTRA_FROM_NOTIFICATION, true);
         int requestId = Long.valueOf(System.currentTimeMillis()).intValue() + 1001;
         try {
-            pendingIntent = PendingIntent.getActivity(mContext, requestId, wrapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            int flags;
+            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+            } else {
+                flags = PendingIntent.FLAG_UPDATE_CURRENT;
+            }
+            pendingIntent = PendingIntent.getActivity(mContext, requestId, wrapIntent, flags);
         } catch (Exception e) {
         }
         return pendingIntent;
@@ -154,7 +160,13 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         wrapIntent.putExtra(CoreManager.EXTRA_ONLY_CANCEL, true);
         int requestId = Long.valueOf(System.currentTimeMillis()).intValue() + 1002;
         try {
-            pendingIntent = PendingIntent.getActivity(mContext, requestId, wrapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            int flags;
+            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+            } else {
+                flags = PendingIntent.FLAG_UPDATE_CURRENT;
+            }
+            pendingIntent = PendingIntent.getActivity(mContext, requestId, wrapIntent, flags);
         } catch (Exception e) {
         }
         return pendingIntent;

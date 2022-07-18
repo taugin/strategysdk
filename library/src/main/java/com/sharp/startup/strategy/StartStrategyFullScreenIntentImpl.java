@@ -28,7 +28,13 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION/*65536*/);
         intent.addFlags(Intent.FLAG_FROM_BACKGROUND/*4*/);
         NotificationCompat.Builder builder = getNotificationBuilder(context);
-        builder.setFullScreenIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT/*134217728*/), true);
+        int flags;
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+        } else {
+            flags = PendingIntent.FLAG_UPDATE_CURRENT;
+        }
+        builder.setFullScreenIntent(PendingIntent.getActivity(context, 0, intent, flags/*134217728*/), true);
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         try {
             notificationManagerCompat.cancel(notification_id);
@@ -41,7 +47,7 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
         }
     }
 
-        @Override
+    @Override
     public String getName() {
         return "FullScreenIntent";
     }

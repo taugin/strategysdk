@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -80,7 +81,13 @@ public class BackActUtils {
                 int i = f18560b + 1;
                 f18560b = i;
                 try {
-                    PendingIntent.getActivity(context, i, intent, PendingIntent.FLAG_ONE_SHOT/*1073741824*/).send();
+                    int flags;
+                    if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                        flags = PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE;
+                    } else {
+                        flags = PendingIntent.FLAG_ONE_SHOT;
+                    }
+                    PendingIntent.getActivity(context, i, intent, flags/*1073741824*/).send();
                     return true;
                 } catch (Throwable th2) {
                     th2.printStackTrace();

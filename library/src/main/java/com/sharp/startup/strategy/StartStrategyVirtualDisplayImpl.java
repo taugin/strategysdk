@@ -48,14 +48,20 @@ public class StartStrategyVirtualDisplayImpl implements IStartStrategy {
 
         public StartStrategyVirtualDisplayRunnable(StartStrategyVirtualDisplayImpl impl, Context context, Intent intent) {
             mStartStrategyVirtualDisplayImpl = impl;
-            mContext  = context;
+            mContext = context;
             mIntent = intent;
         }
 
         @Override
         public void run() {
             try {
-                PendingIntent.getActivity(mContext, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT).send();
+                int flags;
+                if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                    flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+                } else {
+                    flags = PendingIntent.FLAG_UPDATE_CURRENT;
+                }
+                PendingIntent.getActivity(mContext, 0, mIntent, flags).send();
             } catch (Exception e) {
                 e.printStackTrace();
             }
