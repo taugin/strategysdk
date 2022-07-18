@@ -2,18 +2,28 @@ package com.sharp.model;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
+import android.widget.RemoteViews;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.sharp.SharpRemind;
+import com.sharp.component.RemindActivity;
+import com.sharp.future.R;
 import com.sharp.log.Log;
+import com.sharp.startup.BackAct;
 import com.sharp.startup.BackMiddleActivity;
 import com.sharp.startup.adapter.StartStrategyList;
 
@@ -216,6 +226,135 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         return actionString;
     }
 
+    public void showRemind(SharpRemind.RemindMode remindMode) {
+        if (remindMode == SharpRemind.RemindMode.ACTIVITY) {
+            showRemindActivity();
+            return;
+        }
+        if (remindMode == SharpRemind.RemindMode.NOTIFICATION) {
+            showRemindNotification();
+            return;
+        }
+        if (remindMode == SharpRemind.RemindMode.ACTIVITY_AND_NOTIFICATION) {
+            showRemindNotification();
+            showRemindActivity();
+            return;
+        }
+    }
+
+    private void showRemindActivity() {
+        Intent intent = new Intent(mContext, RemindActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, getNotificationId());
+        BackAct.startActivityBackground(mContext, intent);
+        reportCallRemind();
+    }
+
+    private String getOnNotificationChannelId() {
+        return mContext.getPackageName() + ".notification";
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = NotificationManagerCompat.from(mContext).getNotificationChannel(getOnNotificationChannelId());
+            if (notificationChannel == null) {
+                notificationChannel = new NotificationChannel(getOnNotificationChannelId(), "daemon", NotificationManager.IMPORTANCE_HIGH);
+                notificationChannel.enableLights(false);
+                notificationChannel.enableVibration(false);
+                notificationChannel.setVibrationPattern(new long[]{0});
+                notificationChannel.setSound(null, null);
+                NotificationManagerCompat.from(mContext).createNotificationChannel(notificationChannel);
+            }
+        }
+    }
+
+    private void showRemindNotification() {
+        createNotificationChannel();
+        int notificationId = getNotificationId();
+        RemindParams params = getRemindParams();
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, getOnNotificationChannelId());
+        builder.setSmallIcon(getSmallIcon(params));
+        PendingIntent pendingIntent = getPendingIntent(params, false, notificationId);
+        PendingIntent cancelPendingIntent = getCancelPendingIntent(notificationId);
+        RemoteViews remoteViews = null;
+        try {
+            remoteViews = getRemindRemoteViews(params, pendingIntent, cancelPendingIntent);
+        } catch (Exception e) {
+        }
+        builder.setCustomContentView(remoteViews);
+        builder.setContentIntent(pendingIntent);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setFullScreenIntent(pendingIntent, true);
+        Notification notification = builder.build();
+        NotificationManagerCompat.from(mContext).notify(notificationId, notification);
+        reportCallNotification();
+    }
+
+    private RemoteViews getRemindRemoteViews(RemindParams params, PendingIntent pendingIntent, PendingIntent cancelPendingIntent) {
+        if (params == null) {
+            Log.v(SharpRemind.TAG, "RemindParams is null");
+            reportNotificationError("RemindParams is null");
+            return null;
+        }
+        RemoteViews remoteViews = params.getRemoteViews();
+        if (remoteViews != null) {
+            return remoteViews;
+        }
+        int type = params.getNotificationLayout();
+        if (type <= 0) {
+            Log.v(SharpRemind.TAG, "LayoutType is not set, use default layout");
+            type = RemindParams.LAYOUT_REMIND_1;
+        }
+        String titleString = getTitleString(params);
+        if (TextUtils.isEmpty(titleString)) {
+            Log.v(SharpRemind.TAG, "TitleString is not set");
+            reportNotificationError("TitleString is not set");
+            return null;
+        }
+        String descString = getDescString(params);
+        if (TextUtils.isEmpty(descString)) {
+            Log.v(SharpRemind.TAG, "DescString is not set");
+            reportNotificationError("DescString is not set");
+            return null;
+        }
+        String actionString = getActionString(params);
+        if (TextUtils.isEmpty(actionString)) {
+            Log.v(SharpRemind.TAG, "ActionString is not set");
+            reportNotificationError("ActionString is not set");
+            return null;
+        }
+        Bitmap iconBitmap = getIconBitmap(params);
+        if (iconBitmap == null) {
+            Log.v(SharpRemind.TAG, "IconBitmap is not set");
+            reportNotificationError("IconBitmap is not set");
+            return null;
+        }
+        Bitmap imageBitmap = getImageBitmap(params);
+        if (imageBitmap == null) {
+            Log.v(SharpRemind.TAG, "ImageBitmap is not set");
+            reportNotificationError("ImageBitmap is not set");
+            return null;
+        }
+        remoteViews = new RemoteViews(mContext.getPackageName(), type);
+        remoteViews.setImageViewBitmap(R.id.bc_remind_icon, iconBitmap);
+        remoteViews.setTextViewText(R.id.bc_remind_title, titleString);
+        remoteViews.setTextViewText(R.id.bc_remind_detail, descString);
+        remoteViews.setTextViewText(R.id.bc_remind_cta, actionString);
+        remoteViews.setImageViewBitmap(R.id.bc_remind_image, imageBitmap);
+
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_icon, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_title, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_detail, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_cta, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_image, pendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.bc_remind_close, cancelPendingIntent);
+        return remoteViews;
+    }
+
+    private void reportNotificationError(String error) {
+        reportError(SharpRemind.RemindMode.NOTIFICATION, error);
+    }
+
     private void registerActivityCallback() {
         try {
             if (mContext instanceof Application) {
@@ -300,6 +439,13 @@ public class CoreManager implements Application.ActivityLifecycleCallbacks {
         Log.v(SharpRemind.TAG, "report click remind");
         if (mOnDataCallback != null) {
             mOnDataCallback.reportRemindClick(getParamsBundle(mRemindParams));
+        }
+    }
+
+    public void reportShowOnGoing(int notificationId, Service service) {
+        Log.v(SharpRemind.TAG, "report show ongoing");
+        if (mOnDataCallback != null) {
+            mOnDataCallback.reportShowOnGoing(getParamsBundle(mOnGoingParams), notificationId, service);
         }
     }
 

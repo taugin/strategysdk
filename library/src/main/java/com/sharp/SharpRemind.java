@@ -1,6 +1,7 @@
 package com.sharp;
 
 import android.app.ActivityManager;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -22,6 +23,7 @@ import com.sharp.model.RemindParams;
 
 public class SharpRemind {
     public static final String TAG = "remind";
+
     public enum RemindMode {
         ACTIVITY, NOTIFICATION, ACTIVITY_AND_NOTIFICATION, ONGOING
     }
@@ -61,10 +63,7 @@ public class SharpRemind {
             return;
         }
         CoreManager.get(context).setRemindParams(params);
-        Intent intent = new Intent(context, RemindFutureService.class);
-        intent.putExtra(CoreManager.EXTRA_SHOW_REMIND, true);
-        intent.putExtra(CoreManager.EXTRA_REMIND_MODE, remindMode);
-        ContextCompat.startForegroundService(context, intent);
+        CoreManager.get(context).showRemind(remindMode);
     }
 
     private static void startFutureService(final Context context, OnGoingParams params, OnDataCallback callback) {
@@ -128,6 +127,9 @@ public class SharpRemind {
         }
 
         public void reportRemindClick(Bundle bundle) {
+        }
+
+        public void reportShowOnGoing(Bundle bundle, int notificationId, Service service) {
         }
 
         public void reportOnGoingClick(Bundle bundle) {

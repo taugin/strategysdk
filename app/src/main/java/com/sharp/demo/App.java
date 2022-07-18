@@ -2,6 +2,7 @@ package com.sharp.demo;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.Service;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -47,6 +48,11 @@ public class App extends Application {
             @Override
             public void reportRemindClick(Bundle bundle) {
                 Log.v(SharpRemind.TAG, "report click remind : " + bundleToString(bundle));
+            }
+
+            @Override
+            public void reportShowOnGoing(Bundle bundle, int notificationId, Service service) {
+                Log.v(SharpRemind.TAG, "report show ongoing : " + bundleToString(bundle) + " , id : " + notificationId + " , service : " + service);
             }
 
             @Override

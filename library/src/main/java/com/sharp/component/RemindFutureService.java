@@ -32,21 +32,12 @@ public class RemindFutureService extends DaemonBaseService {
     @Override
     public void onCreate() {
         super.onCreate();
-        showForegroundNotification();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        showForegroundNotification();
         Log.v(SharpRemind.TAG, "start command intent : " + intent);
-        if (intent != null && intent.getBooleanExtra(CoreManager.EXTRA_SHOW_REMIND, false)) {
-            SharpRemind.RemindMode remindMode = SharpRemind.RemindMode.ACTIVITY;
-            try {
-                remindMode = (SharpRemind.RemindMode) intent.getSerializableExtra(CoreManager.EXTRA_REMIND_MODE);
-            } catch (Exception e) {
-            }
-            showRemind(remindMode);
-        }
+        showForegroundNotification();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -86,6 +77,7 @@ public class RemindFutureService extends DaemonBaseService {
         builder.setContentIntent(pendingIntent);
         Notification notification = builder.build();
         startForeground(getNotificationId(), notification);
+        reportShowOnGoing();
     }
 
 
@@ -107,7 +99,7 @@ public class RemindFutureService extends DaemonBaseService {
         String titleString = CoreManager.get(this).getTitleString(params);
         if (TextUtils.isEmpty(titleString)) {
             Log.v(SharpRemind.TAG, "TitleString is not set");
-            reportNotificationError("TitleString is not set");
+            reportOngoingError("TitleString is not set");
             return null;
         }
         String descString = CoreManager.get(this).getDescString(params);
@@ -140,136 +132,11 @@ public class RemindFutureService extends DaemonBaseService {
         return remoteViews;
     }
 
-    private void showRemind(SharpRemind.RemindMode remindMode) {
-        if (remindMode == SharpRemind.RemindMode.ACTIVITY) {
-            showRemindActivity();
-            return;
-        }
-        if (remindMode == SharpRemind.RemindMode.NOTIFICATION) {
-            showRemindNotification();
-            return;
-        }
-        if (remindMode == SharpRemind.RemindMode.ACTIVITY_AND_NOTIFICATION) {
-            showRemindNotification();
-            showRemindActivity();
-            return;
-        }
-    }
-
-    private void showRemindActivity() {
-        Intent intent = new Intent(this, RemindActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(CoreManager.EXTRA_NOTIFICATION_ID, CoreManager.get(this).getNotificationId());
-        BackAct.startActivityBackground(this, intent);
-        CoreManager.get(this).reportCallRemind();
-    }
-
-    private String getOnNotificationChannelId() {
-        return getPackageName() + ".notification";
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = NotificationManagerCompat.from(this).getNotificationChannel(getOnNotificationChannelId());
-            if (notificationChannel == null) {
-                notificationChannel = new NotificationChannel(getOnNotificationChannelId(), "daemon", NotificationManager.IMPORTANCE_HIGH);
-                notificationChannel.enableLights(false);
-                notificationChannel.enableVibration(false);
-                notificationChannel.setVibrationPattern(new long[]{0});
-                notificationChannel.setSound(null, null);
-                NotificationManagerCompat.from(this).createNotificationChannel(notificationChannel);
-            }
-        }
-    }
-
-    private void showRemindNotification() {
-        createNotificationChannel();
-        int notificationId = CoreManager.get(this).getNotificationId();
-        RemindParams params = CoreManager.get(this).getRemindParams();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getOnNotificationChannelId());
-        builder.setSmallIcon(CoreManager.get(this).getSmallIcon(params));
-        PendingIntent pendingIntent = CoreManager.get(this).getPendingIntent(params, false, notificationId);
-        PendingIntent cancelPendingIntent = CoreManager.get(this).getCancelPendingIntent(notificationId);
-        RemoteViews remoteViews = null;
-        try {
-            remoteViews = getRemindRemoteViews(params, pendingIntent, cancelPendingIntent);
-        } catch (Exception e) {
-        }
-        builder.setCustomContentView(remoteViews);
-        builder.setContentIntent(pendingIntent);
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        builder.setFullScreenIntent(pendingIntent, true);
-        Notification notification = builder.build();
-        NotificationManagerCompat.from(this).notify(notificationId, notification);
-        CoreManager.get(this).reportCallNotification();
-    }
-
-    private RemoteViews getRemindRemoteViews(RemindParams params, PendingIntent pendingIntent, PendingIntent cancelPendingIntent) {
-        if (params == null) {
-            Log.v(SharpRemind.TAG, "RemindParams is null");
-            reportNotificationError("RemindParams is null");
-            return null;
-        }
-        RemoteViews remoteViews = params.getRemoteViews();
-        if (remoteViews != null) {
-            return remoteViews;
-        }
-        int type = params.getNotificationLayout();
-        if (type <= 0) {
-            Log.v(SharpRemind.TAG, "LayoutType is not set, use default layout");
-            type = RemindParams.LAYOUT_REMIND_1;
-        }
-        String titleString = CoreManager.get(this).getTitleString(params);
-        if (TextUtils.isEmpty(titleString)) {
-            Log.v(SharpRemind.TAG, "TitleString is not set");
-            reportNotificationError("TitleString is not set");
-            return null;
-        }
-        String descString = CoreManager.get(this).getDescString(params);
-        if (TextUtils.isEmpty(descString)) {
-            Log.v(SharpRemind.TAG, "DescString is not set");
-            reportNotificationError("DescString is not set");
-            return null;
-        }
-        String actionString = CoreManager.get(this).getActionString(params);
-        if (TextUtils.isEmpty(actionString)) {
-            Log.v(SharpRemind.TAG, "ActionString is not set");
-            reportNotificationError("ActionString is not set");
-            return null;
-        }
-        Bitmap iconBitmap = CoreManager.get(this).getIconBitmap(params);
-        if (iconBitmap == null) {
-            Log.v(SharpRemind.TAG, "IconBitmap is not set");
-            reportNotificationError("IconBitmap is not set");
-            return null;
-        }
-        Bitmap imageBitmap = CoreManager.get(this).getImageBitmap(params);
-        if (imageBitmap == null) {
-            Log.v(SharpRemind.TAG, "ImageBitmap is not set");
-            reportNotificationError("ImageBitmap is not set");
-            return null;
-        }
-        remoteViews = new RemoteViews(getPackageName(), type);
-        remoteViews.setImageViewBitmap(R.id.bc_remind_icon, iconBitmap);
-        remoteViews.setTextViewText(R.id.bc_remind_title, titleString);
-        remoteViews.setTextViewText(R.id.bc_remind_detail, descString);
-        remoteViews.setTextViewText(R.id.bc_remind_cta, actionString);
-        remoteViews.setImageViewBitmap(R.id.bc_remind_image, imageBitmap);
-
-        remoteViews.setOnClickPendingIntent(R.id.bc_remind_icon, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_remind_title, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_remind_detail, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_remind_cta, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_remind_image, pendingIntent);
-        remoteViews.setOnClickPendingIntent(R.id.bc_remind_close, cancelPendingIntent);
-        return remoteViews;
-    }
-
-    private void reportNotificationError(String error) {
-        CoreManager.get(this).reportError(SharpRemind.RemindMode.NOTIFICATION, error);
-    }
-
     private void reportOngoingError(String error) {
         CoreManager.get(this).reportError(SharpRemind.RemindMode.ONGOING, error);
+    }
+
+    private void reportShowOnGoing() {
+        CoreManager.get(this).reportShowOnGoing(getNotificationId(), this);
     }
 }
