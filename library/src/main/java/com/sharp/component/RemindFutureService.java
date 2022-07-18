@@ -19,8 +19,6 @@ import com.sharp.future.R;
 import com.sharp.log.Log;
 import com.sharp.model.CoreManager;
 import com.sharp.model.OnGoingParams;
-import com.sharp.model.RemindParams;
-import com.sharp.startup.BackAct;
 
 public class RemindFutureService extends DaemonBaseService {
 

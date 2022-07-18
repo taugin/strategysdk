@@ -5,7 +5,6 @@ import android.content.Context;
 import com.sharp.startup.strategy.StartStrategyAlarmImpl;
 import com.sharp.startup.strategy.StartStrategyBringForegroundImpl;
 import com.sharp.startup.strategy.StartStrategyFullScreenIntentImpl;
-import com.sharp.startup.strategy.StartStrategyJobServiceImpl;
 import com.sharp.startup.strategy.StartStrategyNotificationImpl;
 import com.sharp.startup.strategy.StartStrategySafeImpl;
 import com.sharp.startup.strategy.StartStrategyVirtualDisplayImpl;

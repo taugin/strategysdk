@@ -3,10 +3,10 @@ package com.sharp.daemon;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.sharp.log.Log;
+import com.sharp.component.DaemonMain;
 import com.sharp.env.DaemonEntity;
 import com.sharp.env.DaemonEnv;
-import com.sharp.component.DaemonMain;
+import com.sharp.log.Log;
 
 import java.io.File;
 import java.util.ArrayList;

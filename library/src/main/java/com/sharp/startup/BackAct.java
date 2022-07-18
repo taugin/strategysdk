@@ -3,9 +3,9 @@ package com.sharp.startup;
 import android.content.Context;
 import android.content.Intent;
 
+import com.sharp.model.CoreManager;
 import com.sharp.startup.adapter.HWStartStrategyList;
 import com.sharp.startup.adapter.StartStrategyList;
-import com.sharp.model.CoreManager;
 
 public class BackAct {
     public static void startActivityBackground(Context context, Intent intent) {

@@ -7,10 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.sharp.model.CoreManager;
 import com.sharp.startup.adapter.StartStrategyList;
 import com.sharp.startup.log.Log;
 import com.sharp.startup.utils.BackActUtils;
-import com.sharp.model.CoreManager;
 
 public class BackMiddleActivity extends Activity {
     @Override

@@ -3,7 +3,6 @@ package com.sharp.log;
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-
 import com.sharp.future.BuildConfig;
 
 import java.io.File;
