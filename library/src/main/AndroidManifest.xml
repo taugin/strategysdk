@@ -25,13 +25,16 @@
 
         <activity
             android:name="com.sharp.component.RemindActivity"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="behind"
             android:taskAffinity=":remind"
             android:theme="@style/bc_remind_dialog_theme" />
+
         <activity
             android:name="com.sharp.startup.BackMiddleActivity"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleTask"
             android:taskAffinity=":remind"
