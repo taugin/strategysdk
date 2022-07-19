@@ -3,7 +3,8 @@
     package="com.sharp.future">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
     <instrumentation
         android:name="com.sharp.component.DaemonInstrumentation"
         android:targetPackage="${applicationId}"
@@ -24,14 +25,16 @@
 
         <activity
             android:name="com.sharp.component.RemindActivity"
+            android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="behind"
-            android:exported="false"
+            android:taskAffinity=":remind"
             android:theme="@style/bc_remind_dialog_theme" />
         <activity
             android:name="com.sharp.startup.BackMiddleActivity"
-            android:launchMode="singleTask"
             android:exported="false"
+            android:launchMode="singleTask"
+            android:taskAffinity=":remind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 
         <service
