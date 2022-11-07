@@ -16,8 +16,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Bundle bundle = getIntent().getExtras();
-        Log.v(Log.TAG, "start args : " + App.bundleToString(bundle));
     }
 
     public void onClick(View v) {
