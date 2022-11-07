@@ -36,6 +36,6 @@ public class StartStrategyBringForegroundImpl implements IStartStrategy {
 
     @Override
     public String getName() {
-        return "safe";
+        return "bring";
     }
 }

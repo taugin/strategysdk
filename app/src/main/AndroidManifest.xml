@@ -24,6 +24,8 @@
             android:name="com.sharp.demo.ReminderActivity"
             android:launchMode="singleTask"
             android:taskAffinity=":reminder" />
+
+        <service android:name="com.sharp.demo.ForegroundService" />
     </application>
 
 </manifest>

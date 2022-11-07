@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.TextUtils;
 
+import androidx.core.content.ContextCompat;
+
 public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ContextCompat.startForegroundService(this, new Intent(this, ForegroundService.class));
         register();
     }
 

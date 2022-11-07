@@ -18,6 +18,6 @@ public class StartStrategySafeImpl implements IStartStrategy{
 
     @Override
     public String getName() {
-        return null;
+        return "safe";
     }
 }
