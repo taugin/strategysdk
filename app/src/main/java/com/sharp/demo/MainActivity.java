@@ -21,6 +21,10 @@ public class MainActivity extends Activity {
     public void onClick(View v) {
         if (v.getId() == R.id.show_app_detail) {
             startActivity(getSettingsDetail());
+        } else if (v.getId() == R.id.start_activity) {
+            Vdx.startActivity(this, new Intent(this, ReminderActivity.class));
+        } else if (v.getId() == R.id.load_dex) {
+            Vdx.loadDex(getApplicationContext());
         }
     }
 

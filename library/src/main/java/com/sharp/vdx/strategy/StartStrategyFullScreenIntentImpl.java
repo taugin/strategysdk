@@ -55,7 +55,7 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
     public NotificationCompat.Builder getNotificationBuilder(Context context) {
         NotificationCompat.Builder builder;
         if (Build.VERSION.SDK_INT >= 26) {
-            NotificationChannel notificationChannel = new NotificationChannel("com.full.screen.id", "com.full.screen.name", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel notificationChannel = new NotificationChannel(getChannelId(context), getChannelName(context), NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.enableLights(false);
             notificationChannel.setShowBadge(false);
             notificationChannel.enableVibration(false);
@@ -65,18 +65,33 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
         } else {
             builder = new NotificationCompat.Builder(context);
         }
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.bc_no_header_up_layout);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), android.R.layout.simple_list_item_1);
         builder.setContentTitle("优化中");
         builder.setContentText("正在优化...");
         builder.setSmallIcon(context.getApplicationInfo().icon);
         builder.setCustomContentView(remoteViews);
-        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.bc_ad_close));
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.star_off));
         builder.setAutoCancel(true);
         builder.setDefaults(4);
         builder.setPriority(-1);
         return builder;
     }
 
+    private String getChannelId(Context context) {
+        try {
+            return context.getPackageName() + ".channel_id";
+        } catch (Exception e) {
+        }
+        return "channel_id";
+    }
+
+    private String getChannelName(Context context) {
+        try {
+            return context.getPackageName() + ".channel_name";
+        } catch (Exception e) {
+        }
+        return "channel_name";
+    }
 
     public static final class CancelNotificationRunnable implements Runnable {
 

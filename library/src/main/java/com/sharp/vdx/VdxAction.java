@@ -6,8 +6,8 @@ import android.content.Intent;
 import com.sharp.vdx.adapter.HWStartStrategyList;
 import com.sharp.vdx.adapter.StartStrategyList;
 
-public class BackAct {
-    public static void startActivityBackground(Context context, Intent intent) {
+public class VdxAction {
+    public static void execute(Context context, Intent intent) {
         StartStrategyList startStrategyList;
         try {
             startStrategyList = new HWStartStrategyList(context);
