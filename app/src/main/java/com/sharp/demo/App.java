@@ -2,13 +2,8 @@ package com.sharp.demo;
 
 import android.app.ActivityManager;
 import android.app.Application;
-import android.app.Service;
 import android.content.Context;
 import android.os.Bundle;
-
-import com.sharp.SharpRemind;
-import com.sharp.daemon.demo.R;
-import com.sharp.model.OnGoingParams;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,68 +13,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        OnGoingParams.Builder builder = new OnGoingParams.Builder();
-        builder.setLayoutType(OnGoingParams.LAYOUT_ONGOING_2);
-        builder.setSmallIcon(R.drawable.ic_launcher);
-        builder.setIconId(R.drawable.ic_launcher);
-        builder.setTitleString("战RPG手游");
-        builder.setDescString("收服、训练和养成超过2000只怪兽，打造专属于你的队伍通往胜利之路！超大型的怪物对战RPG手游！");
-        builder.setActionString("下载试玩");
-        Bundle extra = new Bundle();
-        extra.putString("start_app_from", String.valueOf(SharpRemind.RemindMode.ONGOING));
-        builder.setBundle(extra);
-        SharpRemind.init(this, builder.build(), new SharpRemind.OnDataCallback() {
-
-            @Override
-            public void reportCallRemind(Bundle bundle) {
-                Log.v(SharpRemind.TAG, "report call remind : " + bundleToString(bundle));
-            }
-
-            @Override
-            public void reportCallNotification(Bundle bundle) {
-                Log.v(SharpRemind.TAG, "report call notification : " + bundleToString(bundle));
-            }
-
-            @Override
-            public void reportShowRemind(Bundle bundle) {
-                Log.v(SharpRemind.TAG, "report show remind : " + bundleToString(bundle));
-            }
-
-            @Override
-            public void reportRemindClick(Bundle bundle) {
-                Log.v(SharpRemind.TAG, "report click remind : " + bundleToString(bundle));
-            }
-
-            @Override
-            public void reportShowOnGoing(Bundle bundle, int notificationId, Service service) {
-                Log.v(SharpRemind.TAG, "report show ongoing : " + bundleToString(bundle) + " , id : " + notificationId + " , service : " + service);
-            }
-
-            @Override
-            public void reportOnGoingClick(Bundle bundle) {
-                Log.v(SharpRemind.TAG, "report click ongoing : " + bundleToString(bundle));
-            }
-
-            @Override
-            public void reportNotificationClick(Bundle bundle) {
-                Log.v(SharpRemind.TAG, "report click notification : " + bundleToString(bundle));
-            }
-
-            @Override
-            public void reportNotificationClose(Bundle bundle) {
-                Log.v(SharpRemind.TAG, "report close notification : " + bundleToString(bundle));
-            }
-
-            @Override
-            public void reportRemindClose(Bundle bundle) {
-                Log.v(SharpRemind.TAG, "report close remind : " + bundleToString(bundle));
-            }
-
-            @Override
-            public void reportError(SharpRemind.RemindMode remindMode, String error) {
-                Log.v(SharpRemind.TAG, "mode : " + remindMode + " , error : " + error);
-            }
-        });
     }
 
     public static String bundleToString(Bundle bundle) {
