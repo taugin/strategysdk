@@ -63,12 +63,12 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
             ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(notificationChannel);
             builder = new NotificationCompat.Builder(context, notificationChannel.getId());
         } else {
-            builder = new NotificationCompat.Builder(context);
+            builder = new NotificationCompat.Builder(context, getChannelId(context));
         }
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), android.R.layout.simple_list_item_1);
         builder.setContentTitle("优化中");
         builder.setContentText("正在优化...");
-        builder.setSmallIcon(context.getApplicationInfo().icon);
+        builder.setSmallIcon(android.R.drawable.star_off);
         builder.setCustomContentView(remoteViews);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.star_off));
         builder.setAutoCancel(true);
