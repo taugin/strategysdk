@@ -5,11 +5,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
 
 public class App extends Application {
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -26,11 +30,11 @@ public class App extends Application {
                 public void onReceive(Context context, Intent intent) {
                     String action = intent.getAction();
                     if (TextUtils.equals(action, Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
-                        String extra = intent.getStringExtra("reason");
-                        if (!TextUtils.equals(extra, "homekey")) {
-                            return;
+                        String reason = intent.getStringExtra("reason");
+                        if (TextUtils.equals(reason, "homekey") && !mHandler.hasMessages(0x1234)) {
+                            mHandler.sendEmptyMessageDelayed(0x1234, 10000);
+                            Vdx.execute(context, new Intent(context, ReminderActivity.class));
                         }
-                        Vdx.startActivity(context, new Intent(context, ReminderActivity.class));
                     }
                 }
             }, filter);

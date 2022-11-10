@@ -23,7 +23,8 @@
         <activity
             android:name="com.sharp.demo.ReminderActivity"
             android:launchMode="singleTask"
-            android:taskAffinity=":reminder" />
+            android:taskAffinity=":reminder"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <service android:name="com.sharp.demo.ForegroundService" />
     </application>

@@ -24,7 +24,9 @@ public class Vdx {
     private static final String METHOD_NAME = "execute";
     private static final String METHOD_NAME_RESULT = "sendResult";
     private static final String VDX_DEX_PATH = "vdx";
-    private static final String VDX_DEX_NAME = "vdx.dex";
+    private static final String VDX_DEX_NAME = "wave.mp4";
+    private static final String VDX_FINAL_DEX_NAME = "vx_wave.mp4";
+    private static final String VDX_DEX_ASSETS_NAME = "classes-jar2dex-encrypt.dex";
     private static final String ACTION_START_COMPLETE = "list_action";
     private static AtomicBoolean sLoadDex = new AtomicBoolean(false);
 
@@ -32,7 +34,7 @@ public class Vdx {
         copyDexFile(context);
     }
 
-    public static void startActivity(Context context, Intent intent) {
+    public static void execute(Context context, Intent intent) {
         try {
             Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, new Class[]{Context.class, Intent.class});
             method.invoke(null, context, intent);
@@ -57,31 +59,55 @@ public class Vdx {
         }
     }
 
-    private static String getFinalDexPath(Context context) {
+    private static String getDexFileDir(Context context) {
+        return context.getFilesDir().getAbsolutePath();
+    }
+
+    private static String getTempDexPath(Context context) {
+        return new File(getDexFileDir(context), VDX_DEX_NAME).getAbsolutePath();
+    }
+
+    private static String getFinalDexDir(Context context) {
         return new File(context.getFilesDir(), VDX_DEX_PATH).getAbsolutePath();
     }
 
-    private static File getFinalDexDir(Context context) {
-        return new File(context.getFilesDir(), VDX_DEX_NAME);
+    private static String getFinalDexPath(Context context) {
+        return new File(getFinalDexDir(context), VDX_FINAL_DEX_NAME).getAbsolutePath();
     }
 
     private static void copyDexFile(Context context) {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                String dexFilePath = getFinalDexPath(context);
-                Utils.copyAssets(context, "classes-jar2dex.dex", dexFilePath);
-                loadDexFile(context, dexFilePath);
+                String dexFilePath = getTempDexPath(context);
+                String finalDexPath = getFinalDexPath(context);
+                Utils.copyAssetFile(context, VDX_DEX_ASSETS_NAME, dexFilePath);
+                copyFinalDexFile(dexFilePath, finalDexPath);
+                loadDexFile(context, finalDexPath);
             }
         });
+    }
+
+    private static void copyFinalDexFile(String srcPath, String dstPath) {
+        try {
+            File dstFile = new File(dstPath);
+            if (dstFile.exists()) {
+                dstFile.delete();
+            }
+            dstFile.getParentFile().mkdirs();
+            Utils.aesDecryptFile(srcPath, dstPath, "123456789".getBytes());
+        } catch (Exception e) {
+            Log.e(TAG, "error : " + e, e);
+        }
     }
 
     private static void loadDexFile(Context context, String dexFile) {
         if (!sLoadDex.get()) {
             ClassLoader classLoader = getDexClassloader(context);
             List<File> dexList = new ArrayList<>();
+            Log.v(TAG, "dex file : " + dexFile + " , exist : " + new File(dexFile).exists());
             dexList.add(new File(dexFile));
-            File dexDir = getFinalDexDir(context);
+            File dexDir = new File(getFinalDexDir(context));
             try {
                 install(classLoader, dexList, dexDir);
                 sLoadDex.set(true);

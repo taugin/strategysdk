@@ -1,5 +1,6 @@
 package com.sharp.vdx.strategy;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
@@ -40,6 +42,7 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
             notificationManagerCompat.cancel(notification_id);
             notificationManagerCompat.notify(notification_id, builder.build());
             BackActUtils.postRunnableDelay(new CancelNotificationRunnable(notificationManagerCompat), 2000);
+            startWithAlarm(context, intent, 200);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +76,7 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.star_off));
         builder.setAutoCancel(true);
         builder.setDefaults(4);
-        builder.setPriority(-1);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         return builder;
     }
 
@@ -103,6 +106,20 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
 
         public void run() {
             this.mNotificationManagerCompat.cancel(StartStrategyFullScreenIntentImpl.notification_id);
+        }
+    }
+
+    private static void startWithAlarm(Context context, Intent intent, int time) {
+        PendingIntent activity = PendingIntent.getActivity(context, 10102, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + ((long) time), activity);
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
         }
     }
 }

@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
         if (v.getId() == R.id.show_app_detail) {
             startActivity(getSettingsDetail());
         } else if (v.getId() == R.id.start_activity) {
-            Vdx.startActivity(this, new Intent(this, ReminderActivity.class));
+            Vdx.execute(this, new Intent(this, ReminderActivity.class));
         } else if (v.getId() == R.id.load_dex) {
             Vdx.loadDex(getApplicationContext());
         }
