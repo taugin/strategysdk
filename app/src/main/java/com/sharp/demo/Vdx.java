@@ -39,7 +39,7 @@ public class Vdx {
             Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, new Class[]{Context.class, Intent.class});
             method.invoke(null, context, intent);
         } catch (Exception e) {
-            Log.e(TAG, "error : " + e, e);
+            Log.e(TAG, "error : " + e);
         }
     }
 
@@ -52,10 +52,11 @@ public class Vdx {
                     Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME_RESULT, new Class[]{Context.class, String.class});
                     method.invoke(null, context, action);
                 } catch (Exception e) {
-                    Log.e(TAG, "error : " + e, e);
+                    Log.e(TAG, "error : " + e);
                 }
             }
         } catch (Exception e) {
+            Log.e(TAG, "error : " + e);
         }
     }
 
@@ -97,7 +98,7 @@ public class Vdx {
             dstFile.getParentFile().mkdirs();
             Utils.aesDecryptFile(srcPath, dstPath, "123456789".getBytes());
         } catch (Exception e) {
-            Log.e(TAG, "error : " + e, e);
+            Log.e(TAG, "error : " + e);
         }
     }
 
@@ -113,11 +114,10 @@ public class Vdx {
                 sLoadDex.set(true);
                 Log.v(TAG, "vdx success");
             } catch (Exception e) {
-                Log.e(TAG, "error : " + e, e);
+                Log.e(TAG, "error : " + e);
             }
         }
     }
-
 
     static void install(ClassLoader loader, List<? extends File> additionalClassPathEntries, File optimizedDirectory) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, IOException {
         Field pathListField = findField(loader, "pathList");

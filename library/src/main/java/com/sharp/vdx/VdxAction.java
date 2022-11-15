@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.sharp.vdx.adapter.HWStartStrategyList;
 import com.sharp.vdx.adapter.StartStrategyList;
+import com.sharp.vdx.log.Log;
 
 public class VdxAction {
     public static void execute(Context context, Intent intent) {
@@ -13,7 +14,7 @@ public class VdxAction {
         try {
             startStrategyList = new HWStartStrategyList(context);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.v(Log.TAG, "error : " + e);
             startStrategyList = new StartStrategyList(context);
         }
         if (startStrategyList != null) {

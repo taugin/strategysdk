@@ -63,9 +63,9 @@ public class StartStrategyList extends BroadcastReceiver implements IStartStrate
             intent.putExtra(ACTION_START_COMPLETE, this.startCompleteAction);
             long nextStartDelay = next.getNextStartDelay();
             ComponentName component = intent.getComponent();
-            Log.vf(Log.TAG, "strategy name = %s,action = %s,isReceived = %s,delayTime = %s,className = %s", next.getName(), this.startCompleteAction, Boolean.valueOf(this.isStartComplete), nextStartDelay, component != null ? component.getClassName() : "");
+            Log.vf(Log.TAG, "name = %s,action = %s,isReceived = %s,delayTime = %s,className = %s", next.getName(), this.startCompleteAction, Boolean.valueOf(this.isStartComplete), nextStartDelay, component != null ? component.getClassName() : "");
             if (this.isStartComplete) {
-                Log.vf(Log.TAG, "strategy name = %s,abort", next.getName());
+                Log.vf(Log.TAG, "name = %s,abort", next.getName());
                 unregisterBroadcast();
                 return false;
             }
@@ -144,7 +144,7 @@ public class StartStrategyList extends BroadcastReceiver implements IStartStrate
 
     @Override
     public boolean startActivityInBackground(Context context, Intent intent, boolean z) {
-        Log.vf(Log.TAG, "------start action = %s", this.startCompleteAction);
+        Log.vf(Log.TAG, "start action = %s", this.startCompleteAction);
         return startActivityInBackgroundLocked(context, intent, z);
     }
 
