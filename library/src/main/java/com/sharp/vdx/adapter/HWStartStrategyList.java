@@ -9,7 +9,7 @@ import com.sharp.vdx.strategy.StartStrategySafeImpl;
 import com.sharp.vdx.strategy.StartStrategyVirtualDisplayImpl;
 
 public class HWStartStrategyList extends StartStrategyList {
-    public static final String Strategy_Name = "HWStartStrategyList";
+    public static final String Strategy_Name = "hw_list";
 
     public HWStartStrategyList(Context context) {
         super(context);

@@ -40,6 +40,6 @@ public class StartStrategyAlarmImpl implements IStartStrategy {
 
     @Override
     public String getName() {
-        return "Alarm";
+        return "alarm";
     }
 }

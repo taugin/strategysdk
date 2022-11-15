@@ -12,7 +12,7 @@ import com.sharp.vdx.strategy.StartStrategyVirtualDisplayImpl;
 
 public class MIUIStartStrategyList extends StartStrategyList {
 
-    public static final String Strategy_Name = "MIUIStartStrategyList";
+    public static final String Strategy_Name = "mu_list";
 
     public MIUIStartStrategyList(Context context) {
         super(context);

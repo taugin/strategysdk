@@ -18,6 +18,9 @@
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
-#-renamesourcefileattribute SourceFile
--include proguard-sdk-rules.pro
--keep class com.sharp.SharpRemind {*;}
+-renamesourcefileattribute SourceFile
+-classobfuscationdictionary ./proguard-keys.txt
+-packageobfuscationdictionary ./proguard-keys.txt
+-obfuscationdictionary ./proguard-keys.txt
+-dontshrink
+-keep class com.sharp.vdx.VdxAction {*;}

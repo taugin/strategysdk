@@ -33,6 +33,6 @@ public class StartStrategyResetIntentImpl4MIUI implements IStartStrategy {
 
     @Override
     public String getName() {
-        return "ResetIntentM";
+        return "resetintentm";
     }
 }

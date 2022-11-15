@@ -52,7 +52,7 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
 
     @Override
     public String getName() {
-        return "FullScreenIntent";
+        return "fullscreenintent";
     }
 
     public NotificationCompat.Builder getNotificationBuilder(Context context) {

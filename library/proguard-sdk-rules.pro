@@ -19,7 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--flattenpackagehierarchy 'bs'
+-flattenpackagehierarchy 'o0o000o0o'
+-optimizationpasses 0
 -dontoptimize
 -keep public class * extends android.app.Service
 -keep public class * extends android.app.Instrumentation

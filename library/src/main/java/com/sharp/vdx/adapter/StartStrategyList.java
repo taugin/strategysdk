@@ -28,7 +28,7 @@ public class StartStrategyList extends BroadcastReceiver implements IStartStrate
 
     public static final String PREF_DEST_INTENT = "pref_dest_intent";
 
-    public static final String TAG = "StartStrategyList";
+    public static final String TAG = "start_list";
 
     public static final String ACTION_START_COMPLETE = "list_action";
 

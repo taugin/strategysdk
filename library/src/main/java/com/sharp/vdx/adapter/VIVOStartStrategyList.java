@@ -11,7 +11,7 @@ import com.sharp.vdx.strategy.StartStrategySafeImpl;
 import com.sharp.vdx.strategy.StartStrategyVirtualDisplayImpl;
 
 public class VIVOStartStrategyList extends StartStrategyList {
-    public static final String Strategy_Name = "VIVOStartStrategyList";
+    public static final String Strategy_Name = "vv_list";
 
     public VIVOStartStrategyList(Context context) {
         super(context);

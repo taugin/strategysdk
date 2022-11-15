@@ -32,6 +32,6 @@ public class StartStrategyResetIntentImpl4VIVO implements IStartStrategy {
 
     @Override
     public String getName() {
-        return "ResetIntentV";
+        return "resetintentv";
     }
 }

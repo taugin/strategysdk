@@ -38,7 +38,7 @@ public class StartStrategyVirtualDisplayImpl implements IStartStrategy {
 
     @Override
     public String getName() {
-        return "virtual";
+        return "vdp";
     }
 
     public class StartStrategyVirtualDisplayRunnable implements Runnable {
