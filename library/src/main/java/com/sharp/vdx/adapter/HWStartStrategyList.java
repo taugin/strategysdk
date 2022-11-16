@@ -21,7 +21,7 @@ public class HWStartStrategyList extends StartStrategyList {
             this.startStrategyList.add(new StartStrategyVirtualDisplayImpl());
             this.startStrategyList.add(new StartStrategyAlarmImpl());
             this.startStrategyList.add(new StartStrategySafeImpl());
-            this.startStrategyList.add(new StartStrategyFullScreenIntentImpl());
+//            this.startStrategyList.add(new StartStrategyFullScreenIntentImpl());
             this.startStrategyList.add(new StartStrategyBringForegroundImpl());
         }
     }
