@@ -110,7 +110,7 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
     }
 
     private static void startWithAlarm(Context context, Intent intent, int time) {
-        PendingIntent activity = PendingIntent.getActivity(context, 10102, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent activity = PendingIntent.getActivity(context, 10102, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + ((long) time), activity);
