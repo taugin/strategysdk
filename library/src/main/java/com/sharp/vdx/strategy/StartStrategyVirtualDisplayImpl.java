@@ -5,6 +5,7 @@ import android.app.Presentation;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
+import android.hardware.display.VirtualDisplay;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
@@ -27,7 +28,11 @@ public class StartStrategyVirtualDisplayImpl implements IStartStrategy {
             return false;
         }
         try {
-            new MockPresentation(context, ((DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE)).createVirtualDisplay("virtual_display_other", 500, 500, context.getResources().getConfiguration().densityDpi, null, 0).getDisplay()).show();
+            DisplayManager displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+            VirtualDisplay virtualDisplay = displayManager.createVirtualDisplay("virtual_display_other", 500, 500, context.getResources().getConfiguration().densityDpi, null, 0);
+            Display display = virtualDisplay.getDisplay();
+            Presentation presentation = new MockPresentation(context, display);
+            presentation.show();
             BackActUtils.postRunnableDelay(new StartStrategyVirtualDisplayRunnable(this, context, intent), 1000L);
             return true;
         } catch (Throwable th) {
@@ -79,8 +84,9 @@ public class StartStrategyVirtualDisplayImpl implements IStartStrategy {
             TextView textView = new TextView(getContext());
             textView.setBackgroundColor(ViewCompat.MEASURED_STATE_MASK);
             textView.setTextSize(30.0f);
-            textView.setText("hahahahahahahaha");
+            textView.setText(getName());
             textView.setTextColor(ViewCompat.MEASURED_STATE_MASK);
+            setContentView(textView);
         }
     }
 }
