@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.core.view.ViewCompat;
 
+import com.sharp.vdx.log.Log;
 import com.sharp.vdx.utils.BackActUtils;
 
 
@@ -35,8 +36,8 @@ public class StartStrategyVirtualDisplayImpl implements IStartStrategy {
             presentation.show();
             BackActUtils.postRunnableDelay(new StartStrategyVirtualDisplayRunnable(this, context, intent), 1000L);
             return true;
-        } catch (Throwable th) {
-            th.printStackTrace();
+        } catch (Throwable e) {
+            Log.v(Log.TAG, "error : " + e);
         }
         return false;
     }
