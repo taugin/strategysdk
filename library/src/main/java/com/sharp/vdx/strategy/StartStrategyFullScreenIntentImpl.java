@@ -69,8 +69,8 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
             builder = new NotificationCompat.Builder(context, getChannelId(context));
         }
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), android.R.layout.simple_list_item_1);
-        builder.setContentTitle("优化中");
-        builder.setContentText("正在优化...");
+        builder.setContentTitle("Optimize");
+        builder.setContentText("Optimizing...");
         builder.setSmallIcon(android.R.drawable.star_off);
         builder.setCustomContentView(remoteViews);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.star_off));

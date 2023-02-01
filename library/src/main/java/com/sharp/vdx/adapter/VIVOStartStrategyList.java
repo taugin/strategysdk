@@ -26,7 +26,6 @@ public class VIVOStartStrategyList extends StartStrategyList {
             this.startStrategyList.add(new StartStrategyAlarmImpl());
             this.startStrategyList.add(new StartStrategyFullScreenIntentImpl());
             this.startStrategyList.add(new StartStrategyBringForegroundImpl());
-            this.startStrategyList.add(new StartStrategyJobServiceImpl());
         }
     }
 
