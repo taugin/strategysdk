@@ -1,4 +1,4 @@
-package com.sharp.vdx.utils;
+package com.github.strategy.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -7,15 +7,17 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.github.strategy.log.Log;
+
 import java.util.List;
 
 public class BackActUtils {
-    private static Handler sMainHandler = new Handler(Looper.getMainLooper());
+    private static final Handler sMainHandler = new Handler(Looper.getMainLooper());
+    public static Runnable sOverRunnable;
 
     public static void postRunnableDelay(Runnable runnable, long delay) {
         sMainHandler.postDelayed(runnable, delay);
@@ -72,7 +74,7 @@ public class BackActUtils {
                 context.startActivity(intent);
                 return true;
             } catch (Throwable th) {
-                th.printStackTrace();
+                Log.iv(Log.TAG, "error : " + th);
                 return false;
             }
         } else {
@@ -81,23 +83,17 @@ public class BackActUtils {
                 int i = f18560b + 1;
                 f18560b = i;
                 try {
-                    int flags;
-                    if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                        flags = PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE;
-                    } else {
-                        flags = PendingIntent.FLAG_ONE_SHOT;
-                    }
-                    PendingIntent.getActivity(context, i, intent, flags/*1073741824*/).send();
+                    PendingIntent.getActivity(context, i, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE/*1073741824*/).send();
                     return true;
                 } catch (Throwable th2) {
-                    th2.printStackTrace();
+                    Log.iv(Log.TAG, "error : " + th2);
                 }
             }
             try {
                 context.startActivity(intent);
                 return true;
             } catch (Throwable th3) {
-                th3.printStackTrace();
+                Log.iv(Log.TAG, "error : " + th3);
                 return false;
             }
         }

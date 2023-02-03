@@ -1,4 +1,4 @@
-package com.sharp.vdx.strategy;
+package com.github.strategy.strategy;
 
 import android.content.Context;
 import android.content.Intent;

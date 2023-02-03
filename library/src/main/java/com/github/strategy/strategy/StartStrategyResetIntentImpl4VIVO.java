@@ -1,4 +1,4 @@
-package com.sharp.vdx.strategy;
+package com.github.strategy.strategy;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +32,6 @@ public class StartStrategyResetIntentImpl4VIVO implements IStartStrategy {
 
     @Override
     public String getName() {
-        return "resetintentv";
+        return "ResetIntentV";
     }
 }

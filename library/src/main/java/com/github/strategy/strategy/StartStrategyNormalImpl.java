@@ -1,9 +1,10 @@
-package com.sharp.vdx.strategy;
+package com.github.strategy.strategy;
 
 import android.content.Context;
 import android.content.Intent;
 
-import com.sharp.vdx.utils.BackActUtils;
+import com.github.strategy.utils.BackActUtils;
+
 
 public class StartStrategyNormalImpl implements IStartStrategy {
     @Override

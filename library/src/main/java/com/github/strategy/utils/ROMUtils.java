@@ -1,4 +1,4 @@
-package com.sharp.vdx.utils;
+package com.github.strategy.utils;
 
 import android.os.Build;
 import android.os.Environment;

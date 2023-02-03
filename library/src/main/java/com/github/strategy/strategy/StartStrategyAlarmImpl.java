@@ -1,4 +1,4 @@
-package com.sharp.vdx.strategy;
+package com.github.strategy.strategy;
 
 import android.Manifest;
 import android.app.AlarmManager;
@@ -16,16 +16,7 @@ public class StartStrategyAlarmImpl implements IStartStrategy {
 
     @Override
     public boolean startActivityInBackground(Context context, Intent intent, boolean z) {
-        if (context == null) {
-            return false;
-        }
-        int flags;
-        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
-        } else {
-            flags = PendingIntent.FLAG_UPDATE_CURRENT;
-        }
-        PendingIntent activity = PendingIntent.getActivity(context, 10102, intent, flags);
+        PendingIntent activity = PendingIntent.getActivity(context, 10102, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) {
             return false;
@@ -40,6 +31,6 @@ public class StartStrategyAlarmImpl implements IStartStrategy {
 
     @Override
     public String getName() {
-        return "alarm";
+        return "Alarm";
     }
 }
