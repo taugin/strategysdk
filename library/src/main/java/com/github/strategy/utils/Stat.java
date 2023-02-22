@@ -1,13 +1,15 @@
 package com.github.strategy.utils;
 
 import android.content.Context;
-
-import com.github.strategy.log.Log;
-
-import java.util.Map;
+import android.os.Message;
+import android.util.Pair;
 
 public class Stat {
-    public static void reportEvent(Context context, String eventId, String value, Map<String, Object> map) {
-        Log.iv(Log.TAG, "eventId : " + eventId + " , value : " + value + " , map : " + map);
+    public static void reportEvent(Context context, String eventId, String value) {
+        if (BackActUtils.sCallback != null) {
+            Message message = Message.obtain();
+            message.obj = new Pair<String, String>(eventId, value);
+            BackActUtils.sCallback.handleMessage(message);
+        }
     }
 }

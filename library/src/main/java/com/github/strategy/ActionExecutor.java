@@ -3,29 +3,33 @@ package com.github.strategy;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.widget.RemoteViews;
 
 import com.github.strategy.adapter.BaseStrategyList;
 import com.github.strategy.adapter.HWBaseStrategyList;
 import com.github.strategy.strategy.IStartStrategy;
 import com.github.strategy.utils.BackActUtils;
-import com.github.strategy.utils.Stat;
 
 
-public class StrategyUtils {
-    public static void startActivityBackground(Context context, Intent intent) {
-        startActivityBackground(context, intent, null, null);
+public class ActionExecutor {
+    public static void executeAction(Context context, Intent intent) {
+        executeAction(context, intent, null, null, null);
     }
 
-    public static void startActivityBackground(Context context, Intent intent, Runnable runnable) {
-        startActivityBackground(context, intent, null, runnable);
+    public static void executeAction(Context context, Intent intent, Runnable runnable) {
+        executeAction(context, intent, null, runnable, null);
     }
 
-    public static void startActivityBackground(Context context, Intent intent, RemoteExtra remoteExtra) {
-        startActivityBackground(context, intent, remoteExtra, null);
+    public static void executeAction(Context context, Intent intent, Handler.Callback callback) {
+        executeAction(context, intent, null, null, callback);
     }
 
-    public static void startActivityBackground(Context context, Intent intent, RemoteExtra remoteExtra, Runnable runnable) {
+    public static void executeAction(Context context, Intent intent, RemoteExtra remoteExtra) {
+        executeAction(context, intent, remoteExtra, null, null);
+    }
+
+    public static void executeAction(Context context, Intent intent, RemoteExtra remoteExtra, Runnable runnable, Handler.Callback callback) {
         if (remoteExtra != null) {
             intent.putExtra(IStartStrategy.EXTRA_REMOVE_VIEWS, remoteExtra.remoteViews);
             intent.putExtra(IStartStrategy.EXTRA_FULLSCREEN_PENDING_INTENT, remoteExtra.fullscreenIntent);
@@ -33,6 +37,7 @@ public class StrategyUtils {
             intent.putExtra(IStartStrategy.EXTRA_CANCEL_ALL, remoteExtra.cancelAll);
         }
         BackActUtils.sOverRunnable = runnable;
+        BackActUtils.sCallback = callback;
         Intent wrapIntent = new Intent(context, StrategyBridgeActivity.class);
         wrapIntent.putExtra(BaseStrategyList.PREF_DEST_INTENT, intent);
         BaseStrategyList baseStrategyList;
@@ -42,7 +47,6 @@ public class StrategyUtils {
             baseStrategyList = new BaseStrategyList(context);
         }
         if (baseStrategyList != null) {
-            Stat.reportEvent(context, "strategy_start_bridge_activity", null, null);
             baseStrategyList.startActivityInBackground(context, wrapIntent, true);
         }
     }

@@ -18,6 +18,7 @@ import java.util.List;
 public class BackActUtils {
     private static final Handler sMainHandler = new Handler(Looper.getMainLooper());
     public static Runnable sOverRunnable;
+    public static Handler.Callback sCallback;
 
     public static void postRunnableDelay(Runnable runnable, long delay) {
         sMainHandler.postDelayed(runnable, delay);

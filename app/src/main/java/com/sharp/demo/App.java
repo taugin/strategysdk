@@ -8,12 +8,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import androidx.core.content.ContextCompat;
 
-import com.github.strategy.StrategyUtils;
+import com.github.strategy.ActionExecutor;
 import com.sharp.daemon.demo.R;
 
 public class App extends Application {
@@ -42,11 +43,19 @@ public class App extends Application {
                             Intent intent1 = new Intent(context, ReminderActivity.class);
                             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.act_reminder);
                             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_IMMUTABLE);
-                            StrategyUtils.RemoteExtra remoteExtra = new StrategyUtils.RemoteExtra(remoteViews, 12345, pendingIntent);
-                            StrategyUtils.startActivityBackground(context, intent1, remoteExtra, new Runnable() {
+                            ActionExecutor.RemoteExtra remoteExtra = new ActionExecutor.RemoteExtra(remoteViews, 12345, pendingIntent);
+                            ActionExecutor.executeAction(context, intent1, remoteExtra, new Runnable() {
                                 @Override
                                 public void run() {
                                     Log.v(Log.TAG, "strategy over");
+                                }
+                            }, new Handler.Callback() {
+                                @Override
+                                public boolean handleMessage(Message msg) {
+                                    if (msg != null) {
+                                        Log.v(Log.TAG, "msg.obj : " + msg.obj);
+                                    }
+                                    return false;
                                 }
                             });
                         }

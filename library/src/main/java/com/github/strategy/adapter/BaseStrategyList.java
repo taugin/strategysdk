@@ -51,7 +51,7 @@ public class BaseStrategyList extends BroadcastReceiver implements IStartStrateg
         if (intent.getAction().equals(this.startCompleteAction)) {
             this.isStartComplete = true;
             Log.vf(Log.TAG, "on Receive(%s) %s ", this.strategyName, this.startCompleteAction);
-            Stat.reportEvent(context, "strategy_start_bridge_name", strategyName, null);
+            Stat.reportEvent(context, "strategy_start_bridge_name", strategyName);
         }
     }
 

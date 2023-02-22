@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 
-import com.github.strategy.StrategyUtils;
+import androidx.annotation.NonNull;
+
+import com.github.strategy.ActionExecutor;
 import com.sharp.daemon.demo.R;
 
 
@@ -25,7 +29,15 @@ public class MainActivity extends Activity {
         } else if (v.getId() == R.id.start_activity) {
 //            Vdx.execute(this, new Intent(this, ReminderActivity.class));
             Intent intent = new Intent(this, ReminderActivity.class);
-            StrategyUtils.startActivityBackground(this, intent);
+            ActionExecutor.executeAction(this, intent, new Handler.Callback() {
+                @Override
+                public boolean handleMessage(@NonNull Message msg) {
+                    if (msg != null) {
+                        Log.v(Log.TAG, "msg.obj : " + msg.obj);
+                    }
+                    return false;
+                }
+            });
         } else if (v.getId() == R.id.load_dex) {
             Vdx.loadDex(getApplicationContext());
         }

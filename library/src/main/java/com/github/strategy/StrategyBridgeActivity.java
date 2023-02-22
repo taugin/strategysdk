@@ -9,14 +9,12 @@ import android.text.TextUtils;
 
 import com.github.strategy.adapter.BaseStrategyList;
 import com.github.strategy.log.Log;
-import com.github.strategy.utils.Stat;
 
 
 public class StrategyBridgeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Stat.reportEvent(this, "strategy_bridge_activity_started", "onCreate", null);
         try {
             String action = getIntent().getStringExtra(BaseStrategyList.ACTION_START_COMPLETE);
             Log.vf(Log.TAG, "start received action = " + action, new Object[0]);
@@ -32,7 +30,6 @@ public class StrategyBridgeActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
-        Stat.reportEvent(this, "strategy_bridge_activity_started", "onNewIntent", null);
         try {
             String action = getIntent().getStringExtra(BaseStrategyList.ACTION_START_COMPLETE);
             if (!TextUtils.isEmpty(action)) {
@@ -65,7 +62,6 @@ public class StrategyBridgeActivity extends Activity {
             Intent intent = getIntent().getParcelableExtra(BaseStrategyList.PREF_DEST_INTENT);
             Log.iv(Log.TAG, "start from (" + from + ") received intent = " + intent);
             startActivity(intent);
-            Stat.reportEvent(this, "strategy_start_dest_activity", from, null);
         } catch (Exception e) {
         }
     }
