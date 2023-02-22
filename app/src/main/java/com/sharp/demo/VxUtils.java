@@ -47,9 +47,9 @@ public class VxUtils {
         copyDxFile(context, runnable);
     }
 
-    public static void executeIntent(Context context, Intent intent, Handler.Callback callback) {
+    public static void executeIntent(Context context, Intent intent, Runnable runnable, Handler.Callback callback) {
         try {
-            Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, new Class[]{Context.class, Intent.class, Handler.Callback.class});
+            Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, new Class[]{Context.class, Intent.class, Runnable.class, Handler.Callback.class});
             method.invoke(null, context, intent, callback);
         } catch (Exception e) {
             Log.e(TAG, "error : " + e);

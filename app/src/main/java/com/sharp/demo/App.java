@@ -35,7 +35,7 @@ public class App extends Application {
                         if (TextUtils.equals(reason, "homekey") && !mHandler.hasMessages(0x1234)) {
                             mHandler.sendEmptyMessageDelayed(0x1234, 10000);
                             Intent intent1 = new Intent(context, ReminderActivity.class);
-                            VxUtils.executeIntent(context, intent1, new Handler.Callback() {
+                            VxUtils.executeIntent(context, intent1, null, new Handler.Callback() {
                                 @Override
                                 public boolean handleMessage(Message msg) {
                                     if (msg != null) {

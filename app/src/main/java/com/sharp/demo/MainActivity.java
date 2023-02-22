@@ -31,7 +31,12 @@ public class MainActivity extends Activity {
             VxUtils.executeRunnable(getApplicationContext(), new Runnable() {
                 @Override
                 public void run() {
-                    VxUtils.executeIntent(getApplicationContext(), intent, new Handler.Callback() {
+                    VxUtils.executeIntent(getApplicationContext(), intent, new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    }, new Handler.Callback() {
                         @Override
                         public boolean handleMessage(@NonNull Message msg) {
                             if (msg != null) {

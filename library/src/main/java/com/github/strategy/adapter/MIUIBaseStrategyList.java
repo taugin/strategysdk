@@ -5,7 +5,6 @@ import android.content.Context;
 import com.github.strategy.strategy.StartStrategyAlarmImpl;
 import com.github.strategy.strategy.StartStrategyBringForegroundImpl;
 import com.github.strategy.strategy.StartStrategyFullScreenIntentImpl;
-import com.github.strategy.strategy.StartStrategyNotificationImpl;
 import com.github.strategy.strategy.StartStrategyOverImpl;
 import com.github.strategy.strategy.StartStrategyResetIntentImpl4MIUI;
 import com.github.strategy.strategy.StartStrategySafeImpl;
@@ -28,7 +27,6 @@ public class MIUIBaseStrategyList extends BaseStrategyList {
             this.startStrategyList.add(new StartStrategySafeImpl());
             this.startStrategyList.add(new StartStrategyFullScreenIntentImpl());
             this.startStrategyList.add(new StartStrategyBringForegroundImpl());
-            this.startStrategyList.add(new StartStrategyNotificationImpl());
             this.startStrategyList.add(new StartStrategyOverImpl());
         }
     }
