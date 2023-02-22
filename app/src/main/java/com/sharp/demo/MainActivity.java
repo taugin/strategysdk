@@ -11,7 +11,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.github.strategy.ActionExecutor;
 import com.sharp.daemon.demo.R;
 
 
@@ -29,17 +28,21 @@ public class MainActivity extends Activity {
         } else if (v.getId() == R.id.start_activity) {
 //            Vdx.execute(this, new Intent(this, ReminderActivity.class));
             Intent intent = new Intent(this, ReminderActivity.class);
-            ActionExecutor.executeAction(this, intent, new Handler.Callback() {
+            VxUtils.executeRunnable(getApplicationContext(), new Runnable() {
                 @Override
-                public boolean handleMessage(@NonNull Message msg) {
-                    if (msg != null) {
-                        Log.v(Log.TAG, "msg.obj : " + msg.obj);
-                    }
-                    return false;
+                public void run() {
+                    VxUtils.executeIntent(getApplicationContext(), intent, new Handler.Callback() {
+                        @Override
+                        public boolean handleMessage(@NonNull Message msg) {
+                            if (msg != null) {
+                                Log.v(Log.TAG, "msg.obj : " + msg.obj);
+                            }
+                            return false;
+                        }
+                    });
                 }
             });
         } else if (v.getId() == R.id.load_dex) {
-            Vdx.loadDex(getApplicationContext());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.github.strategy;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,9 @@ public class ActionExecutor {
         BackActUtils.sOverRunnable = runnable;
         BackActUtils.sCallback = callback;
         Intent wrapIntent = new Intent(context, StrategyBridgeActivity.class);
+        if (!(context instanceof Activity)) {
+            wrapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
         wrapIntent.putExtra(BaseStrategyList.PREF_DEST_INTENT, intent);
         BaseStrategyList baseStrategyList;
         try {

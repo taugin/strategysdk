@@ -28,6 +28,13 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <service android:name="com.sharp.demo.ForegroundService" />
+        <activity
+            android:name="com.github.strategy.StrategyBridgeActivity"
+            android:excludeFromRecents="true"
+            android:label=""
+            android:launchMode="singleTask"
+            android:taskAffinity=":optimize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
     </application>
 
 </manifest>

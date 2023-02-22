@@ -23,4 +23,4 @@
 -packageobfuscationdictionary ./proguard-keys.txt
 -obfuscationdictionary ./proguard-keys.txt
 -dontshrink
--keep class com.sharp.vdx.VdxAction {*;}
+-keep class com.github.strategy.ActionExecutor {*;}

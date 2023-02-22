@@ -21,10 +21,22 @@ public class Log {
     private static final int WARN = android.util.Log.WARN;
 
     public static final String TAG = "demo";
-    public static final boolean DEBUGABLE = BuildConfig.DEBUG;
+    public static final boolean DEBUGGABLE = BuildConfig.DEBUG;
+    private static final boolean INTERNAL_LOG_ENABLE;
+
+    static {
+        boolean internal = false;
+        try {
+            File tagFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File debugFile = new File(tagFolder, ".debug");
+            internal = debugFile.exists();
+        } catch (Exception e) {
+        }
+        INTERNAL_LOG_ENABLE = DEBUGGABLE || internal;
+    }
 
     private static boolean isLoggable(String tag, int level) {
-        if (DEBUGABLE) {
+        if (DEBUGGABLE) {
             return true;
         }
         return android.util.Log.isLoggable(tag, level);
@@ -40,6 +52,14 @@ public class Log {
 
     public static void v(String tag, String message) {
         if (isLoggable(tag, VERBOSE)) {
+            String extraString = getMethodNameAndLineNumber();
+            tag = privateTag() ? tag : getTag();
+            android.util.Log.v(tag, extraString + message);
+        }
+    }
+
+    public static void iv(String tag, String message) {
+        if (isLoggable(tag, VERBOSE) && INTERNAL_LOG_ENABLE) {
             String extraString = getMethodNameAndLineNumber();
             tag = privateTag() ? tag : getTag();
             android.util.Log.v(tag, extraString + message);

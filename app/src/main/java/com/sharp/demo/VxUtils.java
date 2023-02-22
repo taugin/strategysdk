@@ -3,6 +3,8 @@ package com.sharp.demo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -28,80 +30,65 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class Vdx {
+public class VxUtils {
     private static char HEX_DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F'};
-    private static final String TAG = "vdx";
-    private static final String CLASS_NAME = "com.sharp.vdx.VdxAction";
-    private static final String METHOD_NAME = "execute";
-    private static final String METHOD_NAME_RESULT = "sendResult";
-    private static final String VDX_DEX_PATH = "vdx";
-    private static final String VDX_DEX_NAME = "wave.mp4";
-    private static final String VDX_FINAL_DEX_NAME = "vx_wave.mp4";
-    private static final String VDX_DEX_ASSETS_NAME = "wallpaper_bg.mp4";
-    private static final String ACTION_START_COMPLETE = "list_action";
-    private static AtomicBoolean sLoadDex = new AtomicBoolean(false);
+    private static final String TAG = "vx";
+    private static final String CLASS_NAME = "com.github.strategy.ActionExecutor";
+    private static final String METHOD_NAME = "executeAction";
+    private static final String VDX_DX_PATH = "vx";
+    private static final String VDX_DX_NAME = "wave_play.mp4";
+    private static final String VDX_FINAL_DX_NAME = "vx_wave_play.mp4";
+    private static final String VDX_DX_ASSETS_NAME = "wave_paper_live.mp4";
+    private static AtomicBoolean sLoadDx = new AtomicBoolean(false);
+    private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
-    public static void loadDex(Context context) {
-        copyDexFile(context);
+    public static void executeRunnable(Context context, Runnable runnable) {
+        copyDxFile(context, runnable);
     }
 
-    public static void execute(Context context, Intent intent) {
+    public static void executeIntent(Context context, Intent intent, Handler.Callback callback) {
         try {
-            Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, new Class[]{Context.class, Intent.class});
-            method.invoke(null, context, intent);
+            Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, new Class[]{Context.class, Intent.class, Handler.Callback.class});
+            method.invoke(null, context, intent, callback);
         } catch (Exception e) {
             Log.e(TAG, "error : " + e);
         }
     }
 
-    public static void sendResult(Context context, Intent intent) {
-        try {
-            String action = intent.getStringExtra(ACTION_START_COMPLETE);
-            Log.v(TAG, "start received action = " + action);
-            if (!TextUtils.isEmpty(action)) {
-                try {
-                    Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME_RESULT, new Class[]{Context.class, String.class});
-                    method.invoke(null, context, action);
-                } catch (Exception e) {
-                    Log.e(TAG, "error : " + e);
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "error : " + e);
-        }
-    }
-
-    private static String getDexFileDir(Context context) {
+    private static String getDxFileDir(Context context) {
         return context.getFilesDir().getAbsolutePath();
     }
 
     private static String getTempDexPath(Context context) {
-        return new File(getDexFileDir(context), VDX_DEX_NAME).getAbsolutePath();
+        return new File(getDxFileDir(context), VDX_DX_NAME).getAbsolutePath();
     }
 
-    private static String getFinalDexDir(Context context) {
-        return new File(context.getFilesDir(), VDX_DEX_PATH).getAbsolutePath();
+    private static String getFinalDxDir(Context context) {
+        return new File(context.getFilesDir(), VDX_DX_PATH).getAbsolutePath();
     }
 
     private static String getFinalDexPath(Context context) {
-        return new File(getFinalDexDir(context), VDX_FINAL_DEX_NAME).getAbsolutePath();
+        return new File(getFinalDxDir(context), VDX_FINAL_DX_NAME).getAbsolutePath();
     }
 
-    private static void copyDexFile(Context context) {
+    private static void copyDxFile(Context context, final Runnable runnable) {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                String dexFilePath = getTempDexPath(context);
-                String finalDexPath = getFinalDexPath(context);
-                copyAssetFile(context, VDX_DEX_ASSETS_NAME, dexFilePath);
-                copyFinalDexFile(dexFilePath, finalDexPath);
-                loadDexFile(context, finalDexPath);
+                if (!sLoadDx.get()) {
+                    String dexFilePath = getTempDexPath(context);
+                    String finalDexPath = getFinalDexPath(context);
+                    copyAssetFile(context, VDX_DX_ASSETS_NAME, dexFilePath);
+                    copyFinalDxFile(dexFilePath, finalDexPath);
+                    loadDxFile(context, finalDexPath);
+                }
+                sHandler.post(runnable);
             }
         });
     }
 
-    private static void copyFinalDexFile(String srcPath, String dstPath) {
+    private static void copyFinalDxFile(String srcPath, String dstPath) {
         try {
             File dstFile = new File(dstPath);
             if (dstFile.exists()) {
@@ -114,17 +101,17 @@ public class Vdx {
         }
     }
 
-    private static void loadDexFile(Context context, String dexFile) {
-        if (!sLoadDex.get()) {
+    private static void loadDxFile(Context context, String dexFile) {
+        if (!sLoadDx.get()) {
             ClassLoader classLoader = getDexClassloader(context);
             List<File> dexList = new ArrayList<>();
-            Log.v(TAG, "dex file : " + dexFile + " , exist : " + new File(dexFile).exists());
+            Log.iv(TAG, "file : " + dexFile + " , exist : " + new File(dexFile).exists());
             dexList.add(new File(dexFile));
-            File dexDir = new File(getFinalDexDir(context));
+            File dexDir = new File(getFinalDxDir(context));
             try {
                 install(classLoader, dexList, dexDir);
-                sLoadDex.set(true);
-                Log.v(TAG, "vdx success");
+                sLoadDx.set(true);
+                Log.iv(TAG, "vdx success");
             } catch (Exception e) {
                 Log.e(TAG, "error : " + e);
             }
@@ -246,22 +233,8 @@ public class Vdx {
                 || loader instanceof dalvik.system.PathClassLoader) {
             return loader;
         }
-        android.util.Log.e(TAG, "Context class loader is null or not dex-capable. "
-                + "Must be running in test mode. Skip patching.");
         return null;
     }
-
-    private static void printClassMethod(Class clazz) {
-        try {
-            Method[] methods = clazz.getDeclaredMethods();
-            android.util.Log.v(TAG, "class name : " + clazz.getName() + "\n===================");
-            for (Method m : methods) {
-                android.util.Log.v(TAG, "name : " + m.getName() + " , args : " + Arrays.asList(m.getGenericParameterTypes()));
-            }
-        } catch (Exception e) {
-        }
-    }
-
 
     public static String md5sum(String filename) {
         InputStream fis;
@@ -277,7 +250,7 @@ public class Vdx {
             fis.close();
             return toHexString(md5.digest());
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            Log.iv(TAG, "error : " + e);
         }
         return null;
     }
@@ -296,7 +269,7 @@ public class Vdx {
             fis.close();
             return toHexString(md5.digest());
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return null;
     }
@@ -331,7 +304,7 @@ public class Vdx {
             is.close();
             fos.close();
         } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 
