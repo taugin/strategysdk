@@ -7,7 +7,7 @@
 
     <application>
         <activity
-            android:name="com.github.strategy.StrategyBridgeActivity"
+            android:name="com.github.strategy.StrategyActivity"
             android:excludeFromRecents="true"
             android:label=""
             android:launchMode="singleTask"

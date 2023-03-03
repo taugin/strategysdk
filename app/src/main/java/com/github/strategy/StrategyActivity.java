@@ -5,12 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
-public class StrategyBridgeActivity extends Activity {
+public class StrategyActivity extends Activity {
+    public static IExecutor sExecutor;
+
+    public static void setExecutor(IExecutor iExecutor) {
+        sExecutor = iExecutor;
+    }
+
+    public static IExecutor getExecutor() {
+        return sExecutor;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            ExecutorLoader.getExecutor().executeOnCreate(this);
+            sExecutor.executeOnCreate(this);
         } catch (Exception | Error e) {
         }
     }
@@ -18,7 +28,7 @@ public class StrategyBridgeActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         try {
-            ExecutorLoader.getExecutor().executeOnNewIntent(this, intent);
+            sExecutor.executeOnNewIntent(this, intent);
         } catch (Exception | Error e) {
         }
     }

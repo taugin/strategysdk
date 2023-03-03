@@ -32,7 +32,7 @@ public class ActionExecutor implements IExecutor {
     public void executeAction(Context context, Intent intent, Runnable runnable, Handler.Callback callback) {
         BackActUtils.sOverRunnable = runnable;
         BackActUtils.sCallback = callback;
-        Intent wrapIntent = new Intent(context, StrategyBridgeActivity.class);
+        Intent wrapIntent = new Intent(context, StrategyActivity.class);
         if (!(context instanceof Activity)) {
             wrapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }

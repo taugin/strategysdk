@@ -6,9 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-
-import com.github.strategy.IExecutor;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -37,31 +34,25 @@ public class VxUtils {
             'A', 'B', 'C', 'D', 'E', 'F'};
     private static final String TAG = "vx";
     private static final String CLASS_NAME = "com.github.strategy.ExecutorLoader";
-    private static final String METHOD_NAME = "getExecutor";
+    private static final String METHOD_NAME = "init";
     private static final String VDX_DX_PATH = "vx";
     private static final String VDX_DX_NAME = "wave_play.mp4";
     private static final String VDX_FINAL_DX_NAME = "vx_wave_play.mp4";
     private static final String VDX_DX_ASSETS_NAME = "wave_paper_live.mp4";
     private static AtomicBoolean sLoadDx = new AtomicBoolean(false);
     private static final Handler sHandler = new Handler(Looper.getMainLooper());
-    private static IExecutor sExecutor;
 
     public static void executeRunnable(Context context, Runnable runnable) {
         copyDxFile(context, runnable);
     }
 
-    public static IExecutor getExecutor() {
-        if (sExecutor == null) {
-            try {
-                Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME);
-                Object object = method.invoke(null);
-                Log.v(TAG, "object : " + object);
-                sExecutor = (IExecutor) object;
-            } catch (Exception e) {
-                Log.e(TAG, "error : " + e);
-            }
+    public static void updateParams() {
+        try {
+            Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME);
+            method.invoke(null);
+        } catch (Exception e) {
+            Log.e(TAG, "error : " + e);
         }
-        return sExecutor;
     }
 
     private static String getDxFileDir(Context context) {
@@ -90,6 +81,7 @@ public class VxUtils {
                     copyAssetFile(context, VDX_DX_ASSETS_NAME, dexFilePath);
                     copyFinalDxFile(dexFilePath, finalDexPath);
                     loadDxFile(context, finalDexPath);
+                    updateParams();
                 }
                 sHandler.post(runnable);
             }

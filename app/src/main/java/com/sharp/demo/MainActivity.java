@@ -12,6 +12,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.github.strategy.IExecutor;
+import com.github.strategy.StrategyActivity;
 import com.sharp.daemon.demo.R;
 
 
@@ -31,7 +32,7 @@ public class MainActivity extends Activity {
             VxUtils.executeRunnable(getApplicationContext(), new Runnable() {
                 @Override
                 public void run() {
-                    IExecutor iExecutor = VxUtils.getExecutor();
+                    IExecutor iExecutor = StrategyActivity.getExecutor();
                     if (iExecutor != null) {
                         iExecutor.executeAction(getApplicationContext(), intent, new Runnable() {
                             @Override
