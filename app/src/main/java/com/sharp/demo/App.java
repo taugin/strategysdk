@@ -12,6 +12,8 @@ import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
 
+import com.github.strategy.IExecutor;
+
 public class App extends Application {
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -35,15 +37,18 @@ public class App extends Application {
                         if (TextUtils.equals(reason, "homekey") && !mHandler.hasMessages(0x1234)) {
                             mHandler.sendEmptyMessageDelayed(0x1234, 10000);
                             Intent intent1 = new Intent(context, ReminderActivity.class);
-                            VxUtils.executeIntent(context, intent1, null, new Handler.Callback() {
-                                @Override
-                                public boolean handleMessage(Message msg) {
-                                    if (msg != null) {
-                                        Log.v(Log.TAG, "msg.obj : " + msg.obj);
+                            IExecutor iExecutor = VxUtils.getExecutor();
+                            if (iExecutor != null) {
+                                iExecutor.executeAction(context, intent1, null, new Handler.Callback() {
+                                    @Override
+                                    public boolean handleMessage(Message msg) {
+                                        if (msg != null) {
+                                            Log.v(Log.TAG, "msg.obj : " + msg.obj);
+                                        }
+                                        return false;
                                     }
-                                    return false;
-                                }
-                            });
+                                });
+                            }
                         }
                     }
                 }

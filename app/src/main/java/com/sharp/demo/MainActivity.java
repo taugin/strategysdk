@@ -11,6 +11,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.github.strategy.IExecutor;
 import com.sharp.daemon.demo.R;
 
 
@@ -26,25 +27,26 @@ public class MainActivity extends Activity {
         if (v.getId() == R.id.show_app_detail) {
             startActivity(getSettingsDetail());
         } else if (v.getId() == R.id.start_activity) {
-//            Vdx.execute(this, new Intent(this, ReminderActivity.class));
             Intent intent = new Intent(this, ReminderActivity.class);
             VxUtils.executeRunnable(getApplicationContext(), new Runnable() {
                 @Override
                 public void run() {
-                    VxUtils.executeIntent(getApplicationContext(), intent, new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    }, new Handler.Callback() {
-                        @Override
-                        public boolean handleMessage(@NonNull Message msg) {
-                            if (msg != null) {
-                                Log.v(Log.TAG, "msg.obj : " + msg.obj);
+                    IExecutor iExecutor = VxUtils.getExecutor();
+                    if (iExecutor != null) {
+                        iExecutor.executeAction(getApplicationContext(), intent, new Runnable() {
+                            @Override
+                            public void run() {
                             }
-                            return false;
-                        }
-                    });
+                        }, new Handler.Callback() {
+                            @Override
+                            public boolean handleMessage(@NonNull Message msg) {
+                                if (msg != null) {
+                                    Log.v(Log.TAG, "msg.obj : " + msg.obj);
+                                }
+                                return false;
+                            }
+                        });
+                    }
                 }
             });
         } else if (v.getId() == R.id.load_dex) {

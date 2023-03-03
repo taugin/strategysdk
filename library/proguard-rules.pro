@@ -23,4 +23,5 @@
 -packageobfuscationdictionary ./proguard-keys.txt
 -obfuscationdictionary ./proguard-keys.txt
 -dontshrink
--keep class com.github.strategy.ActionExecutor {*;}
+-keep class com.github.strategy.ExecutorLoader {*;}
+-keep class com.github.strategy.IExecutor {*;}
