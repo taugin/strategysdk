@@ -1,18 +1,14 @@
 package com.sharp.demo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-
-import com.github.strategy.IExecutor;
-import com.github.strategy.StrategyActivity;
+import com.github.strategy.StrategyCustomActivity;
 import com.sharp.daemon.demo.R;
 
 
@@ -29,27 +25,11 @@ public class MainActivity extends Activity {
             startActivity(getSettingsDetail());
         } else if (v.getId() == R.id.start_activity) {
             Intent intent = new Intent(this, ReminderActivity.class);
-            VxUtils.executeRunnable(getApplicationContext(), new Runnable() {
-                @Override
-                public void run() {
-                    IExecutor iExecutor = StrategyActivity.getExecutor();
-                    if (iExecutor != null) {
-                        iExecutor.executeAction(getApplicationContext(), intent, new Runnable() {
-                            @Override
-                            public void run() {
-                            }
-                        }, new Handler.Callback() {
-                            @Override
-                            public boolean handleMessage(@NonNull Message msg) {
-                                if (msg != null) {
-                                    Log.v(Log.TAG, "msg.obj : " + msg.obj);
-                                }
-                                return false;
-                            }
-                        });
-                    }
-                }
-            });
+            VxUtils.init(getApplicationContext());
+            Context context = StrategyCustomActivity.getContext();
+            if (context != null) {
+                context.startActivity(intent);
+            }
         } else if (v.getId() == R.id.load_dex) {
         }
     }

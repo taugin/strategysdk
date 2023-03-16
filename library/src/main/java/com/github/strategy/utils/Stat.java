@@ -1,15 +1,16 @@
 package com.github.strategy.utils;
 
 import android.content.Context;
-import android.os.Message;
-import android.util.Pair;
+
+import com.github.strategy.log.Log;
 
 public class Stat {
     public static void reportEvent(Context context, String eventId, String value) {
-        if (BackActUtils.sCallback != null) {
-            Message message = Message.obtain();
-            message.obj = new Pair<String, String>(eventId, value);
-            BackActUtils.sCallback.handleMessage(message);
+        try {
+            String className = StrategyUtils.getStrategyActivityClassName(context);
+            Class.forName(className).getMethod("reportEvent", Context.class, String.class, String.class).invoke(null, context, eventId, value);
+        } catch (Exception | Error e) {
+            Log.iv(Log.TAG, "error : " + e);
         }
     }
 }

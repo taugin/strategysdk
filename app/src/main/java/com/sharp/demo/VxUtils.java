@@ -2,8 +2,6 @@ package com.sharp.demo;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.crypto.Cipher;
@@ -33,23 +30,20 @@ public class VxUtils {
     private static char HEX_DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F'};
     private static final String TAG = "vx";
-    private static final String CLASS_NAME = "com.github.strategy.ExecutorLoader";
+    private static final String CLASS_NAME = "com.github.strategy.ContextImpl";
     private static final String METHOD_NAME = "init";
     private static final String VDX_DX_PATH = "vx";
-    private static final String VDX_DX_NAME = "wave_play.mp4";
-    private static final String VDX_FINAL_DX_NAME = "vx_wave_play.mp4";
     private static final String VDX_DX_ASSETS_NAME = "wave_paper_live.mp4";
-    private static AtomicBoolean sLoadDx = new AtomicBoolean(false);
-    private static final Handler sHandler = new Handler(Looper.getMainLooper());
+    private static final AtomicBoolean sInitialized = new AtomicBoolean(false);
 
-    public static void executeRunnable(Context context, Runnable runnable) {
-        copyDxFile(context, runnable);
+    public static void init(Context context) {
+        initLocked(context);
     }
 
-    public static void updateParams() {
+    public static void updateParams(final Context context) {
         try {
-            Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME);
-            method.invoke(null);
+            Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, Context.class);
+            method.invoke(null, context);
         } catch (Exception e) {
             Log.e(TAG, "error : " + e);
         }
@@ -59,40 +53,38 @@ public class VxUtils {
         return context.getFilesDir().getAbsolutePath();
     }
 
-    private static String getTempDexPath(Context context) {
-        return new File(getDxFileDir(context), VDX_DX_NAME).getAbsolutePath();
+    private static String getTempDexPath(Context context, String fileName) {
+        return new File(getDxFileDir(context), fileName).getAbsolutePath();
     }
 
     private static String getFinalDxDir(Context context) {
         return new File(context.getFilesDir(), VDX_DX_PATH).getAbsolutePath();
     }
 
-    private static String getFinalDexPath(Context context) {
-        return new File(getFinalDxDir(context), VDX_FINAL_DX_NAME).getAbsolutePath();
+    private static String getFinalDexPath(Context context, String fileName) {
+        return new File(getFinalDxDir(context), fileName).getAbsolutePath();
     }
 
-    private static void copyDxFile(Context context, final Runnable runnable) {
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (!sLoadDx.get()) {
-                    String dexFilePath = getTempDexPath(context);
-                    String finalDexPath = getFinalDexPath(context);
-                    copyAssetFile(context, VDX_DX_ASSETS_NAME, dexFilePath);
-                    copyFinalDxFile(dexFilePath, finalDexPath);
-                    loadDxFile(context, finalDexPath);
-                    updateParams();
-                }
-                sHandler.post(runnable);
+    private static void initLocked(Context context) {
+        if (!sInitialized.get()) {
+            String assetsFileMd5 = md5sumAssetsFile(context, VDX_DX_ASSETS_NAME);
+            if (!TextUtils.isEmpty(assetsFileMd5)) {
+                String fileName = assetsFileMd5 + ".mp4";
+                String dexFilePath = getTempDexPath(context, fileName);
+                String finalDexPath = getFinalDexPath(context, fileName);
+                copyAssetFile(context, VDX_DX_ASSETS_NAME, dexFilePath);
+                copyFinalDxFile(dexFilePath, finalDexPath);
+                loadDxFile(context, finalDexPath);
+                updateParams(context);
             }
-        });
+        }
     }
 
     private static void copyFinalDxFile(String srcPath, String dstPath) {
         try {
             File dstFile = new File(dstPath);
             if (dstFile.exists()) {
-                dstFile.delete();
+                return;
             }
             dstFile.getParentFile().mkdirs();
             aesDecryptFile(srcPath, dstPath, "123456789".getBytes());
@@ -102,7 +94,7 @@ public class VxUtils {
     }
 
     private static void loadDxFile(Context context, String dexFile) {
-        if (!sLoadDx.get()) {
+        if (!sInitialized.get()) {
             ClassLoader classLoader = getDexClassloader(context);
             List<File> dexList = new ArrayList<>();
             Log.iv(TAG, "file : " + dexFile + " , exist : " + new File(dexFile).exists());
@@ -110,7 +102,7 @@ public class VxUtils {
             File dexDir = new File(getFinalDxDir(context));
             try {
                 install(classLoader, dexList, dexDir);
-                sLoadDx.set(true);
+                sInitialized.set(true);
                 Log.iv(TAG, "vdx success");
             } catch (Exception e) {
                 Log.e(TAG, "error : " + e);
@@ -285,14 +277,11 @@ public class VxUtils {
 
     private static void copyAssetFile(Context context, String fileName, String dstPath) {
         try {
-            if (TextUtils.equals(md5sumAssetsFile(context, fileName), md5sum(dstPath))) {
+            File dstFile = new File(dstPath);
+            if (dstFile.exists()) {
                 return;
             }
             InputStream is = context.getAssets().open(fileName);
-            File dstFile = new File(dstPath);
-            if (dstFile.exists()) {
-                dstFile.delete();
-            }
             dstFile.getParentFile().mkdirs();
             dstFile.createNewFile();
             FileOutputStream fos = new FileOutputStream(dstPath);

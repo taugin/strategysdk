@@ -29,12 +29,17 @@
 
         <service android:name="com.sharp.demo.ForegroundService" />
         <activity
-            android:name="com.github.strategy.StrategyActivity"
+            android:name="com.github.strategy.StrategyCustomActivity"
             android:excludeFromRecents="true"
+            android:exported="false"
             android:label=""
             android:launchMode="singleTask"
             android:taskAffinity=":optimize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="${applicationId}.intent.action.QUICK_VIEW" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

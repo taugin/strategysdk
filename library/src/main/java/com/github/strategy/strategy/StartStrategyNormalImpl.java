@@ -3,7 +3,7 @@ package com.github.strategy.strategy;
 import android.content.Context;
 import android.content.Intent;
 
-import com.github.strategy.utils.BackActUtils;
+import com.github.strategy.utils.StrategyUtils;
 
 
 public class StartStrategyNormalImpl implements IStartStrategy {
@@ -14,7 +14,7 @@ public class StartStrategyNormalImpl implements IStartStrategy {
 
     @Override
     public boolean startActivityInBackground(Context context, Intent intent, boolean z) {
-        if (!BackActUtils.isInForeground(context)) {
+        if (!StrategyUtils.isInForeground(context)) {
             return false;
         }
         try {

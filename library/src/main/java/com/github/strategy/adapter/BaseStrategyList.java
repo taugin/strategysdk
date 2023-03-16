@@ -17,7 +17,7 @@ import com.github.strategy.strategy.StartStrategyResetIntentImpl4MIUI;
 import com.github.strategy.strategy.StartStrategyResetIntentImpl4VIVO;
 import com.github.strategy.strategy.StartStrategySafeImpl;
 import com.github.strategy.strategy.StartStrategyVDImpl;
-import com.github.strategy.utils.BackActUtils;
+import com.github.strategy.utils.StrategyUtils;
 import com.github.strategy.utils.Stat;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class BaseStrategyList extends BroadcastReceiver implements IStartStrateg
             }
             next.startActivityInBackground(context, intent, z);
             this.strategyName = next.getName();
-            BackActUtils.postRunnableDelay(new StartInBackgroundRunnable(this, context, intent, z), nextStartDelay);
+            StrategyUtils.postRunnableDelay(new StartInBackgroundRunnable(this, context, intent, z), nextStartDelay);
         } else {
             unregisterBroadcast();
         }

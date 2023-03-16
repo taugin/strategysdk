@@ -10,7 +10,7 @@ public class StrategyActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            ExecutorLoader.getExecutor().executeOnCreate(this);
+            ContextImpl.getInstance(this).onCreateView("onCreate", this, null);
         } catch (Exception | Error e) {
         }
     }
@@ -18,7 +18,8 @@ public class StrategyActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         try {
-            ExecutorLoader.getExecutor().executeOnNewIntent(this, intent);
+            setIntent(intent);
+            ContextImpl.getInstance(this).onCreateView("onNewIntent", this, null);
         } catch (Exception | Error e) {
         }
     }

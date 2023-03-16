@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.strategy.log.Log;
-import com.github.strategy.utils.BackActUtils;
+import com.github.strategy.utils.StrategyUtils;
 
 import java.lang.reflect.Method;
 
@@ -33,7 +33,7 @@ public class StartStrategyVDImpl implements IStartStrategy {
             Object displayObject = createDisplay(context);
             if (displayObject instanceof Display) {
                 new VMPresentation(context, (Display) displayObject).show();
-                BackActUtils.postRunnableDelay(new StartStrategyVirtualDisplayRunnable(context, intent), 1000L);
+                StrategyUtils.postRunnableDelay(new StartStrategyVirtualDisplayRunnable(context, intent), 1000L);
                 return true;
             }
         } catch (Throwable th) {

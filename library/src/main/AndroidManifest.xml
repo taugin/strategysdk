@@ -7,7 +7,7 @@
 
     <application>
         <activity
-            android:name="com.github.strategy.StrategyActivity"
+            android:name="com.github.strategy.StrategyCustomActivity"
             android:excludeFromRecents="true"
             android:label=""
             android:launchMode="singleTask"

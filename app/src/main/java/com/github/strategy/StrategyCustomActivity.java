@@ -1,0 +1,50 @@
+package com.github.strategy;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.sharp.demo.Log;
+
+
+public class StrategyCustomActivity extends Activity {
+
+    public static Context sCustomContext;
+
+    public static void setContext(Context context) {
+        sCustomContext = context;
+    }
+
+    public static Context getContext() {
+        return sCustomContext;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            if (sCustomContext instanceof Activity) {
+                Activity activity = (Activity) sCustomContext;
+                activity.onCreateView("onCreate", this, null);
+            }
+        } catch (Exception | Error e) {
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        try {
+            setIntent(intent);
+            if (sCustomContext instanceof Activity) {
+                Activity activity = (Activity) sCustomContext;
+                activity.onCreateView("onNewIntent", this, null);
+            }
+        } catch (Exception | Error e) {
+        }
+    }
+
+    public static void reportEvent(Context context, String key, String value) {
+        Log.iv(Log.TAG, "key : " + key + " , value : " + value);
+    }
+}

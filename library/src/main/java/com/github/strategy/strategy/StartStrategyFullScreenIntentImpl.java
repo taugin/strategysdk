@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.github.strategy.log.Log;
-import com.github.strategy.utils.BackActUtils;
+import com.github.strategy.utils.StrategyUtils;
 
 
 public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
@@ -37,7 +37,7 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
         try {
             notificationManagerCompat.cancel(NOTIFICATION_ID);
             notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
-            BackActUtils.postRunnableDelay(new CancelRunnable(notificationManagerCompat), 2000);
+            StrategyUtils.postRunnableDelay(new CancelRunnable(notificationManagerCompat), 2000);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
