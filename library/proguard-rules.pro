@@ -23,4 +23,4 @@
 -packageobfuscationdictionary ./proguard-keys.txt
 -obfuscationdictionary ./proguard-keys.txt
 -dontshrink
--keep class com.github.strategy.ContextImpl {*;}
+-keep class com.android.support.content.ContextCompat {*;}

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Keep;
+
 import com.sharp.demo.Log;
 
 
@@ -12,6 +14,7 @@ public class StrategyCustomActivity extends Activity {
 
     public static Context sCustomContext;
 
+    @Keep
     public static void setContext(Context context) {
         sCustomContext = context;
     }

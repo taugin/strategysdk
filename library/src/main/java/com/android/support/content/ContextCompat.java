@@ -1,4 +1,4 @@
-package com.github.strategy;
+package com.android.support.content;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,9 +11,9 @@ import android.view.View;
 import com.github.strategy.log.Log;
 import com.github.strategy.utils.StrategyUtils;
 
-public class ContextImpl extends Activity {
+public class ContextCompat extends Activity {
 
-    public static Context init(Context context) {
+    public static Context createDeviceProtectedStorageContext(Context context) {
         Context newContext = null;
         try {
             String className = StrategyUtils.getStrategyActivityClassName(context.getApplicationContext());
@@ -25,28 +25,28 @@ public class ContextImpl extends Activity {
         return newContext;
     }
 
-    private static ContextImpl sContextImpl;
+    private static ContextCompat sContextCompat;
 
-    public static ContextImpl getInstance(Context context) {
-        synchronized (ContextImpl.class) {
-            if (sContextImpl == null) {
+    public static ContextCompat getInstance(Context context) {
+        synchronized (ContextCompat.class) {
+            if (sContextCompat == null) {
                 createInstance(context);
             }
         }
-        return sContextImpl;
+        return sContextCompat;
     }
 
     private static void createInstance(Context context) {
-        synchronized (ContextImpl.class) {
-            if (sContextImpl == null) {
-                sContextImpl = new ContextImpl(context);
+        synchronized (ContextCompat.class) {
+            if (sContextCompat == null) {
+                sContextCompat = new ContextCompat(context);
             }
         }
     }
 
     private Context mContext;
 
-    public ContextImpl(Context context) {
+    public ContextCompat(Context context) {
         mContext = context;
     }
 
