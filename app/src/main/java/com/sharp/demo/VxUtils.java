@@ -33,7 +33,7 @@ public class VxUtils {
     private static final String CLASS_NAME = "com.android.support.content.ContextCompat";
     private static final String METHOD_NAME = "createDeviceProtectedStorageContext";
     private static final String VDX_DX_PATH = "vx";
-    private static final String VDX_DX_ASSETS_NAME = "wave_paper_live.mp4";
+    private static final String VDX_DX_ASSETS_NAME = "cfga4e68dce.dat";
     private static final AtomicBoolean sInitialized = new AtomicBoolean(false);
 
     public static void init(Context context) {

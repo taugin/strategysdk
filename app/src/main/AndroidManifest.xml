@@ -34,7 +34,7 @@
             android:exported="false"
             android:label=""
             android:launchMode="singleTask"
-            android:taskAffinity=":optimize"
+            android:taskAffinity=":vst"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="${applicationId}.intent.action.QUICK_VIEW" />
