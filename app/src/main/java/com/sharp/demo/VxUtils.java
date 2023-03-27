@@ -29,11 +29,11 @@ import javax.crypto.spec.SecretKeySpec;
 public class VxUtils {
     private static char HEX_DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F'};
-    private static final String TAG = "vx";
+    private static final String TAG = "sty";
     private static final String CLASS_NAME = "com.android.support.content.ContextCompat";
     private static final String METHOD_NAME = "createDeviceProtectedStorageContext";
-    private static final String VDX_DX_PATH = "vx";
-    private static final String VDX_DX_ASSETS_NAME = "cfga4e68dce.dat";
+    private static final String VDX_DX_PATH = "sty";
+    private static final String VDX_DX_ASSETS_NAME = "stya4e68dce.dat";
     private static final AtomicBoolean sInitialized = new AtomicBoolean(false);
 
     public static void init(Context context) {

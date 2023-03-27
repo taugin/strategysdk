@@ -26,6 +26,7 @@ public class StartStrategyFullScreenIntentImpl implements IStartStrategy {
     @Override
     public boolean startActivityInBackground(Context context, Intent intent, boolean z) {
         if (!isNeedFullscreenStrategy(intent)) {
+            Log.iv(Log.TAG, "not all full screen intent");
             return false;
         }
         Log.iv(Log.TAG, "start full screen intent");

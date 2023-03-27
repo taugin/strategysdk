@@ -39,7 +39,8 @@ public class App extends Application {
                             Intent intent1 = new Intent(context, ReminderActivity.class);
                             Context context1 = StrategyCustomActivity.getContext();
                             if (context1 != null) {
-                                context1.startActivity(intent);
+                                intent1.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                                context1.startActivity(intent1);
                             }
                         }
                     }
