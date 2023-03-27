@@ -17,8 +17,8 @@ import com.github.strategy.strategy.StartStrategyResetIntentImpl4MIUI;
 import com.github.strategy.strategy.StartStrategyResetIntentImpl4VIVO;
 import com.github.strategy.strategy.StartStrategySafeImpl;
 import com.github.strategy.strategy.StartStrategyVDImpl;
-import com.github.strategy.utils.StrategyUtils;
 import com.github.strategy.utils.Stat;
+import com.github.strategy.utils.StrategyUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,11 +27,9 @@ import java.util.UUID;
 
 public class BaseStrategyList extends BroadcastReceiver implements IStartStrategy {
 
-    public static final String PREF_DEST_INTENT = "pref_dest_intent";
-
     public static final String TAG = "StartStrategyList";
 
-    public static final String ACTION_START_COMPLETE = "list_action";
+    public static final String ACTION_START_COMPLETE = "android.intent.action.COMPLETE_STRATEGY";
 
     public List<IStartStrategy> startStrategyList = new ArrayList();
 

@@ -139,7 +139,7 @@ public class StrategyUtils {
 
     private static void startDestActivity(final Activity activity, String from) {
         try {
-            Intent intent = activity.getIntent().getParcelableExtra(BaseStrategyList.PREF_DEST_INTENT);
+            Intent intent = activity.getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
             Log.iv(Log.TAG, "start from (" + from + ") received intent = " + intent);
             activity.startActivity(intent);
         } catch (Exception e) {
@@ -170,7 +170,7 @@ public class StrategyUtils {
         if (!(context instanceof Activity)) {
             wrapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        wrapIntent.putExtra(BaseStrategyList.PREF_DEST_INTENT, intent);
+        wrapIntent.putExtra(Intent.EXTRA_INTENT, intent);
         BaseStrategyList baseStrategyList;
         try {
             baseStrategyList = new HWBaseStrategyList(context);
@@ -184,7 +184,7 @@ public class StrategyUtils {
 
     public static void executeOverAction(Context context, Intent intent) {
         if (context != null && intent != null) {
-            Intent destIntent = intent.getParcelableExtra(BaseStrategyList.PREF_DEST_INTENT);
+            Intent destIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
             if (destIntent != null) {
                 Notification notification = destIntent.getParcelableExtra(Intent.EXTRA_REPLACEMENT_EXTRAS);
                 Log.iv(Log.TAG, "over action notification : " + notification);
