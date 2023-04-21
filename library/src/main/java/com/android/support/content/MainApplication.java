@@ -68,7 +68,11 @@ public class MainApplication extends Application {
     private Context mContext;
 
     public MainApplication(Context context) {
-        mContext = context;
+        mContext = context != null ? context.getApplicationContext() : null;
+        try {
+            attachBaseContext(mContext);
+        } catch (Exception | Error e) {
+        }
     }
 
     @Override
@@ -88,6 +92,15 @@ public class MainApplication extends Application {
 
     @Override
     public void sendBroadcast(Intent intent) {
-        StrategyUtils.onCreateOrNewIntent(mContext, intent);
+        try {
+            Intent newIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
+            if (newIntent != null) {
+                StrategyUtils.onCreateOrNewIntent(mContext, intent);
+            } else {
+                super.sendBroadcast(intent);
+            }
+        } catch (Exception e) {
+            super.sendBroadcast(intent);
+        }
     }
 }
