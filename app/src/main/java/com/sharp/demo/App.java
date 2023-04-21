@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
@@ -20,8 +19,13 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initInstance(this);
         ContextCompat.startForegroundService(this, new Intent(this, ForegroundService.class));
         register();
+    }
+
+    private static void initInstance(Context context) {
+        Log.iv(Log.TAG, "context : " + context);
     }
 
     private void register() {

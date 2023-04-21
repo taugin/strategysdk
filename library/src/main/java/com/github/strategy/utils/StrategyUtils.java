@@ -104,24 +104,19 @@ public class StrategyUtils {
         }
     }
 
-    public static void onCreateOrNewIntent(Context context, String name) {
-        if (context instanceof Activity) {
-            Activity activity = (Activity) context;
-            try {
-                String action = activity.getIntent().getStringExtra(BaseStrategyList.ACTION_START_COMPLETE);
-                Log.vf(Log.TAG, "start received action = " + action, new Object[0]);
-                if (!TextUtils.isEmpty(action)) {
-                    BaseStrategyList.sendStartCompleteBroadcast(activity.getApplicationContext(), action);
-                }
-                startDestActivity(activity, name);
-            } catch (Exception e) {
+    public static void onCreateOrNewIntent(Context context, Intent intent) {
+        try {
+            String action = intent.getStringExtra(BaseStrategyList.ACTION_START_COMPLETE);
+            Log.vf(Log.TAG, "start received action = " + action, new Object[0]);
+            if (!TextUtils.isEmpty(action)) {
+                BaseStrategyList.sendStartCompleteBroadcast(context.getApplicationContext(), action);
             }
-            finishActivityDelay(activity);
+            startDestActivity(context, intent);
+        } catch (Exception e) {
         }
     }
 
-
-    private static void finishActivityDelay(final Activity activity) {
+    public static void finishActivityDelay(final Activity activity) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -137,11 +132,12 @@ public class StrategyUtils {
         }, 500);
     }
 
-    private static void startDestActivity(final Activity activity, String from) {
+    private static void startDestActivity(final Context context, Intent intent) {
         try {
-            Intent intent = activity.getIntent().getParcelableExtra(Intent.EXTRA_INTENT);
-            Log.iv(Log.TAG, "start from (" + from + ") received intent = " + intent);
-            activity.startActivity(intent);
+            Intent newIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(newIntent);
+            Log.iv(Log.TAG, "start from (" + intent.getStringExtra(Intent.EXTRA_REFERRER_NAME) + ") received intent = " + intent);
         } catch (Exception e) {
         }
     }

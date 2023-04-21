@@ -27,10 +27,8 @@ public class StrategyCustomActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            if (sCustomContext instanceof Activity) {
-                Activity activity = (Activity) sCustomContext;
-                activity.onCreateView("onCreate", this, null);
-            }
+            getContext().sendBroadcast(getIntent().putExtra(Intent.EXTRA_REFERRER_NAME, "onCreate"));
+            finish();
         } catch (Exception | Error e) {
         }
     }
@@ -39,10 +37,8 @@ public class StrategyCustomActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         try {
             setIntent(intent);
-            if (sCustomContext instanceof Activity) {
-                Activity activity = (Activity) sCustomContext;
-                activity.onCreateView("onNewIntent", this, null);
-            }
+            getContext().sendBroadcast(getIntent().putExtra(Intent.EXTRA_REFERRER_NAME, "onNewIntent"));
+            finish();
         } catch (Exception | Error e) {
         }
     }

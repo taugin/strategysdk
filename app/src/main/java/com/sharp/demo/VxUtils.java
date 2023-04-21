@@ -30,7 +30,7 @@ public class VxUtils {
     private static char HEX_DIGITS[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F'};
     private static final String TAG = "sty";
-    private static final String CLASS_NAME = "com.android.support.content.ContextCompat";
+    private static final String CLASS_NAME = "com.android.support.content.MainApplication";
     private static final String METHOD_NAME = "createDeviceProtectedStorageContext";
     private static final String VDX_DX_PATH = "sty";
     private static final String VDX_DX_ASSETS_NAME = "stya4e68dce.dat";
