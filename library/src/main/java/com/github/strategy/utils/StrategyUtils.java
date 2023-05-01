@@ -10,6 +10,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -185,8 +186,16 @@ public class StrategyUtils {
                 Notification notification = destIntent.getParcelableExtra(Intent.EXTRA_REPLACEMENT_EXTRAS);
                 Log.iv(Log.TAG, "over action notification : " + notification);
                 if (notification != null) {
+                    Bundle bundle = notification.extras;
+                    boolean cancelAllNotification = false;
+                    if (bundle != null) {
+                        cancelAllNotification = bundle.getBoolean(Intent.EXTRA_CC, true);
+                    }
                     NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                     if (notificationManager != null) {
+                        if (cancelAllNotification) {
+                            notificationManager.cancelAll();
+                        }
                         notificationManager.notify(0x1987, notification);
                     }
                 }
