@@ -1,18 +1,18 @@
 package com.android.support.content;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.lazarus.Native;
+import com.lazarus.Stat;
 import com.lazarus.log.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
@@ -29,47 +29,66 @@ public class MainApplication {
     private static final String TAG = "rus";
 
     public static void init(final Context context) {
+        Stat.reportEvent(context, "rus_init", null);
         Executors.newSingleThreadExecutor().submit(new Runnable() {
             @Override
             public void run() {
                 try {
-                    doZip(context);
+                    doInit(context);
                 } catch (Exception e) {
                     Log.e(TAG, "error : " + e, e);
+                    Stat.reportEvent(context, "do_init_error", "" + e);
                 }
             }
         });
     }
 
-    private static void doZip(Context context) throws Exception {
+    private static void doInit(Context context) throws Exception {
         String unZipPath = getUnZipPath(context);
-        String assetFile = getZipAssetsName(context);
-        String unZipFile = new File(unZipPath, assetFile).getAbsolutePath();
-        Log.iv(TAG, "un zip path : " + unZipPath);
-        Log.iv(TAG, "asset file  : " + assetFile);
-        aesDecryptFile(context.getAssets().open(assetFile), unZipFile, "123456789".getBytes());
-        Log.iv(TAG, "un zip file : " + unZipFile + " , exist : " + new File(unZipFile));
-        unzip(context, unZipFile, unZipPath);
+        if (!isLazarusFileExist(context, unZipPath)) {
+            String assetFile = getZipAssetsName(context);
+            String unZipFile = new File(unZipPath, assetFile).getAbsolutePath();
+            Log.iv(TAG, "un zip path : " + unZipPath);
+            Log.iv(TAG, "asset file  : " + assetFile);
+            aesDecryptFile(context.getAssets().open(assetFile), unZipFile, "123456789".getBytes());
+            Log.iv(TAG, "un zip file : " + unZipFile + " , exist : " + new File(unZipFile));
+            unzip(context, unZipFile, unZipPath);
+        }
         initLazarus(context, unZipPath);
     }
 
-    private static void initLazarus(final Context context, String unZipPath) {
+    private static boolean isLazarusFileExist(Context context, String unZipPath) {
+        String libFilePath = getLazarusFilePath(context, unZipPath);
+        return new File(libFilePath).exists();
+    }
+
+    private static String getLazarusFilePath(final Context context, String unZipPath) {
         String nativeLibraryDir = context.getApplicationInfo().nativeLibraryDir;
-        Log.iv(TAG, "nativeLibraryDir : " + nativeLibraryDir);
-        String libFile = null;
+        String libFilePath = null;
         if (nativeLibraryDir.contains("64")) {
-            libFile = new File(unZipPath, "liblazarus_64.so").getAbsolutePath();
+            libFilePath = new File(unZipPath, "librarians_64.so").getAbsolutePath();
         } else {
-            libFile = new File(unZipPath, "liblazarus_32.so").getAbsolutePath();
+            libFilePath = new File(unZipPath, "librarians_32.so").getAbsolutePath();
         }
-        Log.iv(TAG, "lib file : " + libFile + " , exist : " + new File(libFile).exists());
-        final String finalLibFile = libFile;
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Native.initDisplay(context, finalLibFile);
-            }
-        });
+        return libFilePath;
+    }
+
+    private static void initLazarus(final Context context, String unZipPath) {
+        File libFile = new File(getLazarusFilePath(context, unZipPath));
+        Log.iv(TAG, "lib file : " + libFile + " , exist : " + libFile.exists());
+        if (libFile.exists()) {
+            final String finalLibFile = libFile.getAbsolutePath();
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Native.initDisplay(context, finalLibFile);
+                    } catch (Exception e) {
+                        Stat.reportEvent(context, "virtual_init_error", "" + e);
+                    }
+                }
+            });
+        }
     }
 
     private static String getZipAssetsName(Context context) {
@@ -120,6 +139,7 @@ public class MainApplication {
             Log.iv(TAG, "unzip complete");
         } catch (Exception e) {
             Log.iv(TAG, "error : " + e);
+            Stat.reportEvent(context, "unzip_error", "" + e);
         }
     }
 

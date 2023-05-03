@@ -17,13 +17,12 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initInstance(this);
         ContextCompat.startForegroundService(this, new Intent(this, ForegroundService.class));
         register();
     }
 
-    private static void initInstance(Context context) {
-        Log.iv(Log.TAG, "context : " + context);
+    public static void reportEvent(Context context, String event, String value) {
+        Log.iv(Log.TAG, "event : " + event + " , value : " + value);
     }
 
     private void register() {
