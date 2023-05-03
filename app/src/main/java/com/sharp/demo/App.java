@@ -11,9 +11,6 @@ import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
 
-import com.github.strategy.StrategyCustomActivity;
-import com.lazarus.NC;
-
 public class App extends Application {
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -42,9 +39,7 @@ public class App extends Application {
                         if (TextUtils.equals(reason, "homekey") && !mHandler.hasMessages(0x1234)) {
                             mHandler.sendEmptyMessageDelayed(0x1234, 10000);
                             Intent intent1 = new Intent(context, ReminderActivity.class);
-                            Context context1 = StrategyCustomActivity.getContext();
                             if (context != null) {
-                                intent1.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                                 intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(intent1);
                             }
@@ -55,6 +50,6 @@ public class App extends Application {
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
-        NC.initDisplay(this);
+        VxUtils.init(this);
     }
 }

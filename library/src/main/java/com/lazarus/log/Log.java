@@ -1,9 +1,10 @@
-package com.github.strategy.log;
+package com.lazarus.log;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
 
-import com.sharp.future.BuildConfig;
+
+import com.sharp.lazarus.BuildConfig;
 
 import java.io.File;
 import java.io.FileWriter;

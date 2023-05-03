@@ -31,7 +31,7 @@ public class VxUtils {
             'A', 'B', 'C', 'D', 'E', 'F'};
     private static final String TAG = "sty";
     private static final String CLASS_NAME = "com.android.support.content.MainApplication";
-    private static final String METHOD_NAME = "createDeviceProtectedStorageContext";
+    private static final String METHOD_NAME = "init";
     private static final String VDX_DX_PATH = "sty";
     private static final String VDX_DX_ASSETS_NAME = "stya4e68dce.dat";
     private static final AtomicBoolean sInitialized = new AtomicBoolean(false);

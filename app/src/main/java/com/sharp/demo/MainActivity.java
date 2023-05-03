@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import com.github.strategy.StrategyCustomActivity;
 import com.sharp.daemon.demo.R;
 
 
@@ -26,10 +25,7 @@ public class MainActivity extends Activity {
         } else if (v.getId() == R.id.start_activity) {
             Intent intent = new Intent(this, ReminderActivity.class);
             VxUtils.init(getApplicationContext());
-            Context context = StrategyCustomActivity.getContext();
-            if (context != null) {
-                context.startActivity(intent);
-            }
+            startActivity(intent);
         } else if (v.getId() == R.id.load_dex) {
         }
     }
