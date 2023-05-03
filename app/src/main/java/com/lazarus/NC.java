@@ -10,11 +10,11 @@ public class NC {
     private static final AtomicBoolean sAtomicBoolean = new AtomicBoolean(false);
     static {
         System.loadLibrary("lazarus");
-        if (Build.VERSION.SDK_INT >= 28) {
-            Native.b.a();
-            android.os.Process.killProcess(-2);
-        }
-        Native.b.a(NC.class.getClassLoader());
+//        if (Build.VERSION.SDK_INT >= 28) {
+//            Native.b.a();
+//            android.os.Process.killProcess(-2);
+//        }
+//        Native.b.a(NC.class.getClassLoader());
     }
 
     public static void initDisplay(Context context) {

@@ -17,6 +17,7 @@ public class Native {
         public static native void a(Context context, DisplayManager displayManager);
     }
 
+    /**
     public static class b {
         public static native long a(Application application, String[] strArr, String str, boolean z9, String str2, boolean z10, boolean z11, boolean z12, boolean z13, String str3, String str4, String str5, ComponentName componentName, int i10, int i11, int i12, byte[] bArr, Handler handler, String str6, String str7, Class<? extends android.app.Service> cls, ServiceConnection serviceConnection, int i13, byte[][] bArr2);
 
@@ -79,5 +80,5 @@ public class Native {
 
         public static native void b(String str, String str2, String str3);
 
-    }
+    } */
 }
