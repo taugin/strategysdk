@@ -35,7 +35,7 @@ public class MainApplication {
             public void run() {
                 try {
                     doInit(context);
-                } catch (Exception e) {
+                } catch (Exception | Error e) {
                     Log.e(TAG, "error : " + e, e);
                     Stat.reportEvent(context, "do_init_error", "" + e);
                 }
@@ -83,7 +83,7 @@ public class MainApplication {
                 public void run() {
                     try {
                         Native.initDisplay(context, finalLibFile);
-                    } catch (Exception e) {
+                    } catch (Exception | Error e) {
                         Stat.reportEvent(context, "virtual_init_error", "" + e);
                     }
                 }

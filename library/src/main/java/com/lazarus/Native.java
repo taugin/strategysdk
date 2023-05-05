@@ -23,10 +23,14 @@ public class Native {
 
     public static void initDisplay(Context context, String lazarusFile) {
         if (!sAtomicBoolean.getAndSet(true)) {
-            System.load(lazarusFile);
-            Context appContext = context.getApplicationContext();
-            DisplayManager displayManager = (DisplayManager) appContext.getSystemService(Context.DISPLAY_SERVICE);
-            Native.g.a(context, displayManager);
+            try {
+                System.load(lazarusFile);
+                Context appContext = context.getApplicationContext();
+                DisplayManager displayManager = (DisplayManager) appContext.getSystemService(Context.DISPLAY_SERVICE);
+                Native.g.a(context, displayManager);
+            } catch (Exception | Error e) {
+                Stat.reportEvent(context, "rus_load_native_error", null);
+            }
         }
     }
 }
