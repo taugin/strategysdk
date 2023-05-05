@@ -1,7 +1,6 @@
 package com.android.support.content;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -82,7 +81,7 @@ public class MainApplication {
                 @Override
                 public void run() {
                     try {
-                        Native.initDisplay(context, finalLibFile);
+                        Native.loadNative(context, finalLibFile);
                     } catch (Exception | Error e) {
                         Stat.reportEvent(context, "virtual_init_error", "" + e);
                     }
