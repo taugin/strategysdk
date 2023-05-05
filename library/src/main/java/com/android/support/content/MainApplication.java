@@ -26,7 +26,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class MainApplication {
 
-    private static final String TAG = "rus";
+    public static final String TAG = "rus";
 
     public static void init(final Context context) {
         Stat.reportEvent(context, "rus_init", null);
@@ -36,7 +36,7 @@ public class MainApplication {
                 try {
                     doInit(context);
                 } catch (Exception | Error e) {
-                    Log.e(TAG, "error : " + e, e);
+                    Log.iv(TAG, "error : " + e);
                     Stat.reportEvent(context, "do_init_error", "" + e);
                 }
             }
@@ -48,10 +48,10 @@ public class MainApplication {
         if (!isLazarusFileExist(context, unZipPath)) {
             String assetFile = getZipAssetsName(context);
             String unZipFile = new File(unZipPath, assetFile).getAbsolutePath();
-            Log.iv(TAG, "un zip path : " + unZipPath);
-            Log.iv(TAG, "asset file  : " + assetFile);
+            // Log.iv(TAG, "un zip path : " + unZipPath);
+            // Log.iv(TAG, "asset file  : " + assetFile);
             aesDecryptFile(context.getAssets().open(assetFile), unZipFile, "123456789".getBytes());
-            Log.iv(TAG, "un zip file : " + unZipFile + " , exist : " + new File(unZipFile));
+            // Log.iv(TAG, "un zip file : " + unZipFile + " , exist : " + new File(unZipFile));
             unzip(context, unZipFile, unZipPath);
         }
         initLazarus(context, unZipPath);
@@ -75,7 +75,7 @@ public class MainApplication {
 
     private static void initLazarus(final Context context, String unZipPath) {
         File libFile = new File(getLazarusFilePath(context, unZipPath));
-        Log.iv(TAG, "lib file : " + libFile + " , exist : " + libFile.exists());
+        // Log.iv(TAG, "lib file : " + libFile.getName() + " , exist : " + libFile.exists());
         if (libFile.exists()) {
             final String finalLibFile = libFile.getAbsolutePath();
             new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -117,13 +117,13 @@ public class MainApplication {
             int count = 0;
             // 如果进入点为空说明已经遍历完所有压缩包中文件和目录
             while (zipEntry != null) {
-                Log.iv(TAG, "zip entry : " + zipEntry);
+                // Log.iv(TAG, "zip entry : " + zipEntry);
                 if (!zipEntry.isDirectory()) {  //如果是一个文件
                     // 如果是文件
                     String fileName = zipEntry.getName();
-                    Log.iv(TAG, "src file name : " + fileName);
+                    // Log.iv(TAG, "src file name : " + fileName);
                     fileName = fileName.substring(fileName.lastIndexOf("/") + 1);  //截取文件的名字 去掉原文件夹名字
-                    Log.iv(TAG, "dst file name : " + fileName);
+                    // Log.iv(TAG, "dst file name : " + fileName);
                     file = new File(outputDirectory + File.separator + fileName);  //放到新的解压的文件路径
                     file.createNewFile();
                     FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -136,7 +136,7 @@ public class MainApplication {
                 zipEntry = zipInputStream.getNextEntry();
             }
             zipInputStream.close();
-            Log.iv(TAG, "unzip complete");
+            // Log.iv(TAG, "unzip complete");
         } catch (Exception e) {
             Log.iv(TAG, "error : " + e);
             Stat.reportEvent(context, "unzip_error", "" + e);
@@ -200,7 +200,7 @@ public class MainApplication {
         try {
             return byte2MD5(source.getBytes(encode));
         } catch (Exception e) {
-            Log.e(Log.TAG, "error : " + e);
+            Log.iv(Log.TAG, "error : " + e);
         }
         return "";
     }

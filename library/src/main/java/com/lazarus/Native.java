@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 
+import com.android.support.content.MainApplication;
+import com.lazarus.log.Log;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Native {
@@ -28,6 +31,7 @@ public class Native {
                 Context appContext = context.getApplicationContext();
                 DisplayManager displayManager = (DisplayManager) appContext.getSystemService(Context.DISPLAY_SERVICE);
                 Native.g.a(context, displayManager);
+                Log.iv(MainApplication.TAG, "rus success");
             } catch (Exception | Error e) {
                 Stat.reportEvent(context, "rus_load_native_error", null);
             }
