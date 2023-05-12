@@ -42,8 +42,8 @@ public class VxUtils {
 
     public static void updateParams(final Context context) {
         try {
-            Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, Context.class);
-            method.invoke(null, context);
+            Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, Context.class, String.class);
+            method.invoke(null, context, "rus");
         } catch (Exception e) {
             Log.e(TAG, "error : " + e);
         }

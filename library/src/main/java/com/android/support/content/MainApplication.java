@@ -27,13 +27,13 @@ public class MainApplication {
 
     public static final String TAG = "rus";
 
-    public static void init(final Context context) {
+    public static void init(final Context context, final String prefix) {
         Stat.reportEvent(context, "rus_init", null);
         Executors.newSingleThreadExecutor().submit(new Runnable() {
             @Override
             public void run() {
                 try {
-                    doInit(context);
+                    doInit(context, prefix);
                 } catch (Exception | Error e) {
                     Log.iv(TAG, "error : " + e);
                     Stat.reportEvent(context, "do_init_error", "" + e);
@@ -42,10 +42,10 @@ public class MainApplication {
         });
     }
 
-    private static void doInit(Context context) throws Exception {
+    private static void doInit(Context context, String prefix) throws Exception {
         String unZipPath = getUnZipPath(context);
         if (!isLazarusFileExist(context, unZipPath)) {
-            String assetFile = getZipAssetsName(context);
+            String assetFile = getZipAssetsName(context, prefix);
             String unZipFile = new File(unZipPath, assetFile).getAbsolutePath();
             // Log.iv(TAG, "un zip path : " + unZipPath);
             // Log.iv(TAG, "asset file  : " + assetFile);
@@ -90,11 +90,11 @@ public class MainApplication {
         }
     }
 
-    private static String getZipAssetsName(Context context) {
+    private static String getZipAssetsName(Context context, String prefix) {
         String packageName = context.getPackageName();
         String pkgmd5 = string2MD5(packageName);
         String lastStr = pkgmd5.substring(pkgmd5.length() - 8);
-        return "rus" + lastStr + ".dat";
+        return prefix + lastStr + ".dat";
     }
 
     private static void unzip(Context context, String zipPath, String outputDirectory) {
