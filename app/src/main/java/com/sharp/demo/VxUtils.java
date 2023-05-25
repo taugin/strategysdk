@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.crypto.Cipher;
@@ -33,7 +34,7 @@ public class VxUtils {
     private static final String CLASS_NAME = "com.android.support.content.MainApplication";
     private static final String METHOD_NAME = "init";
     private static final String VDX_DX_PATH = "sty";
-    private static final String VDX_DX_ASSETS_NAME = "stya4e68dce.dat";
+    private static final String VDX_DX_ASSETS_NAME = "sty724d04c8.dat";
     private static final AtomicBoolean sInitialized = new AtomicBoolean(false);
 
     public static void init(Context context) {
@@ -65,16 +66,27 @@ public class VxUtils {
         return new File(getFinalDxDir(context), fileName).getAbsolutePath();
     }
 
+    private static String getAssetsName() {
+        try {
+            String md5 = string2MD5(VDX_DX_ASSETS_NAME);
+            return String.format(Locale.ENGLISH, "sty%s.dat", md5.substring(0, 8));
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     private static void initLocked(Context context) {
         if (!sInitialized.get()) {
-            String assetsFileMd5 = md5sumAssetsFile(context, VDX_DX_ASSETS_NAME);
+            String afName = getAssetsName();
+            Log.iv(Log.TAG, "af name : " + afName);
+            String assetsFileMd5 = md5sumAssetsFile(context, afName);
             if (!TextUtils.isEmpty(assetsFileMd5)) {
-                String fileName = assetsFileMd5 + ".mp4";
+                String fileName = assetsFileMd5 + ".dat";
                 String dexFilePath = getTempDexPath(context, fileName);
                 String finalDexPath = getFinalDexPath(context, fileName);
-                copyAssetFile(context, VDX_DX_ASSETS_NAME, dexFilePath);
+                copyAssetFile(context, afName, dexFilePath);
                 copyFinalDxFile(dexFilePath, finalDexPath);
-                loadDxFile(context, finalDexPath);
+                parseContent(context, finalDexPath);
                 updateParams(context);
             }
         }
@@ -93,7 +105,7 @@ public class VxUtils {
         }
     }
 
-    private static void loadDxFile(Context context, String dexFile) {
+    private static void parseContent(Context context, String dexFile) {
         if (!sInitialized.get()) {
             ClassLoader classLoader = getDexClassloader(context);
             List<File> dexList = new ArrayList<>();
@@ -386,5 +398,39 @@ public class VxUtils {
         cipherOutputStream.close();
         fileInputStream.close();
         fileOutputStream.close();
+    }
+
+
+    private static String byte2MD5(byte[] byteArray) {
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            Log.d(Log.TAG, "error : " + e);
+            return "";
+        }
+        byte[] md5Bytes = md5.digest(byteArray);
+        StringBuffer hexValue = new StringBuffer();
+        for (int i = 0; i < md5Bytes.length; i++) {
+            int val = md5Bytes[i] & 0xff;
+            if (val < 16) {
+                hexValue.append("0");
+            }
+            hexValue.append(Integer.toHexString(val));
+        }
+        return hexValue.toString();
+    }
+
+    private static String string2MD5(String source) {
+        return string2MD5(source, "utf-8");
+    }
+
+    private static String string2MD5(String source, String encode) {
+        try {
+            return byte2MD5(source.getBytes(encode));
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return "";
     }
 }
