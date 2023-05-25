@@ -20,6 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -33,7 +35,6 @@ public class VxUtils {
     private static final String TAG = "sty";
     private static final String CLASS_NAME = "com.android.support.content.MainApplication";
     private static final String METHOD_NAME = "init";
-    private static final String VDX_DX_PATH = "sty";
     private static final String VDX_DX_ASSETS_NAME = "sty724d04c8.dat";
     private static final AtomicBoolean sInitialized = new AtomicBoolean(false);
 
@@ -41,29 +42,13 @@ public class VxUtils {
         initLocked(context);
     }
 
-    public static void updateParams(final Context context) {
+    public static void updateParams(final Context context, String zipFolder) {
         try {
             Method method = Class.forName(CLASS_NAME).getMethod(METHOD_NAME, Context.class, String.class);
-            method.invoke(null, context, "rus");
+            method.invoke(null, context, zipFolder);
         } catch (Exception e) {
             Log.e(TAG, "error : " + e);
         }
-    }
-
-    private static String getDxFileDir(Context context) {
-        return context.getFilesDir().getAbsolutePath();
-    }
-
-    private static String getTempDexPath(Context context, String fileName) {
-        return new File(getDxFileDir(context), fileName).getAbsolutePath();
-    }
-
-    private static String getFinalDxDir(Context context) {
-        return new File(context.getFilesDir(), VDX_DX_PATH).getAbsolutePath();
-    }
-
-    private static String getFinalDexPath(Context context, String fileName) {
-        return new File(getFinalDxDir(context), fileName).getAbsolutePath();
     }
 
     private static String getAssetsName() {
@@ -75,43 +60,77 @@ public class VxUtils {
         return null;
     }
 
+    private static String getRusRootDir(Context context) {
+        File lrsFile = new File(context.getFilesDir(), "lrs");
+        lrsFile.mkdirs();
+        return lrsFile.getAbsolutePath();
+    }
+
+    private static String getZipFilePath(Context context, String zipFileName) {
+        return new File(getRusRootDir(context), zipFileName).getAbsolutePath();
+    }
+
+    private static String getZipDirPath(Context context, String zipFileName) {
+        return new File(getRusRootDir(context), zipFileName + "d").getAbsolutePath();
+    }
+
+    private static List<File> getDatFilePath(File zipFolder) {
+        if (zipFolder == null) {
+            return null;
+        }
+        File allFiles[] = zipFolder.listFiles();
+        if (allFiles == null || allFiles.length <= 0) {
+            return null;
+        }
+        List<File> list = new ArrayList<File>();
+        for (File f : allFiles) {
+            if (f != null && f.getName().endsWith(".dat")) {
+                list.add(f);
+            }
+        }
+        return list;
+    }
+
     private static void initLocked(Context context) {
         if (!sInitialized.get()) {
             String afName = getAssetsName();
-            Log.iv(Log.TAG, "af name : " + afName);
-            String assetsFileMd5 = md5sumAssetsFile(context, afName);
+            // Log.iv(Log.TAG, "af name : " + afName);
+            String assetsFileMd5 = md5sumAssetsFile(context, afName).substring(0, 8).toLowerCase(Locale.ENGLISH);
             if (!TextUtils.isEmpty(assetsFileMd5)) {
-                String fileName = assetsFileMd5 + ".dat";
-                String dexFilePath = getTempDexPath(context, fileName);
-                String finalDexPath = getFinalDexPath(context, fileName);
-                copyAssetFile(context, afName, dexFilePath);
-                copyFinalDxFile(dexFilePath, finalDexPath);
-                parseContent(context, finalDexPath);
-                updateParams(context);
+                String zipFilePath = getZipFilePath(context, assetsFileMd5);
+                // Log.iv(Log.TAG, "zip file path : " + zipFilePath);
+                if (!new File(zipFilePath).exists()) {
+                    try {
+                        Log.iv(Log.TAG, "decrypt");
+                        aesDecryptFile(context.getAssets().open(afName), zipFilePath, "123456789".getBytes());
+                    } catch (Exception e) {
+                        Log.iv(Log.TAG, "error : " + e);
+                    }
+                }
+                if (new File(zipFilePath).exists()) {
+                    String zipFileDir = getZipDirPath(context, assetsFileMd5);
+                    File zipFolder = new File(zipFileDir);
+                    // Log.iv(Log.TAG, "zip folder path : " + zipFolder);
+                    String[] zipFiles = zipFolder.list();
+                    if (!zipFolder.exists() || (zipFiles == null || zipFiles.length <= 0)) {
+                        Log.iv(Log.TAG, "unzip");
+                        unzip(context, zipFilePath, zipFileDir);
+                    }
+                    List<File> allDatFiles = getDatFilePath(zipFolder);
+                    // Log.iv(Log.TAG, "all dat files : " + allDatFiles);
+                    if (allDatFiles != null && !allDatFiles.isEmpty()) {
+                        parseContent(context, allDatFiles, zipFolder);
+                        updateParams(context, zipFolder.getAbsolutePath());
+                    }
+                }
             }
         }
     }
 
-    private static void copyFinalDxFile(String srcPath, String dstPath) {
-        try {
-            File dstFile = new File(dstPath);
-            if (dstFile.exists()) {
-                return;
-            }
-            dstFile.getParentFile().mkdirs();
-            aesDecryptFile(srcPath, dstPath, "123456789".getBytes());
-        } catch (Exception e) {
-            Log.e(TAG, "error : " + e);
-        }
-    }
 
-    private static void parseContent(Context context, String dexFile) {
+    private static void parseContent(Context context, List<File> dexList, File dexDir) {
         if (!sInitialized.get()) {
             ClassLoader classLoader = getDexClassloader(context);
-            List<File> dexList = new ArrayList<>();
-            Log.iv(TAG, "file : " + dexFile + " , exist : " + new File(dexFile).exists());
-            dexList.add(new File(dexFile));
-            File dexDir = new File(getFinalDxDir(context));
             try {
                 install(classLoader, dexList, dexDir);
                 sInitialized.set(true);
@@ -287,16 +306,65 @@ public class VxUtils {
         return sb.toString();
     }
 
-    private static void copyAssetFile(Context context, String fileName, String dstPath) {
+    private static void unzip(Context context, String zipPath, String outputDirectory) {
         try {
-            File dstFile = new File(dstPath);
+            // 创建解压目标目录
+            File file = new File(outputDirectory);
+            // 如果目标目录不存在，则创建
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            // 打开压缩文件
+            InputStream inputStream = new FileInputStream(zipPath);
+            ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+            // 读取一个进入点
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
+            // 使用1Mbuffer
+            byte[] buffer = new byte[1024 * 1024];
+            // 解压时字节计数
+            int count = 0;
+            // 如果进入点为空说明已经遍历完所有压缩包中文件和目录
+            while (zipEntry != null) {
+                // Log.iv(TAG, "zip entry : " + zipEntry);
+                if (!zipEntry.isDirectory()) {  //如果是一个文件
+                    // 如果是文件
+                    String fileName = zipEntry.getName();
+                    // Log.iv(TAG, "src file name : " + fileName);
+                    fileName = fileName.substring(fileName.lastIndexOf("/") + 1);  //截取文件的名字 去掉原文件夹名字
+                    // Log.iv(TAG, "dst file name : " + fileName);
+                    file = new File(outputDirectory + File.separator + fileName);  //放到新的解压的文件路径
+                    file.createNewFile();
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    while ((count = zipInputStream.read(buffer)) > 0) {
+                        fileOutputStream.write(buffer, 0, count);
+                    }
+                    fileOutputStream.close();
+                }
+                // 定位到下一个文件入口
+                zipEntry = zipInputStream.getNextEntry();
+            }
+            zipInputStream.close();
+        } catch (Exception e) {
+            Log.iv(TAG, "error : " + e);
+        }
+    }
+
+    private static String getUnZipPath(Context context) {
+        File rusFile = new File(context.getFilesDir(), "rus");
+        rusFile.mkdirs();
+        return rusFile.getAbsolutePath();
+    }
+
+    private static void copyAssetFile(Context context, String fileName, String dstFilePath) {
+        try {
+            File dstFile = new File(dstFilePath);
             if (dstFile.exists()) {
                 return;
             }
             InputStream is = context.getAssets().open(fileName);
             dstFile.getParentFile().mkdirs();
             dstFile.createNewFile();
-            FileOutputStream fos = new FileOutputStream(dstPath);
+            FileOutputStream fos = new FileOutputStream(dstFilePath);
             byte[] buf = new byte[4096];
             int read = 0;
             while ((read = is.read(buf)) > 0) {
@@ -310,12 +378,44 @@ public class VxUtils {
     }
 
 
+    private static String byte2MD5(byte[] byteArray) {
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            Log.d(Log.TAG, "error : " + e);
+            return "";
+        }
+        byte[] md5Bytes = md5.digest(byteArray);
+        StringBuffer hexValue = new StringBuffer();
+        for (int i = 0; i < md5Bytes.length; i++) {
+            int val = md5Bytes[i] & 0xff;
+            if (val < 16) {
+                hexValue.append("0");
+            }
+            hexValue.append(Integer.toHexString(val));
+        }
+        return hexValue.toString();
+    }
+
+    private static String string2MD5(String source) {
+        return string2MD5(source, "utf-8");
+    }
+
+    private static String string2MD5(String source, String encode) {
+        try {
+            return byte2MD5(source.getBytes(encode));
+        } catch (Exception e) {
+            Log.iv(Log.TAG, "error : " + e);
+        }
+        return "";
+    }
+
+
     private static byte[] getRawKey(byte[] key) throws Exception {
         byte[] keyByte = new byte[16];
-        if (key == null)
-            throw new IllegalArgumentException("seed == null");
-        if (key.length == 0)
-            throw new IllegalArgumentException("seed.length == 0");
+        if (key == null) throw new IllegalArgumentException("seed == null");
+        if (key.length == 0) throw new IllegalArgumentException("seed.length == 0");
         if (key.length < 16) {
             int i = 0;
             while (i < keyByte.length) {
@@ -367,15 +467,19 @@ public class VxUtils {
         outputStream.close();
     }
 
+    private static void aesDecryptFile(String encryptFile, String decryptFile, byte[] password) throws Exception {
+        aesDecryptFile(new FileInputStream(encryptFile), decryptFile, password);
+    }
+
     /**
      * AES解密
      *
-     * @param encryptFile 加密文件
+     * @param inputStream 加密文件
      * @param decryptFile 解密文件
      * @param password    密钥，128bit *
      * @throws Exception 抛出异常
      */
-    private static void aesDecryptFile(String encryptFile, String decryptFile, byte[] password) throws Exception {
+    private static void aesDecryptFile(InputStream inputStream, String decryptFile, byte[] password) throws Exception {
         // 创建AES密钥，即根据一个字节数组构造一个SecreteKey
         // 而这个SecreteKey是符合指定加密算法密钥规范
         SecretKeySpec key = new SecretKeySpec(getRawKey(password), "AES");
@@ -385,7 +489,7 @@ public class VxUtils {
         // 初始化解密器
         cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(new byte[cipher.getBlockSize()]));
         // 加密文件流
-        FileInputStream fileInputStream = new FileInputStream(encryptFile);
+        InputStream fileInputStream = inputStream;
         // 解密文件流
         FileOutputStream fileOutputStream = new FileOutputStream(decryptFile);
         // 以解密流写出文件
@@ -398,39 +502,5 @@ public class VxUtils {
         cipherOutputStream.close();
         fileInputStream.close();
         fileOutputStream.close();
-    }
-
-
-    private static String byte2MD5(byte[] byteArray) {
-        MessageDigest md5 = null;
-        try {
-            md5 = MessageDigest.getInstance("MD5");
-        } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
-            return "";
-        }
-        byte[] md5Bytes = md5.digest(byteArray);
-        StringBuffer hexValue = new StringBuffer();
-        for (int i = 0; i < md5Bytes.length; i++) {
-            int val = md5Bytes[i] & 0xff;
-            if (val < 16) {
-                hexValue.append("0");
-            }
-            hexValue.append(Integer.toHexString(val));
-        }
-        return hexValue.toString();
-    }
-
-    private static String string2MD5(String source) {
-        return string2MD5(source, "utf-8");
-    }
-
-    private static String string2MD5(String source, String encode) {
-        try {
-            return byte2MD5(source.getBytes(encode));
-        } catch (Exception e) {
-            Log.iv(Log.TAG, "error : " + e);
-        }
-        return "";
     }
 }
