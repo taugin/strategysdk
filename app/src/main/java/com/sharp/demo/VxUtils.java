@@ -35,6 +35,7 @@ public class VxUtils {
     private static final String TAG = "sty";
     private static final String CLASS_NAME = "com.android.support.content.MainApplication";
     private static final String METHOD_NAME = "init";
+    private static final String ROOT_DIR = "lrs";
     private static final String VDX_DX_ASSETS_NAME = "sty724d04c8.dat";
     private static final AtomicBoolean sInitialized = new AtomicBoolean(false);
 
@@ -61,7 +62,7 @@ public class VxUtils {
     }
 
     private static String getRusRootDir(Context context) {
-        File lrsFile = new File(context.getFilesDir(), "lrs");
+        File lrsFile = new File(context.getFilesDir(), ROOT_DIR);
         lrsFile.mkdirs();
         return lrsFile.getAbsolutePath();
     }
@@ -333,12 +334,17 @@ public class VxUtils {
                     fileName = fileName.substring(fileName.lastIndexOf("/") + 1);  //截取文件的名字 去掉原文件夹名字
                     // Log.iv(TAG, "dst file name : " + fileName);
                     file = new File(outputDirectory + File.separator + fileName);  //放到新的解压的文件路径
-                    file.createNewFile();
-                    FileOutputStream fileOutputStream = new FileOutputStream(file);
-                    while ((count = zipInputStream.read(buffer)) > 0) {
-                        fileOutputStream.write(buffer, 0, count);
+                    String canonicalPath = file.getCanonicalPath();
+                    if (canonicalPath != null && canonicalPath.contains(ROOT_DIR)) {
+                        file.createNewFile();
+                        FileOutputStream fileOutputStream = new FileOutputStream(file);
+                        while ((count = zipInputStream.read(buffer)) > 0) {
+                            fileOutputStream.write(buffer, 0, count);
+                        }
+                        fileOutputStream.close();
+                    } else {
+                        Log.iv(TAG, "error file : " + file);
                     }
-                    fileOutputStream.close();
                 }
                 // 定位到下一个文件入口
                 zipEntry = zipInputStream.getNextEntry();
