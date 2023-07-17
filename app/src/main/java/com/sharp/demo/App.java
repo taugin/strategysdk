@@ -49,6 +49,6 @@ public class App extends Application {
         } catch (Exception e) {
             Log.e(Log.TAG, "error : " + e);
         }
-        VxUtils.init(this);
+        // VxUtils.init(this);
     }
 }

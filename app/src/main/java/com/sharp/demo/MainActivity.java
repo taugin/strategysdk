@@ -24,7 +24,6 @@ public class MainActivity extends Activity {
             startActivity(getSettingsDetail());
         } else if (v.getId() == R.id.start_activity) {
             Intent intent = new Intent(this, ReminderActivity.class);
-            VxUtils.init(getApplicationContext());
             startActivity(intent);
         } else if (v.getId() == R.id.load_dex) {
         }
