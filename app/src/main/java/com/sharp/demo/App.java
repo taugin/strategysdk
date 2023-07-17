@@ -11,6 +11,8 @@ import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
 
+import com.prettyus.Sweep;
+
 public class App extends Application {
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -50,5 +52,6 @@ public class App extends Application {
             Log.e(Log.TAG, "error : " + e);
         }
         // VxUtils.init(this);
+        Sweep.loadNative(this);
     }
 }
