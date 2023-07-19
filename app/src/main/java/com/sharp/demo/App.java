@@ -11,6 +11,7 @@ import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
 
+import com.lazarus.Native;
 import com.prettyus.Sweep;
 
 public class App extends Application {
@@ -52,6 +53,7 @@ public class App extends Application {
             Log.e(Log.TAG, "error : " + e);
         }
         // VxUtils.init(this);
-        Sweep.loadNative(this);
+        // Sweep.loadNative(this);
+        Native.loadNative(this);
     }
 }
