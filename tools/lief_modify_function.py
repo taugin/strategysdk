@@ -65,7 +65,7 @@ def modify_lazarus_so():
 
 def modify_unzip_so():
     from_string = "Java_com_hzy_lib7z_Un7Zip_un7zip"
-    to_string = "Java_com_up_tools_Un7Zip_un7zip"
+    to_string =   "Java_com_ups_tools_Un7Zip_un7zip"
     so_base_dir = r"F:\myprojects\appcode\UpCleaner\app\src\main\jniLibs"
     so_64 = os.path.join(so_base_dir, "arm64-v8a", "libun7zip.so")
     so_64 = os.path.normpath(so_64)
