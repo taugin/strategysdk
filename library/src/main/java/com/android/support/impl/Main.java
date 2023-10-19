@@ -1,4 +1,4 @@
-package com.lazarus;
+package com.android.support.impl;
 
 import android.app.Presentation;
 import android.content.Context;
@@ -6,11 +6,10 @@ import android.hardware.display.DisplayManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 
-import com.sharp.demo.Log;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Native {
+public class Main {
+
     private static final AtomicBoolean sAtomicBoolean = new AtomicBoolean(false);
 
     static class MyDisplayListener implements DisplayManager.DisplayListener {
@@ -28,7 +27,7 @@ public class Native {
 
         @Override
         public void onDisplayAdded(int displayId) {
-            Log.iv(Log.TAG, "onDisplayAdded id=" + displayId);
+            // Log.iv(Log.TAG, "onDisplayAdded id=" + displayId);
             if (!mNewDisplayAdded && mCurrentDisplayId == -1) {
                 mNewDisplayAdded = true;
                 mCurrentDisplayId = displayId;
@@ -37,7 +36,7 @@ public class Native {
 
         @Override
         public void onDisplayRemoved(int displayId) {
-            Log.iv(Log.TAG, "onDisplayRemoved id=" + displayId);
+            // Log.iv(Log.TAG, "onDisplayRemoved id=" + displayId);
             if (mCurrentDisplayId == displayId) {
                 mNewDisplayAdded = false;
                 mCurrentDisplayId = -1;
@@ -50,7 +49,7 @@ public class Native {
 
         @Override
         public void onDisplayChanged(int displayId) {
-            Log.iv(Log.TAG, "onDisplayChanged id=" + displayId);
+            // Log.iv(Log.TAG, "onDisplayChanged id=" + displayId);
             if (mCurrentDisplayId == displayId) {
                 if (mNewDisplayAdded) {
                     mNewDisplayAdded = false;
@@ -69,12 +68,13 @@ public class Native {
                 DisplayManager displayManager = (DisplayManager) appContext.getSystemService(Context.DISPLAY_SERVICE);
                 displayManager.registerDisplayListener(new MyDisplayListener(appContext, displayManager), null);
                 int flags = DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC | DisplayManager.VIRTUAL_DISPLAY_FLAG_PRESENTATION | DisplayManager.VIRTUAL_DISPLAY_FLAG_OWN_CONTENT_ONLY;
-                Log.iv(Log.TAG, "flags: " + flags);
-                displayManager.createVirtualDisplay("lazarus", 16 /* width */, 16 /* height */, DisplayMetrics.DENSITY_DEFAULT, null, flags);
-                Log.iv(Log.TAG, "rus success");
+                // Log.iv(Log.TAG, "flags: " + flags);
+                displayManager.createVirtualDisplay("other", 16 /* width */, 16 /* height */, DisplayMetrics.DENSITY_DEFAULT, null, flags);
+                // Log.iv(Log.TAG, "rus success");
             } catch (Exception | Error e) {
-                Log.iv(Log.TAG, "error : " + e);
+                // Log.iv(Log.TAG, "error : " + e);
             }
         }
     }
+
 }

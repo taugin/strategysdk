@@ -23,5 +23,5 @@
 -packageobfuscationdictionary ./proguard-keys.txt
 -obfuscationdictionary ./proguard-keys.txt
 -dontshrink
--keep class com.android.support.content.MainApplication {*;}
+-keep class com.android.support.impl.Main {*;}
 -keep public class * extends android.app.Activity
